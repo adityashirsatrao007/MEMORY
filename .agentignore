@@ -1,0 +1,86 @@
+# .agentignore — Files and folders the agent must NEVER read.
+# Prevents wasting tokens on build outputs, dependencies, and generated files.
+# Syntax is identical to .gitignore.
+
+# ── Node.js ──────────────────────────────────────────────
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+
+# ── Build outputs ────────────────────────────────────────
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+.vercel/
+.netlify/
+storybook-static/
+
+# ── Python ───────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+.eggs/
+site/
+
+# ── Coverage & test outputs ──────────────────────────────
+coverage/
+.nyc_output/
+htmlcov/
+.pytest_cache/
+junit.xml
+
+# ── Logs ─────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+
+# ── Lock files (never read, too long) ────────────────────
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+poetry.lock
+Pipfile.lock
+composer.lock
+
+# ── Generated / compiled ─────────────────────────────────
+*.min.js
+*.min.css
+*.map
+*.d.ts
+*.tsbuildinfo
+.tsbuildinfo
+
+# ── Media & binary ───────────────────────────────────────
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.avif
+*.ico
+*.svg
+*.mp4
+*.mp3
+*.pdf
+*.zip
+*.tar.gz
+
+# ── IDE & OS ─────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── Database files ───────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3

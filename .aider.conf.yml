@@ -1,0 +1,3 @@
+# Aider configuration — reads project rules from GEMINI.md
+read:
+  - GEMINI.md
