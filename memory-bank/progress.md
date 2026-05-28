@@ -24,3 +24,4 @@
 |------|--------------|
 | 2026-05-28 | Created Remix UI and design-system implementation guidance documentation |
 | 2026-05-28 | Redesigned and rethemed Next.js portfolio website to match the Remix monospace dark luxury visual identity, verified builds, and persisted dev process in PM2 |
+| 2026-05-28 | Removed redundant remix-docs-site project and PM2 daemon, keeping only the central design-system rules inside GEMINI.md |
