@@ -257,6 +257,7 @@ Every app must have before being marked done:
 - All tests pass with zero failures
 - All API endpoints verified via `curl` with correct status codes
 - Build completes with zero errors
+- **React Code Quality (React Doctor):** For every React-based codebase (React 18/19, Next.js, Vite, Remix, etc.), run deterministic static analysis with React Doctor (`npx react-doctor@latest`). Diagnose and fix all security, performance, correctness, and architecture issues reported by the CLI to achieve a perfect 100/100 health score before finalization.
 
 ---
 
@@ -479,16 +480,6 @@ project/
 ├── src/model.py       ← transfer learning setup
 ├── src/train.py       ← training loop
 ├── src/predict.py     ← inference
-├── configs/config.yaml
-└── Makefile           ← make train, make eval, make submit
-```
-
-### Kaggle Competition Workflow (Full Automation)
-1. `kaggle competitions download -c <name> -p data/raw/`
-2. EDA notebook auto-generated
-3. Baseline model from HuggingFace
-4. Training with MLflow tracking
-5. `kaggle competitions submit -c <name> -f submission.csv -m "baseline"`e
 ├── configs/config.yaml
 └── Makefile           ← make train, make eval, make submit
 ```
