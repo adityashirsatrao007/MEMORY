@@ -1,5 +1,7 @@
 # Agent Configuration — Aditya's Workspace
 
+This file mirrors the workspace-level Gemini instructions at /home/aditya/Desktop/Projects/GEMINI.md so VS Code Copilot uses the same memory and workflow rules.
+
 This file is automatically read by Antigravity at the start of every session.
 All rules below are MANDATORY and apply to every task without exception.
 
