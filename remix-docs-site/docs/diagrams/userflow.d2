@@ -1,0 +1,30 @@
+# docs/diagrams/userflow.d2
+direction: down
+classes: {
+  action: {
+    shape: rectangle
+    style: { fill: "#1e2226"; stroke: "#57cda4"; font-color: "#dee2e6" }
+  }
+  decision: {
+    shape: diamond
+    style: { fill: "#1c1c1e"; stroke: "#57cda4"; font-color: "#dee2e6" }
+  }
+}
+
+User: "User Lands on Docs Site" {class: action}
+Search: "Presses / or Cmd+K" {class: action}
+SidebarToggle: "Clicks Sidebar Category" {class: action}
+
+User -> Search
+User -> SidebarToggle
+
+Search -> "Search Modal Opens" {class: action}
+"Search Modal Opens" -> "User Types Query" {class: action}
+"User Types Query" -> "Matches Found?" {class: decision}
+"Matches Found?" -> "Display Filtered Links": Yes {class: action}
+"Matches Found?" -> "Show 'No Results'": No {class: action}
+
+"Display Filtered Links" -> "Click / Press Enter" {class: action}
+"Click / Press Enter" -> "Navigate & Close Modal" {class: action}
+
+SidebarToggle -> "Toggle Sidebar Collapse" {class: action}

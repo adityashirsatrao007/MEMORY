@@ -1,0 +1,16 @@
+{
+  "name": "remix-docs-site",
+  "version": "1.0.0",
+  "description": "Remix UI design-system documentation site showcase",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "lint": "echo \"No linting rules specified\" && exit 0"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "private": true
+}
