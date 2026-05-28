@@ -28,3 +28,4 @@
 | 2026-05-28 | Learned and integrated Andrej Karpathy's agent behavioral guidelines into GEMINI.md rules, and synced them across dotfiles and other projects |
 | 2026-05-28 | Migrated and merged the dotfiles configuration project into the central MEMORY repository, and cleaned up the separate local project directory |
 | 2026-05-28 | Migrated and merged the calculator-app codebase into the central MEMORY repository, deleted the separate standalone local/remote repositories, and documented its premium UI/UX micro-interaction rules in GEMINI.md |
+| 2026-05-28 | Fixed portfolio particle visibility (opacity 0.25→0.6, removed ghosting trail, transparent canvas bg). Learned scrollytelling pipeline: Google Whisk (image gen) → EZGif (video→frames) → Anti-Gravity (code gen) → NodeJS. Documented Apple-level scrollytelling architecture and premium design rules in memory bank. |
