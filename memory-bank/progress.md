@@ -22,3 +22,4 @@
 <!-- Agent appends a one-line summary after each session -->
 | Date | What Was Done |
 |------|--------------|
+| 2026-05-28 | Created Remix UI and design-system implementation guidance documentation |
