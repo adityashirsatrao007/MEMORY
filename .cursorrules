@@ -3218,3 +3218,39 @@ Before committing code changes to the documentation site build repository, engin
 - [ ] Off-canvas menus on responsive mobile viewports are fully keyboard-navigable and collapsible.
 - [ ] Copy blocks are clean, direct, and implementation-focused; "please", "oops", and ambiguous labels are excluded.
 - [ ] Buttons and links support touch targets of at least `44px` height.
+
+---
+
+## 8. Immersive & 3D Web Design Principles (Noomo Agency Guidance)
+
+Based on industry leading practices for immersive brand activations, WebGL development, and 3D web experience design:
+
+### A. The Immersive UX Mindset
+* **Active Participation over Passive Consumption:** Standard websites present information flatly. 3D websites transform the user from a passive reader into an active participant. Interactivity must trigger immediate visual and physical responses (e.g., cursor interactivity, scroll-driven camera movements, 360-degree product rotation).
+* **Narrative-Driven Storytelling:** The most successful 3D and AR implementations integrate brand narrative directly into the environment. Do not treat 3D as a decorative gimmick; it must tell a cohesive story.
+
+### B. Implementation Methodologies
+When choosing a technology stack for three-dimensional representations, select the appropriate method:
+
+1. **Pre-rendered 3D Video**
+   * *Best For:* Controlled cinematic sequences, landing hero sequences with complex lighting or animation that cannot be rendered in real-time.
+   * *Disadvantage:* Lacks interactivity; high bandwidth consumption.
+2. **Interactive Image Sequences**
+   * *Best For:* Lightweight simulated 3D rotations or animations tied to scroll triggers or mouse horizontal drag events.
+   * *Disadvantage:* Limited to predefined paths; can break or jitter if image density is too low.
+3. **Real-Time WebGL Rendering (Three.js, React Three Fiber, OGL, Spline)**
+   * *Best For:* High-fidelity product configurators (e.g., custom glass materials, colorways) and fully interactive 3D spaces.
+   * *Disadvantage:* High resource overhead; requires significant development and optimization.
+
+### C. Technical & Layering Rules (MANDATORY)
+To prevent common layout and accessibility issues in 3D-integrated interfaces:
+* **Background Layering:** WebGL canvases acting as interactive backgrounds must be styled with `position: fixed` or `position: absolute`, `top: 0`, `left: 0`, `width: 100%`, `height: 100%`, and `z-index: -1` or lower.
+* **Canvas Pointer Events:** If a WebGL canvas sits behind page content, it **MUST** have the CSS rule `pointer-events: none` applied. This ensures standard text selection, link clicks, and buttons remain fully interactive. If the 3D canvas requires direct mouse/drag events, interactive elements must be placed in separate, visually distinct layout wrappers with appropriate `z-index` layering.
+* **Transparent Wrappers:** Do not apply solid background colors to full-page sections or pages if a fixed WebGL animation layer (e.g., starfields, particle clouds) is running. Section elements must use transparent backgrounds (e.g., `bg-transparent`, `bg-[#000000]/40`) to keep the background layer visible.
+* **Interactive Hover Fade & Contrast:** When implementing cursor-interactive lighting (such as a spotlight effect that brightens on hover and fades to dark otherwise), ensure the default text contrast ratio on the page continues to satisfy WCAG 2.2 AA standards (`4.5:1` minimum). Do not allow text to fade below readability thresholds.
+
+### D. Optimization & Performance
+* **Asset Compression:** All 3D assets (GLTF, GLB) must be optimized. Apply Draco compression (`gltf-pipeline`), reduce texture map resolution (max 2K for general web), and strip unused node hierarchies.
+* **Progressive Loading:** Always implement a custom preloader/loading spinner while WebGL assets compile or download. Use progressive loader skeletons or lower-detail fallback graphics.
+* **Hardware Degradation:** Provide a graceful fallback path. If the client browser or device fails WebGL compatibility checks, automatically replace the 3D scene with a high-performance 2D image sequence or pre-rendered optimized fallback illustration.
+
