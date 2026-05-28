@@ -928,6 +928,84 @@ When the user says **any** of these:
 
 ---
 
+## 🎭 Premium Frontend Library Stack (Mandatory — Every Web Project)
+
+> The agent MUST use this stack for all new web projects. Never build generic AI-looking block websites.
+
+### Core Stack (Always Install)
+```bash
+bun add next@latest react@19 react-dom@19          # Framework
+bun add lenis                                         # Smooth scroll (14k stars)
+bun add motion                                        # Animation (370+ examples)
+bun add gsap @gsap/react                              # Complex timelines + ScrollTrigger
+bun add three @types/three @react-three/fiber @react-three/drei  # 3D (113k stars)
+bun add tailwindcss @tailwindcss/vite                 # Styling
+bun add zustand                                       # State (for 3D scenes)
+npx shadcn@latest init                                # UI primitives
+```
+
+### Library Selection Matrix
+| Need | Library | Install | Why |
+|------|---------|---------|-----|
+| Smooth scroll | **Lenis** | `bun add lenis` | 14k stars, buttery physics, GSAP integration |
+| Basic animations | **Motion.dev** | `bun add motion` | 370+ examples, React declarative API |
+| Complex timelines | **GSAP** | `bun add gsap` | Industry standard, ScrollTrigger, pinning |
+| 3D scenes | **Three.js + R3F** | `bun add three @react-three/fiber` | 113k stars, React declarative 3D |
+| 3D helpers | **Drei** | `bun add @react-three/drei` | Environment, Float, Text3D, useGLTF |
+| Post-processing | **R3F Postprocessing** | `bun add @react-three/postprocessing` | Bloom, DOF, Vignette |
+| Text animations | **ReactBits** | `npx shadcn@latest add @react-bits/*` | BlurText, SplitText, Typewriter |
+| UI components | **ReactBits** | `npx shadcn@latest add @react-bits/*` | TiltCard, Spotlight, Marquee |
+| Backgrounds | **ReactBits** | `npx shadcn@latest add @react-bits/*` | GradientBg, ParticleField, AuroraBg |
+| State management | **Zustand** | `bun add zustand` | Lightweight, for 3D scene state |
+
+### Scrolling Patterns (Decision Guide)
+| Pattern | When | Implementation |
+|---------|------|----------------|
+| **Long Scroll** | Storytelling, landing pages | Lenis + Motion `whileInView` |
+| **Fixed Scroll** | Docs, dashboards | CSS `sticky` + Lenis |
+| **Parallax** | Brand stories, portfolios | Lenis + `useTransform` |
+| **Scrollytelling** | Product showcases | Canvas image sequence + scroll-linked frame playback |
+| **Infinite Scroll** | Social feeds, galleries | Intersection Observer + API pagination |
+
+### Long Scroll Best Practices (Clay Global 2026)
+1. Chunk content visually — distinct sections with headings, background changes
+2. Front-load value — most important content + CTA above the fold
+3. Provide orientation — sticky nav, progress indicators, back-to-top
+4. Lazy load images — Intersection Observer for off-screen content
+5. Break text blocks — short paragraphs, images, videos between sections
+6. Clear CTAs throughout — guide users on what to do next
+7. Mobile-first — buttons/links big enough to tap, text readable
+8. Optimize speed — compress files, limit plugins, use WebP/AVIF
+9. Monitor with Hotjar — heatmaps show where users scroll/lose interest
+10. Respect `prefers-reduced-motion` — always provide fallback
+
+### Anti-Patterns (NEVER Do This)
+- ❌ Infinite scroll + parallax on same page (conflict)
+- ❌ Auto-loading without "Load More" fallback
+- ❌ Fixed elements that obscure content on mobile
+- ❌ Heavy parallax on content-heavy pages (kills readability)
+- ❌ No loading indicators during content loads
+- ❌ Forgetting footer links are unreachable with infinite scroll
+- ❌ Generic AI-looking card grids — every component must feel handcrafted
+- ❌ Using `cat` on JSON files — use `jless` (see ZERO-TOKEN CLI RULEBOOK)
+
+### Scrollytelling Pipeline (Product Showcases)
+1. **Google Whisk** → Generate AI product shots (hero, exploded view, detail)
+2. **Google Veo Flow** → Animate between frames (disassembly/reassembly)
+3. **EZGif** → Extract video frames at 30 FPS (JPG, ZIP download)
+4. **Anti-Gravity / Gemini** → Generate Next.js scrollytelling code
+5. **NodeJS** → Local dev server
+
+### Reference Files
+- `templates/animations/MOTION_DEV_LIBRARY.md` — 8 core patterns, 14 APIs, presets
+- `templates/animations/REACT_BITS_LIBRARY.md` — 110+ components, 4 categories
+- `templates/animations/SCROLLYTELLING_TEMPLATE.tsx` — Apple-level product showcase
+- `templates/animations/SCROLLYTELLING_TOOLCHAIN.md` — Full pipeline docs
+- `templates/animations/SCROLLING_PATTERNS.md` — 4 patterns, decision matrix
+- `templates/animations/FRONTEND_LIBRARY_STACK.md` — Complete stack reference
+
+---
+
 ## 🛑 Global Error Learnings & Guardrails (Permanent Memory)
 
 1. **Staging Bloat Prevention:** Never stage virtual environments (`venv`, `.venv`), package lockfiles (`package-lock.json`, `yarn.lock`), or build packages (`node_modules`) to Git. Always ensure a comprehensive `.gitignore` is active to prevent push unpacking failures on GitHub.
