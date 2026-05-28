@@ -27,3 +27,4 @@
 | 2026-05-28 | Removed redundant remix-docs-site project and PM2 daemon, keeping only the central design-system rules inside GEMINI.md |
 | 2026-05-28 | Learned and integrated Andrej Karpathy's agent behavioral guidelines into GEMINI.md rules, and synced them across dotfiles and other projects |
 | 2026-05-28 | Migrated and merged the dotfiles configuration project into the central MEMORY repository, and cleaned up the separate local project directory |
+| 2026-05-28 | Migrated and merged the calculator-app codebase into the central MEMORY repository, deleted the separate standalone local/remote repositories, and documented its premium UI/UX micro-interaction rules in GEMINI.md |
