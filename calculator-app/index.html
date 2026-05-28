@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A premium dark-mode calculator with glassmorphism design, full keyboard support, and history log." />
+  <title>Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="background">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <main class="app" id="app">
+    <div class="calculator" role="application" aria-label="Calculator">
+
+      <!-- History Panel -->
+      <aside class="history-panel" id="historyPanel" aria-label="Calculation history">
+        <div class="history-header">
+          <h2 class="history-title">History</h2>
+          <button class="history-clear-btn" id="clearHistoryBtn" aria-label="Clear history" title="Clear history">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6l-1 14H6L5 6"></path>
+              <path d="M10 11v6M14 11v6"></path>
+              <path d="M9 6V4h6v2"></path>
+            </svg>
+          </button>
+        </div>
+        <ul class="history-list" id="historyList" aria-live="polite" aria-label="Calculation history list">
+          <li class="history-empty" id="historyEmpty">No history yet</li>
+        </ul>
+      </aside>
+
+      <!-- Main Calculator -->
+      <div class="calc-body">
+
+        <!-- Display -->
+        <div class="display" role="region" aria-label="Calculator display">
+          <div class="expression-row" id="expressionRow" aria-live="polite" aria-atomic="true"></div>
+          <div class="result-row" id="resultRow" aria-live="polite" aria-atomic="true" aria-label="Current value">0</div>
+          <button class="history-toggle" id="historyToggle" aria-label="Toggle history" title="Toggle history panel">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Keypad -->
+        <div class="keypad" role="group" aria-label="Calculator keys">
+
+          <!-- Row 1 -->
+          <button class="key key--function" id="key-ac" data-action="ac" aria-label="All Clear">AC</button>
+          <button class="key key--function" id="key-sign" data-action="sign" aria-label="Toggle sign">+/−</button>
+          <button class="key key--function" id="key-percent" data-action="percent" aria-label="Percent">%</button>
+          <button class="key key--operator" id="key-divide" data-action="operator" data-value="÷" aria-label="Divide">÷</button>
+
+          <!-- Row 2 -->
+          <button class="key key--digit" id="key-7" data-action="digit" data-value="7" aria-label="7">7</button>
+          <button class="key key--digit" id="key-8" data-action="digit" data-value="8" aria-label="8">8</button>
+          <button class="key key--digit" id="key-9" data-action="digit" data-value="9" aria-label="9">9</button>
+          <button class="key key--operator" id="key-multiply" data-action="operator" data-value="×" aria-label="Multiply">×</button>
+
+          <!-- Row 3 -->
+          <button class="key key--digit" id="key-4" data-action="digit" data-value="4" aria-label="4">4</button>
+          <button class="key key--digit" id="key-5" data-action="digit" data-value="5" aria-label="5">5</button>
+          <button class="key key--digit" id="key-6" data-action="digit" data-value="6" aria-label="6">6</button>
+          <button class="key key--operator" id="key-subtract" data-action="operator" data-value="−" aria-label="Subtract">−</button>
+
+          <!-- Row 4 -->
+          <button class="key key--digit" id="key-1" data-action="digit" data-value="1" aria-label="1">1</button>
+          <button class="key key--digit" id="key-2" data-action="digit" data-value="2" aria-label="2">2</button>
+          <button class="key key--digit" id="key-3" data-action="digit" data-value="3" aria-label="3">3</button>
+          <button class="key key--operator" id="key-add" data-action="operator" data-value="+" aria-label="Add">+</button>
+
+          <!-- Row 5 -->
+          <button class="key key--digit key--zero" id="key-0" data-action="digit" data-value="0" aria-label="0">0</button>
+          <button class="key key--digit" id="key-decimal" data-action="decimal" aria-label="Decimal point">.</button>
+          <button class="key key--equals" id="key-equals" data-action="equals" aria-label="Equals">=</button>
+
+        </div>
+
+        <!-- Keyboard hint -->
+        <p class="keyboard-hint" aria-hidden="true">Keyboard supported · Esc to clear</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

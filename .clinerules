@@ -222,7 +222,8 @@ When creating any new project, the agent MUST run the local setup first and wait
 
 ### Phase 2: GitHub Publishing (Only AFTER explicit User approval)
 8. Once the user approves pushing/uploading:
-   - Run `gh repo create adityashirsatrao007/<project-name> --private --push --source=.`
+   - **Crucial Authentication Rule:** Always run `gh` CLI commands using `env -u GITHUB_TOKEN gh ...` to prevent sandbox-level dummy tokens from overriding your local system credentials.
+   - Run `env -u GITHUB_TOKEN gh repo create adityashirsatrao007/<project-name> --private --push --source=.`
    - Push the commits to the remote main tracking branch.
 
 ---
@@ -231,9 +232,14 @@ When creating any new project, the agent MUST run the local setup first and wait
 
 Every web interface MUST be premium quality:
 - **Font:** `-apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, sans-serif`
-- **Dark mode:** Default dark background `#1C1C1E`, surface `#2C2C2E`
+- **Dark mode:** Default dark background `#1C1C1E`, surface `#2C2C2E` (or macOS/iOS `#0A0A0F` dark interface bases)
 - **Glass effects:** `backdrop-filter: blur(20px)` on cards and modals
-- **Animations:** Scale `0.98` on press, 150ms transitions on all interactive elements
+- **Animations & Micro-Interactions:**
+  - Scale `0.98` (or `0.93` for compact keys/buttons) on press/click, with 150ms transitions on all interactive elements
+  - Shake animations for inputs/displays on invalid entry or errors
+  - Pulse/scale-up animations on successful computations or updates
+- **Auto-Sizing Typography:** Text container fonts (like displays or input rows) must scale down dynamically based on string length to prevent clipping, wrapping, or line truncation.
+- **Physical Keyboarding:** Always implement matching keyboard shortcut mapping for critical UI operations (with visual focus and click simulation feedback).
 - **Colors:** Never plain red/blue/green — use HSL-tuned, harmonious palettes
 - **Icons:** SVG or Lucide only — never raw emoji as icons
 - **No placeholders:** Generate real images with the image generation tool
