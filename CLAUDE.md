@@ -216,9 +216,9 @@ When creating any new project, the agent MUST run the local setup first and wait
 2. `git init` inside the project folder
 3. `git config init.defaultBranch main`
 4. Run `/home/aditya/bin/setup-project /home/aditya/Desktop/Projects/<project-name>` — installs git hooks, .gitignore, .editorconfig, Makefile, and memory-bank docs templates.
-5. Initialize the application server, run the development server locally, and verify it is working.
-6. Run `pm2 start <server> --name <project-name> && pm2 save` so it runs locally and survives reboots.
-7. **STOP & WAIT FOR APPROVAL:** Present the working local application to the user. Do NOT push, create a GitHub repo, or upload anything to GitHub.
+5. Initialize the application server and run the development server (e.g. `pm2 start npm --name <project-name> -- run dev`) so that real-time hot-reloading is active.
+6. Verify the server is running, and print the localhost URL (e.g. `http://localhost:<port>`) immediately to the user.
+7. **STOP & WAIT FOR APPROVAL:** Present the working local application and its localhost address to the user. Do NOT push, create a GitHub repo, or upload anything to GitHub.
 
 ### Phase 2: GitHub Publishing (Only AFTER explicit User approval)
 8. Once the user approves pushing/uploading:
