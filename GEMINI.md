@@ -77,7 +77,7 @@ This means the NEXT session starts instantly without re-analysis.
 The agent must NEVER ask permission, seek approval, or prompt the user for:
 - Which UI style to use (always premium Apple HIG by default)
 - Whether to use git (always yes)
-- Whether to push to GitHub (always yes, automatically)
+- Whether to push to GitHub (only AFTER explicit user approval for that project; never automatically for new projects)
 - Which framework to use (make the best production choice)
 - Whether to write tests (always yes)
 - How to fix an error (self-heal autonomously)
@@ -171,14 +171,21 @@ The agent must:
 
 ## 📁 Every New Project — Mandatory Setup
 
-When creating any new project, the agent MUST automatically run ALL of these steps in order:
+When creating any new project, the agent MUST run the local setup first and wait for explicit user approval before publishing/pushing to GitHub:
+
+### Phase 1: Local Setup & Running
 1. Create folder inside `/home/aditya/Desktop/Projects/<project-name>/`
 2. `git init` inside the project folder
 3. `git config init.defaultBranch main`
-4. Run `/home/aditya/bin/setup-project /home/aditya/Desktop/Projects/<project-name>` — installs git hooks (pre-commit: lint+typecheck+secret scan, pre-push: tests+build), .gitignore, .editorconfig
-5. `gh repo create adityashirsatrao007/<project-name> --private --push --source=.`
-6. When the app server is started, run `pm2 start <server> --name <project-name> && pm2 save` so it survives reboots
-7. The auto-push cron at `*/10 * * * *` already protects it — no extra setup needed
+4. Run `/home/aditya/bin/setup-project /home/aditya/Desktop/Projects/<project-name>` — installs git hooks, .gitignore, .editorconfig, Makefile, and memory-bank docs templates.
+5. Initialize the application server, run the development server locally, and verify it is working.
+6. Run `pm2 start <server> --name <project-name> && pm2 save` so it runs locally and survives reboots.
+7. **STOP & WAIT FOR APPROVAL:** Present the working local application to the user. Do NOT push, create a GitHub repo, or upload anything to GitHub.
+
+### Phase 2: GitHub Publishing (Only AFTER explicit User approval)
+8. Once the user approves pushing/uploading:
+   - Run `gh repo create adityashirsatrao007/<project-name> --private --push --source=.`
+   - Push the commits to the remote main tracking branch.
 
 ---
 
@@ -1260,6 +1267,27 @@ When starting work on any codebase, follow this EXACT sequence:
 
 This 5-step pre-flight reads the ENTIRE codebase context in 5 commands instead of 50+ file reads. Saves up to 90% of session tokens.
 
+### 🎯 AUTO-TRIGGER RULES — Tool Must Fire Automatically on These Conditions
+
+The following tools are installed but under-used. These rules make them **mandatory triggers** so the agent reaches for them reflexively:
+
+| Condition | Tool to Fire | Command |
+|-----------|-------------|---------|
+| Any JSON file > 50 lines | `jless` | `jless file.json` — interactive browse, don't open in editor |
+| Building a jq query interactively | `jnv` | `cat file.json \| jnv` — live jq query builder |
+| Starting work on ANY existing project | `onefetch` | `onefetch` — instant repo summary before reading files |
+| Starting work on ANY existing project | `eza --tree` | `eza --tree --level 2 --git-ignore` — understand structure |
+| Dev server running + editing source | `entr` | `fd -e ts -e tsx \| entr -r npm run build` — auto-rebuild on save |
+| Bulk rename/replace across files | `sd` | `sd 'old' 'new' **/*.ts` — never use sed or file-edit for bulk |
+| Debugging what processes are running | `procs` | `procs --tree` — process tree with resources |
+| System resource overview with GPU | `btm` | `btm` — CPU/RAM/GPU/network in one TUI |
+| Exploring an unfamiliar open-source repo | `gitingest` | Change `github.com` → `gitingest.com` in URL — AI-friendly summary |
+| Feeding a repo to AI for deep analysis | `gitmcp` | Paste URL into `gitmcp.io` — converts repo to AI-readable format |
+| Viewing any GitHub file for copy/paste | `?plain=1` | Append `?plain=1` to GitHub file URL — raw view, no UI clutter |
+| Quick-editing a file in browser | `.` key | Press `.` on any GitHub repo page → instant VS Code in browser |
+| Downloading repo without git | ZIP trick | Append `/archive/refs/heads/main.zip` to repo URL |
+
+**Rule:** If the agent uses `cat` on a JSON file, it has FAILED. Use `jless`. If the agent starts a project session without `onefetch`, it has FAILED. If the agent manually re-runs a build after editing source files, it should have used `entr`.
 
 ---
 
@@ -2686,3 +2714,337 @@ https://github.com/user/repo/blob/main/index.js?plain=1
 | Check repo health | Insights tab |
 | Profile portfolio | Repo named same as username |
 
+
+
+---
+
+
+# Remix UI Implementation Guidance: Documentation Site
+
+## Design Intent
+The Remix documentation user interface must deliver an ultra-fast, visually precise, developer-first reading and code-exploration environment using a monospace-centric design system optimized for high density, readability, and keyboard navigation.
+
+---
+
+## 1. Context and Goals
+The Remix documentation site serves developers and technical teams seeking immediate API references, architectural patterns, and code samples. This guide defines a system of semantic tokens and strict component-level constraints to ensure design consistency, reduce bundle bloat, and guarantee keyboard-navigable accessibility across the documentation surface. 
+
+The site utilizes a high-density page structure featuring:
+- Primary document reading layout with sidebar and table of contents.
+- High component density including numerous links, hierarchical sidebars, code toggles, and unified keyboard-driven search inputs.
+
+---
+
+## 2. Design Tokens and Foundations
+
+### Base Foundations
+These base tokens are absolute, immutable values mapped from the Remix brand guidelines. They must not be overridden at the component level.
+
+```json
+{
+  "font": {
+    "family": {
+      "primary": "JetBrains Mono",
+      "stack": "JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace"
+    },
+    "size": {
+      "xs": "10px",
+      "sm": "12px",
+      "base": "16px",
+      "lg": "56px",
+      "xl": "84px"
+    },
+    "weight": {
+      "base": "400",
+      "bold": "700"
+    },
+    "lineHeight": {
+      "base": "24px",
+      "tight": "1.2"
+    }
+  },
+  "color": {
+    "text": {
+      "primary": "#dee2e6",
+      "secondary": "#ffffff",
+      "tertiary": "#57cda4"
+    },
+    "surface": {
+      "base": "#000000",
+      "muted": "#1e2226"
+    },
+    "border": {
+      "default": "#c8c8c8"
+    }
+  },
+  "space": {
+    "1": "4px",
+    "2": "6px",
+    "3": "10px",
+    "4": "16px",
+    "5": "19px",
+    "6": "20px",
+    "7": "24px",
+    "8": "27px"
+  },
+  "radius": {
+    "xs": "24px",
+    "sm": "999px"
+  },
+  "motion": {
+    "duration": {
+      "instant": "150ms"
+    }
+  }
+}
+```
+
+### Semantic Token Mapping
+All UI components must refer directly to these semantic mappings. Developers must never reference raw hex codes or absolute pixel dimensions.
+
+| Semantic Token | Value / Mapping | Usage Context |
+| :--- | :--- | :--- |
+| `color.text.body` | `color.text.primary` (`#dee2e6`) | Default reading text, paragraphs, standard list items. |
+| `color.text.heading` | `color.text.secondary` (`#ffffff`) | H1, H2, active nav item text, visual emphasis. |
+| `color.text.link` | `color.text.tertiary` (`#57cda4`) | Standard inline links and interactive indicators. |
+| `color.text.placeholder` | `#6c757d` | Input placeholder text (contrasts 4.5:1 against black). |
+| `color.bg.canvas` | `color.surface.base` (`#000000`) | Global page background color. |
+| `color.bg.container` | `color.surface.muted` (`#1e2226`) | Sidebars, code blocks, card overlays. |
+| `color.bg.accent` | `color.text.tertiary` (`#57cda4`) | Badge fills, active accents, focus borders. |
+| `color.border.ui` | `color.border.default` (`#c8c8c8`) | Default element dividers and input borders. |
+| `color.border.focus` | `color.text.tertiary` (`#57cda4`) | Keyboard focus rings. |
+| `space.inset.sm` | `space.2` (`6px`) `space.3` (`10px`) | Padding for small components (e.g. badges, list items). |
+| `space.inset.md` | `space.4` (`16px`) | Padding for buttons, text inputs, and inline alerts. |
+| `space.stack.md` | `space.7` (`24px`) | Vertical spacing between main layout blocks. |
+| `radius.component` | `radius.xs` (`24px`) | Button, input, and container rounding. |
+| `radius.pill` | `radius.sm` (`999px`) | Focus rings and pill-shaped badge elements. |
+| `transition.instant` | `motion.duration.instant` (`150ms`) | Speed of CSS states (hover, focus, active). |
+
+---
+
+## 3. Component-Level Rules
+
+Remix documentation pages maintain a high density of components. Standard density expectations per layout viewport:
+- **Links:** 24 per page
+- **Navigation blocks:** 3 per page (Global Top Nav, Docs Sidebar Nav, In-page Table of Contents)
+- **Buttons:** 2 per page (Code-copy actions, version switchers)
+- **Inputs:** 1 per page (Documentation Search)
+- **Lists:** 1 per page (Sidebar category hierarchies)
+
+---
+
+### Component 1: Links (Density: 24/page)
+Inline or standalone text element linking to external sites or other documentation pages.
+
+#### Component Anatomy & Variants
+- **Anatomy:** Text string (primary anchor) + visual pointer indicator on focus.
+- **Inline Link Variant:** Embedded in body text, underlined by default.
+- **Sidebar Link Variant:** Sourced in nav bars, sans-underline, uses indentation spacing.
+
+#### Spacing & Typography
+- Typography must utilize `font.family.stack` with `font.size.base` for inline text, or `font.size.sm` for sidebar links.
+- Line height must be `font.lineHeight.base`.
+- Inline links must have zero padding; sidebar links must have vertical padding of `space.2` and horizontal padding of `space.3`.
+
+#### State Matrix
+- **Default State:** Foreground is `color.text.link`. Underlined if inline.
+- **Hover State:** Foreground transitions instantly to `color.text.heading`. Underline thickness increases to 2px.
+- **Focus-Visible State:** Background becomes `color.surface.muted`. Outline ring of 2px `color.border.focus` forms around target with offset of `space.1`. Outline must be visible on keyboard navigation.
+- **Active State:** Foreground shifts to `color.text.heading`. Translate-y down 1px.
+- **Disabled State:** Foreground opacity is reduced to 40%. Pointer-events are disabled.
+- **Loading State:** Text remains, background has a pulse animation alternating opacity between 30% and 60% with speed of `400ms`.
+- **Error State:** Foreground is red `#fa5252`, text is appended with a warning icon.
+
+#### Interactions & Device Behavior
+- **Keyboard:** Must trigger action on `Enter` keypress.
+- **Pointer:** Hover state triggered on mouseover. Pointer cursor must display.
+- **Touch:** Minimum touch target height must be `44px` (achieved via transparent pseudo-element overlays for inline links, or layout height for sidebar links).
+- **Edge Cases:** Text exceeding the containing element width must wrap naturally if inline. Sidebar links must truncate with an ellipsis (`overflow: hidden; text-overflow: ellipsis; white-space: nowrap;`) and should reveal full text via standard HTML `title` on hover.
+
+---
+
+### Component 2: Navigation Blocks (Density: 3/page)
+Controls page layout, directory traversing, and in-page sections. The three variants are: Global Top Nav, Docs Sidebar Nav, and In-page Table of Contents (ToC).
+
+#### Component Anatomy & Variants
+- **Global Top Nav:** Horizontal strip containing logo, version picker, and high-level sections.
+- **Docs Sidebar Nav:** Vertical hierarchical tree representing documents structure.
+- **Table of Contents (ToC):** Vertical, sticky layout detailing current page anchors.
+
+#### Spacing & Typography
+- **Top Nav:** Height must be exactly `56px`. Padding must be `space.4` horizontally. Font size must be `font.size.md`.
+- **Sidebar Nav:** Width must be exactly `280px`. Vertical spacing between links must be `space.2`.
+- **ToC:** Font size must be `font.size.xs`. Line height must be `14px`. Padding-left indent must increase by `space.3` per heading tier.
+
+#### State Matrix
+- **Default State (Inactive Item):** Text color is `color.text.body`.
+- **Hover State:** Text color transitions to `color.text.heading`.
+- **Focus-Visible State:** Outline ring of 2px `color.border.focus` around navigation anchor element.
+- **Active State (Selected Document):** Text color is `color.text.heading`. Left border indicator of 3px `color.bg.accent` must render (Sidebar Nav variant).
+- **Disabled State:** Hidden from view or grayed out (`opacity: 0.3`) and omitted from tab sequence via `tabindex="-1"`.
+- **Loading State:** Active section name scales down slightly, and a spinning inline loading wheel replaces active status indicators.
+- **Error State:** Not applicable to nav routing.
+
+#### Interactions & Device Behavior
+- **Keyboard Navigation:** Tab keys switch between nav containers. Sidebar hierarchical lists must support navigation with Up/Down arrow keys, collapsing or expanding child routes using Left/Right arrow keys respectively.
+- **Pointer & Touch:** Sidebar list expansion toggles on clicking folder arrow icons. Target touch areas must measure at least `44px` vertically.
+- **Responsive Handling:** Below `1024px` viewport width, the Docs Sidebar Nav must collapse into an off-canvas drawer controlled by a persistent header menu toggle button. The ToC must hide entirely on viewports narrower than `1280px`.
+
+---
+
+### Component 3: Buttons (Density: 2/page)
+Trigger actions within page contexts, specifically copying code snippets and switching docs versions.
+
+#### Component Anatomy & Variants
+- **Copy Button:** Compact, square icon-only button placed absolute inside code blocks.
+- **Dropdown Selector Button:** Pill-shaped selector with label and trailing arrow icon for version switching.
+
+#### Spacing & Typography
+- **Copy Button:** Dimensions must be exactly `32px` by `32px`. Internal spacing must be centered. Radius must be `radius.xs`.
+- **Dropdown Selector:** Height must be `36px`. Padding must be `space.2` vertically and `space.4` horizontally. Font style must be `font.family.primary`, size `font.size.sm`.
+
+#### State Matrix
+- **Default State:** Background is `color.surface.muted`, border is 1px `color.border.ui`, text color is `color.text.body`.
+- **Hover State:** Background is `color.surface.base`, border is 1px `color.text.heading`, text color is `color.text.secondary`.
+- **Focus-Visible State:** Outer focus ring of 2px `color.border.focus` with an offset spacing of `2px`.
+- **Active State:** Background is `#212529`. Dropdown overlay scales to `1.0` if version switcher is activated.
+- **Disabled State:** Opacity reduced to 30%. Cursor set to `not-allowed`. Keyboard trigger blocked.
+- **Loading State:** Button text is replaced by a centered loading spinner. Icon buttons spin.
+- **Error State:** Red border (`#fa5252`) and shake animation (5px translation back and forth) for 150ms.
+
+#### Interactions & Device Behavior
+- **Keyboard:** Must execute action on `Space` or `Enter` keydown. Dropdown Selector must open options menu on `Down Arrow` keypress.
+- **Pointer/Touch:** Click/tap initiates immediate action. Transitions must execute at `transition.instant`.
+- **Empty States / Edge Cases:** Version dropdown selection items must limit display height to a max-content vertical scroll height of 300px, utilizing `overflow-y: auto` with custom monospace scrollbars.
+
+---
+
+### Component 4: Inputs (Density: 1/page)
+Command-palette/Search text input located at the top of the viewport for search queries.
+
+#### Component Anatomy & Variants
+- **Search Input:** Text field + prepended magnifying glass icon + appended keyboard shortcut badge (`Cmd+K`).
+
+#### Spacing & Typography
+- Input field height must be exactly `40px`.
+- Horizontal padding must be `space.4`. Prepended icon spacing must use `space.3`.
+- Typography must utilize `font.family.primary` with `font.size.md`.
+- Border radius must be `radius.xs`.
+
+#### State Matrix
+- **Default State:** Background is `color.surface.muted`, border is 1px `color.border.ui`, text is `color.text.body`. Shortcut badge is visible.
+- **Hover State:** Border transitions to `color.text.heading`.
+- **Focus-Visible (Focused) State:** Border changes to `color.border.focus`, background to `color.surface.base`. Outline ring of 2px `color.border.focus` scales in. Shortcut badge disappears.
+- **Active State:** Identical to focused state.
+- **Disabled State:** Not applicable to global search.
+- **Loading State:** Magnifying glass icon is replaced by a spinning loader.
+- **Error State:** Border becomes red (`#fa5252`), text color becomes red, validation text displays below container.
+
+#### Interactions & Device Behavior
+- **Keyboard:** Focus is captured globally on pressing `/` or `Cmd+K`. Pressing `Esc` clears input and releases focus. Up and down arrows navigate search results dropdown list.
+- **Pointer/Touch:** Focus triggered on click/tap. Clears input with a visible "X" action button on touch screens.
+- **Edge Cases (Long Content):** Search text must scroll horizontally if it exceeds container width. Text wrap inside the input field is prohibited.
+
+---
+
+### Component 5: Lists (Density: 1/page)
+The directory structures, search results lists, or document category sections.
+
+#### Component Anatomy & Variants
+- **Hierarchical List:** Indented nested lines representing categories and pages. Includes collapsible folder groups.
+
+#### Spacing & Typography
+- List items must be vertically separated by `space.2`.
+- Child items must be indented by `space.4` per hierarchy level.
+- Font size must be `font.size.sm`. Line height must be `font.lineHeight.base`.
+
+#### State Matrix
+- **Default State:** Item text color is `color.text.body`. Folder toggle is pointing right.
+- **Hover State:** Item background becomes `color.surface.muted`, text transitions to `color.text.heading`.
+- **Focus-Visible State:** Focal ring of 2px `color.border.focus` overlays the targeted item row.
+- **Active State:** Selected category item text is `color.text.heading`. Font weight is set to `font.weight.bold`.
+- **Disabled State (Unpublished Docs):** Text color changed to `#495057`. Item selection is blocked.
+- **Loading State:** Nested list node displays an empty state block with a skeleton animation pulsing between 20% and 40% opacity.
+- **Error State:** Item displays with a red warning badge if category fail to load.
+
+#### Interactions & Device Behavior
+- **Keyboard:** Lists must support keyboard traversing. Focus moves sequentially down items. Expand/Collapse folders using Right/Left arrows.
+- **Pointer/Touch:** Folders toggle state on clicking or tapping row banners.
+- **Empty States:** When a folder is expanded but empty, it must display the message "No articles available" indented by `space.4` in color `#6c757d` with font-style set to italic.
+
+---
+
+## 4. Accessibility Requirements & Testable Criteria
+
+Remix components must adhere to WCAG 2.2 AA target rules. 
+
+### Mandatory Implementation Requirements
+1. **Interactive Element Contrast:** All interactive elements (text buttons, inputs, links) must exceed a contrast ratio of `4.5:1` against the solid black (`color.surface.base`) background.
+2. **Keyboard Traversal:** The document must maintain a logical tab order starting from Skip Navigation, moving through Main Nav, Sidebar Nav, Search Input, page content links, and ending in footer links.
+3. **Focus Isolation:** Modals (e.g. search dialogue overlay) must trap focus inside the dialog box. Tab traversal must wrap within the modal when active. Focus must return to the triggering element on exit.
+4. **ARIA Roles:** Expandable folders must utilize `aria-expanded="true|false"` attributes. Search inputs must map to `role="searchbox"`. Nav containers must use `<nav>` tags with distinct `aria-label` descriptors.
+
+### Pass/Fail Acceptance Criteria
+
+```
+[PASS] Text elements meet contrast of 4.5:1.
+[FAIL] Using #495057 text directly on a #000000 background (contrast ratio: 2.2:1).
+
+[PASS] Interactive elements display a distinct, 2px thick focus-visible outline when navigated via keyboard.
+[FAIL] Using styling blocks with outline: none or outline: 0 without custom focus states.
+
+[PASS] Skip to content link is hidden off-screen on initial page load, and displays at top left of viewport on first Tab keypress.
+[FAIL] Skip navigation anchors are completely missing, forcing screen readers to read sidebar nav menus on every single page load.
+
+[PASS] Modal overlay traps keyboard focus; user cannot tab into obscured page links underneath search dialogue.
+[FAIL] Search overlay allows tab sequence to exit modal boundaries and scroll the underlying layout screen.
+```
+
+---
+
+## 5. Content and Tone Standards
+
+### Tone of Voice
+Guidance, error reporting, and documentation labels must be:
+- **Concise:** Keep actions short. Omit flowery adjectives.
+- **Confident:** State facts directly. Do not apologize or sound hesitant.
+- **Implementation-focused:** Directly tell the developer what to input, output, or check.
+
+### Code and Copy Guidelines
+- Use code-like variables or exact actions.
+- Avoid phrases like "Please click here" or "Oops, something went wrong".
+
+### Action Examples
+
+| Context | Prohibited Copy (DO NOT) | Compliant Copy (DO) |
+| :--- | :--- | :--- |
+| **Search Input** | "Please type here to find a document." | "Search Remix docs..." |
+| **Empty Folder List** | "Oops! It looks like we don't have any items in this folder yet." | "No articles available." |
+| **Loading Error** | "We are so sorry, but the documentation failed to load." | "Failed to fetch document tree. Retry." |
+| **Code Block Action** | "Click here if you want to copy code!" | "Copy" |
+
+---
+
+## 6. Anti-Patterns and Prohibited Implementations
+
+Developers and designers must not implement the following visual or structural patterns:
+- **No Raw Colors:** Do not use Tailwind default colors (e.g. `text-blue-500`) or custom hex codes. You must use designated semantic tokens.
+- **No Outline Disabling:** Do not set `outline: none` on interactive focus properties unless replacing it with an equivalent or stronger visual focus style matching the brand's primary color palette.
+- **No Inline Spacing Exceptions:** Adding `margin-top: 13px` or other arbitrary margins is strictly prohibited. Spacer calculations must resolve to mapped `space.[1-8]` tokens.
+- **No Non-Semantic HTML:** Do not map clickable button events to non-interactive elements like `<div>` or `<span>`. Interactive elements must utilize `<button>` or `<a>` tag foundations.
+
+---
+
+## 7. QA Checklist
+
+Before committing code changes to the documentation site build repository, engineers must verify compliance against this list:
+
+- [ ] All interactive elements (links, navigation items, buttons, inputs) meet WCAG 2.2 AA `4.5:1` minimum color contrast requirements.
+- [ ] Tab navigation traverses the page layout logically without skipping elements or getting caught in focus loops.
+- [ ] No raw colors or absolute margins are referenced in stylesheets; all code mappings utilize semantic design tokens.
+- [ ] Components render expected state variations: default, hover, focus-visible, active, disabled, loading, and error.
+- [ ] Global search command-palette shortcut (`Cmd+K` / `/`) is wired and successfully traps focus when triggered.
+- [ ] All clickable actions use semantic markup tags (`<button>` or `<a>` with valid `href` destinations).
+- [ ] Off-canvas menus on responsive mobile viewports are fully keyboard-navigable and collapsible.
+- [ ] Copy blocks are clean, direct, and implementation-focused; "please", "oops", and ambiguous labels are excluded.
+- [ ] Buttons and links support touch targets of at least `44px` height.

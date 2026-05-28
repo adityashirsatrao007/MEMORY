@@ -2886,7 +2886,7 @@ Controls page layout, directory traversing, and in-page sections. The three vari
 - **Error State:** Not applicable to nav routing.
 
 #### Interactions & Device Behavior
-- **Keyboard Navigation:** Tab keys switch between nav containers. Sidebar hierarchical lists must support navigation with Up/Down arrow keys, collapsing/expanding child routes using Left/Right arrow keys respectively.
+- **Keyboard Navigation:** Tab keys switch between nav containers. Sidebar hierarchical lists must support navigation with Up/Down arrow keys, collapsing or expanding child routes using Left/Right arrow keys respectively.
 - **Pointer & Touch:** Sidebar list expansion toggles on clicking folder arrow icons. Target touch areas must measure at least `44px` vertically.
 - **Responsive Handling:** Below `1024px` viewport width, the Docs Sidebar Nav must collapse into an off-canvas drawer controlled by a persistent header menu toggle button. The ToC must hide entirely on viewports narrower than `1280px`.
 
