@@ -243,6 +243,7 @@ Every web interface MUST be premium quality:
 - **Colors:** Never plain red/blue/green — use HSL-tuned, harmonious palettes
 - **Icons:** SVG or Lucide only — never raw emoji as icons
 - **No placeholders:** Generate real images with the image generation tool
+- **Background Visibility:** Never apply solid background colors to full-page sections if a fixed background canvas or WebGL animation layer (like dynamic particle clouds or galactic fields) is active; sections must use transparent background colors (e.g., `bg-transparent`, `bg-[#000000]/40`) to prevent blocking the visual effect.
 
 ---
 
