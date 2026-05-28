@@ -1006,6 +1006,62 @@ npx shadcn@latest init                                # UI primitives
 
 ---
 
+## 📄 PDF & Document Extraction Tools (Zero-Token, Always Available)
+
+> The agent MUST NEVER say "I cannot read PDFs" or "this model does not support PDF input". Use these tools to extract content FIRST, then read the extracted text.
+
+### Installed Tools (poppler-utils + pandoc + tesseract)
+
+| Tool | Command | What It Does |
+|------|---------|-------------|
+| `pdftotext` | `pdftotext input.pdf output.txt` | Extract text from PDF to plain text |
+| `pdftoppm` | `pdftoppm -png -r 300 input.pdf output` | Convert PDF pages to PNG images |
+| `pdfimages` | `pdfimages -png input.pdf output` | Extract all images from PDF |
+| `pdfinfo` | `pdfinfo input.pdf` | Get PDF metadata (pages, size, author) |
+| `pdftohtml` | `pdftohtml input.pdf output.html` | Convert PDF to HTML |
+| `tesseract` | `tesseract input.png output` | OCR — extract text from images/scans |
+| `pandoc` | `pandoc input.pdf -t plain` | Convert PDF to plain text/markdown |
+
+### Self-Healing Protocol for File Reading
+
+When the agent encounters a file it cannot read directly:
+
+1. **PDF files** → Use `pdftotext`:
+   ```bash
+   pdftotext "file.pdf" /tmp/extracted.txt && cat /tmp/extracted.txt
+   ```
+
+2. **Scanned PDFs / images** → Use `tesseract` OCR:
+   ```bash
+   pdftoppm -png -r 300 "file.pdf" /tmp/page
+   tesseract /tmp/page-1.png output.txt
+   ```
+
+3. **Extract images from PDF** → Use `pdfimages`:
+   ```bash
+   pdfimages -png "file.pdf" /tmp/extracted
+   ```
+
+4. **Convert PDF to HTML** → Use `pdftohtml`:
+   ```bash
+   pdftohtml "file.pdf" /tmp/output.html
+   ```
+
+5. **Convert PDF to markdown** → Use `pandoc`:
+   ```bash
+   pandoc "file.pdf" -t markdown -o /tmp/output.md
+   ```
+
+6. **Get PDF info first** → Use `pdfinfo`:
+   ```bash
+   pdfinfo "file.pdf"
+   ```
+
+### Rule
+> If a PDF is encountered, ALWAYS extract text first using `pdftotext`, read the extracted text, then proceed. NEVER tell the user you cannot read PDFs.
+
+---
+
 ## 🛑 Global Error Learnings & Guardrails (Permanent Memory)
 
 1. **Staging Bloat Prevention:** Never stage virtual environments (`venv`, `.venv`), package lockfiles (`package-lock.json`, `yarn.lock`), or build packages (`node_modules`) to Git. Always ensure a comprehensive `.gitignore` is active to prevent push unpacking failures on GitHub.
