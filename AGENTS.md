@@ -1260,6 +1260,27 @@ When starting work on any codebase, follow this EXACT sequence:
 
 This 5-step pre-flight reads the ENTIRE codebase context in 5 commands instead of 50+ file reads. Saves up to 90% of session tokens.
 
+### 🎯 AUTO-TRIGGER RULES — Tool Must Fire Automatically on These Conditions
+
+The following tools are installed but under-used. These rules make them **mandatory triggers** so the agent reaches for them reflexively:
+
+| Condition | Tool to Fire | Command |
+|-----------|-------------|---------|
+| Any JSON file > 50 lines | `jless` | `jless file.json` — interactive browse, don't open in editor |
+| Building a jq query interactively | `jnv` | `cat file.json \| jnv` — live jq query builder |
+| Starting work on ANY existing project | `onefetch` | `onefetch` — instant repo summary before reading files |
+| Starting work on ANY existing project | `eza --tree` | `eza --tree --level 2 --git-ignore` — understand structure |
+| Dev server running + editing source | `entr` | `fd -e ts -e tsx \| entr -r npm run build` — auto-rebuild on save |
+| Bulk rename/replace across files | `sd` | `sd 'old' 'new' **/*.ts` — never use sed or file-edit for bulk |
+| Debugging what processes are running | `procs` | `procs --tree` — process tree with resources |
+| System resource overview with GPU | `btm` | `btm` — CPU/RAM/GPU/network in one TUI |
+| Exploring an unfamiliar open-source repo | `gitingest` | Change `github.com` → `gitingest.com` in URL — AI-friendly summary |
+| Feeding a repo to AI for deep analysis | `gitmcp` | Paste URL into `gitmcp.io` — converts repo to AI-readable format |
+| Viewing any GitHub file for copy/paste | `?plain=1` | Append `?plain=1` to GitHub file URL — raw view, no UI clutter |
+| Quick-editing a file in browser | `.` key | Press `.` on any GitHub repo page → instant VS Code in browser |
+| Downloading repo without git | ZIP trick | Append `/archive/refs/heads/main.zip` to repo URL |
+
+**Rule:** If the agent uses `cat` on a JSON file, it has FAILED. Use `jless`. If the agent starts a project session without `onefetch`, it has FAILED. If the agent manually re-runs a build after editing source files, it should have used `entr`.
 
 ---
 
