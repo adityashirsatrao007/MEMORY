@@ -184,5 +184,9 @@ export PUPPETEER_EXECUTABLE_PATH=/snap/bin/chromium
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+# Limit command-line terminal output length to prevent token bloat
+export BASH_MAX_OUTPUT_LENGTH=15000
+
 # Starship Prompt
 eval "$(starship init bash)"
+
