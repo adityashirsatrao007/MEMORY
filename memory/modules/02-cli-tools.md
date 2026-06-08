@@ -100,12 +100,19 @@ Only THEN open files with `bat` if needed.
 | Log system event | `codeburn log --type system "msg"` |
 Costs auto-log to progress.md on shell exit.
 
-## Mode: MEMORY_MODE=lazy (RECOMMENDED — 95% token savings)
-Set `export MEMORY_MODE=lazy` and GEMINI.md instructs agent to skip module preloads.
-Instead, search vector DB on demand with `memory-search "<task>"`.
-- Lazy: ~70 tokens per session (search only)
-- Full: ~1420 tokens per session (preloaded modules)
-- Switching: restart session with `MEMORY_MODE=full` for rapid-fire CLI mode
+## Auto Mode Switching — NEVER Manual
+Start every session in **lazy** (~70 tokens). Switch to **full** (~1420 tokens) ONLY when the task requires it. Decision matrix (hardcoded — never ask user):
+
+| If user asks for this | Use mode | Reason |
+|---|---|---|
+| "what is", "find", "explain", "read this file" | **lazy** | Simple lookup, one search |
+| Single command, one file edit | **lazy** | Don't waste tokens |
+| "build", "create", "implement", "refactor" | **full** | Need all rules |
+| 3+ git operations in same task | **full** | CLI rules needed |
+| After 3+ memory-search calls on same task | **full** | You keep searching = you need the rules loaded |
+
+Switch with: `bat "$MEMORY_ROOT/memory/modules/01-core-rules.md"` (lazy→full).
+Stay lazy by running `memory-search "<task>"` instead of loading files.
 
 ## Silent CLI (MANDATORY — saves 30-40% tokens)
 - EVERY bash command: suppress output unless error. Pattern: `cmd > /dev/null 2>&1 || echo "FAIL: cmd: $?"`
