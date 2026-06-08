@@ -1396,7 +1396,22 @@ This protocol governs how the agent audits, reviews, and documents all changes b
 
 ### 1. Automated Code Quality Audits (Self-Healing Check)
 Before declaring any task done, the agent MUST run the following checks and resolve all failures autonomously:
-- **Static Analysis Audit:** Run `semgrep scan --config auto .` to analyze code for security vulnerabilities and logic bugs. Alternatively run `bandit -r .` for Python-specific security checks. If critical issues are found, fix them.
+- **MEMORY Structural Audit:** Run these checks before any commit to the MEMORY repo:
+  ```bash
+  # 1. No documented tools should be missing
+  for tool in $(rg "^\`([a-z][a-z-]+)\`" GEMINI.md -o --no-filename 2>/dev/null); do
+    which "$tool" &>/dev/null || echo "MISSING TOOL: $tool"
+  done
+  # 2. No empty directories should survive
+  find . -type d -empty -not -path './.git/*' -exec echo "EMPTY DIR: {}" \;
+  # 3. No absolute home paths should be stale
+  rg "/home/aditya/Desktop/Projects/MEMORY/" GEMINI.md 2>/dev/null && echo "WARN: hardcoded absolute paths found" || true
+  # 4. .agentignore and .gitignore paths must match actual layout
+  for pattern in $(rg "^[a-z_./]" .agentignore -o 2>/dev/null); do
+    find . -path "./${pattern}" -type f 2>/dev/null | head -1 || echo "STALE IGNORE: ${pattern} matches nothing"
+  done
+  ```
+- **Static Analysis Audit:** Run `semgrep scan --config auto .` to analyze code for security vulnerabilities and logic bugs.
 - **AI-Friendliness Audit:** Run `agentlint check` (or similar command) to ensure the codebase remains readable, structured, and continuous for other agents.
 - **Pre-commit Checks:** Run `pre-commit run --all-files` locally to verify that linters, formatters, and secret scans (`gitleaks`) pass successfully.
 - **Unit Testing:** Execute `make test` or `bun test` and ensure all tests pass with zero failures.

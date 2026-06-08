@@ -187,3 +187,68 @@ After any directory restructure, grep for old paths:
 ```bash
 rg "/home/aditya/Desktop/Projects/MEMORY/old-path" GEMINI.md
 ```
+
+### 11. Reference Projects & Bloat Creep Into Config Repo
+**Error Signature:**
+```
+templates/ contains 200+ files of full Next.js reference projects
+  - frontend-v0-reference (100+ TSX/TS files, 0 references anywhere)
+  - fullstack-bolt-reference (100+ TS/TSX files, 0 references anywhere)
+Purpose of MEMORY repo: agent configs + rules. NOT reference apps.
+```
+
+**Root Cause:**
+During coding sessions, agent generates reference/template projects to demonstrate patterns, then stores them in the MEMORY repo "for later use" — but nothing ever references them. They silently bloat the repo by 200+ files.
+
+**Standard Resolution:**
+Before committing to the MEMORY repo, every new file must pass the "MEMORY test":
+```
+Is this file a config, rule, tool script, or doc for agent behavior?
+  → YES: belongs here
+  → NO (e.g. full app source, reference project, generated scaffold):
+    → Delete it or move it to /tmp/ or a dedicated project repo
+```
+
+### 12. Agentignore / Gitignore Paths Not Updated After Restructure
+**Error Signature:**
+```
+.agentignore had:  vector_db/
+Actual location:   memory/vector_db/
+Agent reads the directory, finds a 164K binary SQLite file → wasted tokens
+```
+
+**Root Cause:**
+When directories are moved during restructure, `.agentignore` and `.gitignore` patterns that reference old paths silently stop matching. The agent then wastes tokens reading ignored-now-tracked files.
+
+**Standard Resolution:**
+After any file/directory move, run:
+```bash
+# Check if .agentignore paths still resolve
+for pattern in $(rg "^[a-z_]" .agentignore -o); do
+  find . -path "./${pattern}" -type f 2>/dev/null | head -1 && echo "  → STILL MATCHES"
+done
+
+# Same for .gitignore
+for pattern in $(rg "^[a-z_]" .gitignore -o); do
+  find . -path "./${pattern}" -type f 2>/dev/null | head -1 && echo "  → STILL MATCHES"
+done
+```
+
+### 13. Empty Directories Survive Cleanup
+**Error Signature:**
+```
+scratch/          — empty
+docs/images/      — empty
+docs/diagrams/    — empty
+graphify-out/     — empty
+4 empty dirs wasting `ls`/`eza` output lines
+```
+
+**Root Cause:**
+During restructuring, source directories get emptied (content moved or deleted), but the empty directory remains. Agents then list them, see nothing, and waste a line of output per empty dir.
+
+**Standard Resolution:**
+At the end of any session, run:
+```bash
+find . -type d -empty -not -path './.git/*' -delete 2>/dev/null
+```
