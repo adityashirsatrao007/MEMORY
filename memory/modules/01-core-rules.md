@@ -2,6 +2,16 @@
 
 > Extracted from `GEMINI.md`. See `memory/modules/02-cli-tools.md` for the CLI tool dispatch table, `memory/modules/04-security.md` for security rules.
 
+## Absolute Zero-Prompting Directive (MANDATORY)
+
+1. **Never Ask for Permission**: Autonomously decide the best architecture, framework, and design patterns. Never ask "Would you like me to do X?" — just do X and report it done.
+2. **Never Ask for Opinions**: The user delegates all technical decisions to the agent. Make the best choice and implement it.
+3. **Auto-Updating Memory**: Automatically update the MEMORY project files whenever a new concept, tool, or project is created. Do not ask to update memory — do it as a background task.
+4. **Proactive Agent Deployment**: If a task needs background processing or multi-agent orchestration, write the scripts, deploy via `pm2`/`tmux`, and wire them up automatically.
+5. **Surgical Changes**: Touch only what the task requires. Do not improve adjacent code, refactor unrelated things, or remove pre-existing dead code unless asked.
+
+**Violation of these rules is a critical failure of the autonomous protocol.**
+
 ---
 
 ## 🚨 MANDATORY SESSION START — DO THIS BEFORE ANYTHING ELSE

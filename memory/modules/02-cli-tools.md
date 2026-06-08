@@ -393,6 +393,17 @@ export DISPLAY=:0
 wezterm start -- bash -c "tmux attach -t agent-tasks"
 ```
 
-### 15. Global Error Logging & Self-Correction Protocol
+### 15. CodeBurn — Token & Cost Observability
+
+| Action | Command | Purpose |
+|--------|---------|---------|
+| Status | `codeburn status` | Today's token/cost usage |
+| Optimize | `codeburn optimize` | Find context waste, suggest fixes |
+| Aliases | `codeburn alias` | List available commands |
+| Logging | `codeburn log --type system "message"` | Manually log cost events |
+
+Session costs auto-log to `memory/memory-bank/progress.md` on shell exit.
+
+### 16. Global Error Logging & Self-Correction Protocol
 - Log all error signatures and resolution patterns to `memory/LESSONS_LEARNED.md`.
 - Cross-reference `memory/LESSONS_LEARNED.md` before writing code or fixing bugs.
