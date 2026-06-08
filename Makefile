@@ -17,9 +17,9 @@ validate:  ## Check all module files exist and have content
 	echo "  Grand total: $$((total + $$(wc -l < GEMINI.md))) lines"; \
 	[ "$$errors" -eq 0 ] && echo "  ✅ All modules valid" || echo "  ❌ $$errors error(s)"
 
-seed:  ## Re-vector ChromaDB from all module files
+seed:  ## Re-vector ChromaDB from all module files (--force)
 	@echo "=== Seeding Vector DB ==="
-	@. /home/aditya/.venvs/ml/bin/activate && python3 tools/seed_vector_db.py
+	@. /home/aditya/.venvs/ml/bin/activate && python3 tools/seed_vector_db.py --force
 	@echo "  ✅ Done"
 
 stats:  ## Module sizes and token savings
@@ -68,6 +68,8 @@ hooks:  ## Install git hooks for auto-seed (run after clone)
 	@chmod +x .githooks/post-commit
 	@git config core.hooksPath .githooks 2>/dev/null || true
 	@echo "  ✅ post-merge + post-commit hooks installed in .githooks/"
+
+all: validate seed  ## Validate modules and re-seed vector DB
 
 fix-paths:  ## Update relative paths in all modules to use $MEMORY_ROOT
 	@echo "=== Fixing cross-project module references ==="
