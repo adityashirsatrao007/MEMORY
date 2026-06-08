@@ -1,0 +1,6 @@
+#!/bin/bash
+# Auto-re-vector ChromaDB when module files change
+CHANGED=$(git diff HEAD@{1} --name-only 2>/dev/null | grep -c "memory/modules/")
+if [ "$CHANGED" -gt 0 ]; then
+  . /home/aditya/.venvs/ml/bin/activate 2>/dev/null && python3 tools/seed_vector_db.py 2>/dev/null
+fi

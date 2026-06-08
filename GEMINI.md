@@ -2,62 +2,56 @@
 
 > **I am an index file.** All AI tools (opencode, claude, cursor, windsurf, etc.) symlink here via AGENTS.md / CLAUDE.md / .clinerules / .cursorrules / .windsurfrules / copilot-instructions.md.
 >
-> My purpose is to tell you which module files to load. Do not load me and stop — read the relevant modules below.
+> **MEMORY_ROOT** = `/home/aditya/Desktop/Projects/MEMORY` (set by session-start.sh)
+> Use `$MEMORY_ROOT/memory/modules/<file>.md` to load modules from any working directory.
 
 ## Always Load (core — every session)
 
-These modules govern basic agent behavior and are loaded automatically by `session-start.sh`:
+Loaded automatically by `session-start.sh` step 1:
 
-| Module | What It Contains |
-|--------|-----------------|
-| [`memory/modules/01-core-rules.md`](memory/modules/01-core-rules.md) | Session start protocol, hallucination prevention, Karpathy guidelines, tool installation, production standards, self-healing, memory bank, code review |
-| [`memory/modules/02-cli-tools.md`](memory/modules/02-cli-tools.md) | 54-tool dispatch table, guardrails, zero-token CLI rulebook, token optimization, auto-dispatch, session-start.sh |
+| Module | Lines | What It Contains |
+|--------|-------|-----------------|
+| `$MEMORY_ROOT/memory/modules/01-core-rules.md` | 324 | Session protocol, Karpathy, prod standards, self-healing, code review |
+| `$MEMORY_ROOT/memory/modules/02-cli-tools.md` | 398 | 54-tool dispatch table, guardrails, zero-token CLI, token optimization |
 
 ## Load by Task
 
-| If you are doing this… | Load this module |
-|------------------------|-----------------|
-| ML training, model serving, MLOps | [`memory/modules/03-ml-engineering.md`](memory/modules/03-ml-engineering.md) |
-| Security audit, secret scanning, password hashing | [`memory/modules/04-security.md`](memory/modules/04-security.md) |
-| UI/UX design, animations, 3D, Remix docs | [`memory/modules/05-ui-ux.md`](memory/modules/05-ui-ux.md) |
-| Web dev, project setup, SEO, CODVYN | [`memory/modules/06-web-dev.md`](memory/modules/06-web-dev.md) |
-| Resume writing, LinkedIn, job applications | [`memory/modules/07-job-hunt.md`](memory/modules/07-job-hunt.md) |
-| System architecture, SAGA, CQRS, EDA, scaling | [`memory/modules/08-architecture.md`](memory/modules/08-architecture.md) |
-| Everything else (roadmap, GitHub tricks, OSM, misc) | [`memory/modules/09-misc.md`](memory/modules/09-misc.md) |
+| Task | Module |
+|------|--------|
+| ML training, model serving, MLOps | `$MEMORY_ROOT/memory/modules/03-ml-engineering.md` (292 lines) |
+| Security audit, secret scanning | `$MEMORY_ROOT/memory/modules/04-security.md` (147 lines) |
+| UI/UX design, animations, 3D, Remix | `$MEMORY_ROOT/memory/modules/05-ui-ux.md` (260 lines) |
+| Web dev, project setup, SEO | `$MEMORY_ROOT/memory/modules/06-web-dev.md` (305 lines) |
+| Resumes, LinkedIn, job hunt | `$MEMORY_ROOT/memory/modules/07-job-hunt.md` (145 lines) |
+| Architecture, SAGA, CQRS, EDA | `$MEMORY_ROOT/memory/modules/08-architecture.md` (198 lines) |
+| Roadmap, GitHub tricks, OSM, misc | `$MEMORY_ROOT/memory/modules/09-misc.md` (210 lines) |
 
 ## Quick Reference
 
-> **symlinks:** AGENTS.md, CLAUDE.md, .clinerules, .cursorrules, .windsurfrules, .github/copilot-instructions.md → all point here
->
-> **opencode:** reads this index → agent decides which modules to load
->
-> **session-start.sh (step 1):** auto-loads `memory/modules/01-core-rules.md` and `memory/modules/02-cli-tools.md`
->
-> **auto-dispatch:** `auto-dispatch <task>` suggests the right tool + module
->
-> **memory dashboard:** `http://localhost:8082` — search across all modules via vector DB
+```
+MEMORY_ROOT=/home/aditya/Desktop/Projects/MEMORY
+symlinks:   AGENTS.md, CLAUDE.md, .clinerules, .cursorrules → GEMINI.md
+opencode:   reads GEMINI.md → agent loads relevant modules
+dashboard:  http://localhost:8082 — vector search across all modules
+Makefile:   cd $MEMORY_ROOT && make validate  — check all modules
+            cd $MEMORY_ROOT && make seed     — re-vector ChromaDB
+            cd $MEMORY_ROOT && make stats    — module sizes + token savings
+```
 
-## Architecture
+## File Tree
 
 ```
-/home/aditya/Desktop/Projects/MEMORY/
-├── GEMINI.md                    ← THIS FILE — index, 7KB
+$MEMORY_ROOT/
+├── GEMINI.md                    ← THIS FILE — index (56 lines)
 ├── AGENTS.md -> GEMINI.md       ← all AI tools symlink here
+├── .githooks/                   ← tracked hooks: post-commit auto-seeds vector DB
 ├── memory/
-│   ├── modules/                 ← 9 focused module files, ~2,278 lines total
-│   │   ├── 01-core-rules.md     (324 lines — always loaded)
-│   │   ├── 02-cli-tools.md      (397 lines — always loaded)
-│   │   ├── 03-ml-engineering.md (292 lines — on demand)
-│   │   ├── 04-security.md       (147 lines — on demand)
-│   │   ├── 05-ui-ux.md          (260 lines — on demand)
-│   │   ├── 06-web-dev.md        (305 lines — on demand)
-│   │   ├── 07-job-hunt.md       (145 lines — on demand)
-│   │   ├── 08-architecture.md   (198 lines — on demand)
-│   │   └── 09-misc.md          (210 lines — on demand)
-│   ├── memory-bank/             ← session logs, progress, decisions
-│   ├── vector_db/               ← ChromaDB with all modules seeded
+│   ├── modules/                 ← 9 focused modules (2,279 lines total)
+│   ├── memory-bank/             ← progress, decisions, session logs
+│   ├── vector_db/               ← ChromaDB (disk-based, 0 RAM)
 │   └── LESSONS_LEARNED.md       ← cross-project error patterns
-├── tools/                       ← dashboard, seed scripts
-├── config/                      ← opencode, Makefiles, README
-└── dotfiles/                    ← bash, git, starship, tmux configs
+├── tools/                       ← dashboard.py, seed_vector_db.py
+├── Makefile                     ← validate, seed, stats, hooks targets
+├── config/                      ← opencode, README
+└── dotfiles/                    ← bash, git, starship, tmux
 ```
