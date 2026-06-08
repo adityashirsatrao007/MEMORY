@@ -1,129 +1,177 @@
 # MEMORY — Aditya's Workspace & Agent Configuration Hub
 
-Central repository for all system configurations, dotfiles, AI agent rules, and automation setups. This repository serves as the ultimate source of truth to bootstrap any new developer machine in a single step.
+Central repository for all system configurations, AI agent rules, CLI tool mappings, dotfiles, and automation setups. Bootstraps any new machine in a single clone.
 
 ---
 
-## 📂 Repository Contents
+## 📂 Repository Layout
 
-| File / Folder | Purpose |
-|:---|:---|
-| [`AGENTS.md`](file:///home/aditya/Desktop/Projects/MEMORY/AGENTS.md) | Central Agent rules (mirrored as `GEMINI.md` and `CLAUDE.md`). |
-| [`CLAUDE.md`](file:///home/aditya/Desktop/Projects/MEMORY/CLAUDE.md) | Global rules template for Claude Code. |
-| [`GEMINI.md`](file:///home/aditya/Desktop/Projects/MEMORY/GEMINI.md) | Global rules template for Gemini CLI and Antigravity. |
-| [`.clinerules`](file:///home/aditya/Desktop/Projects/MEMORY/.clinerules) | Global rules template for Cline-family agents (Roo Code, KiloCode). |
-| [`.cursorrules`](file:///home/aditya/Desktop/Projects/MEMORY/.cursorrules) | Global rules template for Cursor IDE. |
-| [`.windsurfrules`](file:///home/aditya/Desktop/Projects/MEMORY/.windsurfrules) | Global rules template for Windsurf IDE. |
-| [`.github/copilot-instructions.md`](file:///home/aditya/Desktop/Projects/MEMORY/.github/copilot-instructions.md) | Rules template for GitHub Copilot. |
-| [`VIBE_CODER_GUIDE.md`](file:///home/aditya/Desktop/Projects/MEMORY/VIBE_CODER_GUIDE.md) | Premium web design layout, animation, and aesthetic standards. |
-| [`.agentignore`](file:///home/aditya/Desktop/Projects/MEMORY/.agentignore) | Global blacklist directory/file list to prevent agents from reading junk. |
-| [`.aider.conf.yml`](file:///home/aditya/Desktop/Projects/MEMORY/.aider.conf.yml) | Configuration file for Aider AI pair programmer. |
-| [`.continuerc.json`](file:///home/aditya/Desktop/Projects/MEMORY/.continuerc.json) | Configuration file for Continue.dev extension. |
-| [`opencode.json`](file:///home/aditya/Desktop/Projects/MEMORY/opencode.json) | Main configuration file mapping Opencode to `AGENTS.md`. |
-| [`dotfiles/`](file:///home/aditya/Desktop/Projects/MEMORY/dotfiles/) | Configs for terminal tools: bashrc, starship.toml, tmux.conf, gitconfig. |
-| [`templates/`](file:///home/aditya/Desktop/Projects/MEMORY/templates/) | Reusable blueprints (Remix, Makefile, Github Actions, Docker Compose). |
-| [`memory-bank/`](file:///home/aditya/Desktop/Projects/MEMORY/memory-bank/) | Documentation for the MEMORY repository state. |
+```
+📁 MEMORY/
+├── GEMINI.md              ← Master agent rules (single source of truth)
+├── AGENTS.md → GEMINI.md  ← Symlinks for every AI tool
+├── CLAUDE.md → GEMINI.md
+├── .clinerules → GEMINI.md
+├── .cursorrules → GEMINI.md
+├── .windsurfrules → GEMINI.md
+├── .github/copilot-instructions.md → GEMINI.md
+├── opencode.json          ← Opencode config (points to AGENTS.md)
+│
+├── config/
+│   ├── opencode/          ← Opencode sub-config
+│   ├── VIBE_CODER_GUIDE.md
+│   ├── ZERO_PROMPTING_DIRECTIVE.md
+│   ├── .aider.conf.yml
+│   ├── .continuerc.json
+│   ├── .editorconfig
+│   ├── Makefile
+│   └── README.md
+│
+├── memory/
+│   ├── LESSONS_LEARNED.md     ← Cross-project error memory
+│   ├── memory-bank/           ← Project state (progress, architecture, decisions)
+│   └── vector_db/             ← ChromaDB (gemini ignored)
+│
+├── tools/
+│   └── dashboard.py           ← Memory dashboard (localhost:8082)
+│
+├── templates/
+│   ├── animations/            ← GSAP, Motion.dev, ReactBits, scroll patterns
+│   ├── ASTRO_STARTERKIT.md
+│   └── DEPLOYMENT_WORKFLOW.md
+│
+├── dotfiles/
+│   ├── bash/bashrc
+│   ├── git/gitconfig
+│   ├── starship/starship.toml
+│   └── install.sh
+│
+├── docs/
+│   ├── codeburn.md
+│   ├── images/
+│   └── diagrams/
+│
+└── scratch/
+```
 
 ---
 
-## 🚀 Bootstrap a New PC (Setup Guide)
+## 🚀 Quick Start (New Machine)
 
-Follow these steps to fully configure a new development environment.
-
-### Step 1: Clone the Repository
-Clone the central memory repo to your `Projects` folder:
 ```bash
 git clone https://github.com/adityashirsatrao007/MEMORY.git ~/Desktop/Projects/MEMORY
-```
 
-### Step 2: Install Core Dotfiles (Symlink)
-Execute the install script to symlink your bash shell, starship prompt, tmux window manager, and global git configs:
-```bash
-cd ~/Desktop/Projects/MEMORY/dotfiles
-chmod +x install.sh
-./install.sh
-source ~/.bashrc
-```
+# Step 2: Dotfiles
+cd ~/Desktop/Projects/MEMORY/dotfiles && chmod +x install.sh && ./install.sh && source ~/.bashrc
 
-### Step 3: Install all Developer CLI Tools
-Run the single installation script or command block matching your toolset (see detailed list below).
+# Step 3: CLI Tools (see below)
+```
 
 ---
 
-## 🛠️ CLI Tools Directory & Installation Mappings
+## 🛠️ CLI Tool Installation Reference
 
-Below is the complete list of CLI tools used in this workspace, their uses, and exact installation commands.
+### One-Shot Script (Package Managers)
 
-### 1. Global Setup (Copy-Paste Core Script)
-Run this single block to install all package-managed tools at once:
 ```bash
-# Update and install system dependencies
-sudo apt-get update && sudo apt install -y bat eza ripgrep direnv gh docker.io pipx git tmux build-essential curl
-
-# Setup pipx environment
+sudo apt update && sudo apt install -y bat eza ripgrep direnv gh docker.io pipx git tmux build-essential curl
 pipx ensurepath
-
-# Install Python global CLIs via pipx
-pipx install semgrep
-pipx install pgcli
-pipx install dvc
-
-# Install Node.js global CLIs
+pipx install semgrep pgcli dvc graphifyy enola aider
 npm install -g pm2 tldr codeburn
+cargo install lowfat delta dust hyperfine onefetch jless jnv
 ```
 
-### 2. Standalone Binary Installations
-Run these individual commands for tools requiring custom releases:
+### Standalone Binaries
 
-*   **Trivy** (Security Vulnerability & IaC Scanner):
-    ```bash
-    curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
-    ```
-*   **Gitleaks** (Secrets Leak Detector):
-    ```bash
-    curl -sL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_linux_x64.tar.gz | sudo tar -xz -C /usr/local/bin gitleaks
-    ```
-*   **Lazygit** (TUI Git Manager):
-    ```bash
-    curl -sL "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_$(uname -s)_$(uname -m).tar.gz" | sudo tar -xz -C /usr/local/bin lazygit
-    ```
-*   **Zoxide** (Smarter `cd` matching engine):
-    ```bash
-    curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
-    ```
-*   **Ollama** (Local LLM Execution Engine):
-    ```bash
-    curl -fsSL https://ollama.com/install.sh | sh
-    ```
+| Tool | Install Command |
+|------|----------------|
+| **Trivy** | `curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \| sudo sh -s -- -b /usr/local/bin` |
+| **Gitleaks** | `curl -sL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_linux_x64.tar.gz \| sudo tar -xz -C /usr/local/bin gitleaks` |
+| **Lazygit** | `curl -sL "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_$(uname -s)_$(uname -m).tar.gz" \| sudo tar -xz -C /usr/local/bin lazygit` |
+| **Zoxide** | `curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh \| bash` |
+| **Ollama** | `curl -fsSL https://ollama.com/install.sh \| sh` |
+| **OnlyCLI** | Go build: `go install github.com/clementd64/onlycli@latest` |
+| **Uv** | `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
 
 ---
 
-### 3. Detailed Tool List & Use Cases
+## 🔧 Full Tool Inventory & Auto-Trigger Rules
 
-| CLI Tool | Purpose | Primary CLI Commands |
-|:---|:---|:---|
-| **codeburn** | AI agent cost and token observability dashboard. | `codeburn`, `codeburn optimize` |
-| **gh** | Command-line client for GitHub actions, repos, issues. | `gh repo create`, `gh pr create` |
-| **pm2** | Process manager for active background Node.js servers. | `pm2 list`, `pm2 logs` |
-| **semgrep** | Static analysis scanner for code security and style. | `semgrep scan --config auto` |
-| **trivy** | Scans directories, Docker images, and repos for CVEs. | `trivy fs .` |
-| **gitleaks** | Prevents committed API keys and passwords from pushing. | `gitleaks detect -v` |
-| **lazygit** | Interactive terminal layout for staging and committing. | `lazygit` |
-| **ripgrep (`rg`)** | Ultrafast recursive code finder (saves agent read tokens). | `rg "query"` |
-| **bat** | Syntax-highlighted code output viewer in terminal. | `bat filename` |
-| **eza** | Structured colorized alternative to `ls` displaying git status. | `eza -la --git` |
-| **direnv** | Automatic context-based environment variable loading. | `direnv allow` |
-| **zoxide** | Learns your directory jump patterns to bypass long `cd` commands. | `z` |
-| **tldr** | Simplified manual pages with common command examples. | `tldr tar` |
-| **pgcli** | PostgreSQL client with auto-completion and syntax styling. | `pgcli -u postgres` |
-| **dvc** | Data version controller for machine learning file staging. | `dvc init`, `dvc add` |
-| **ollama** | Run models (llama3.2, phi3) locally on native machines. | `ollama run llama3.2` |
+The agent automatically selects the right CLI based on the task — zero tokens wasted.
+
+| Category | Tool | Auto-Trigger Condition |
+|----------|------|----------------------|
+| **Search** | `rg` | Any code search (replaces grep) |
+| **Files** | `fd` | Find files by name (replaces find) |
+| **Listing** | `eza` | List directory with git status (replaces ls) |
+| **Reading** | `bat` | View file with syntax highlighting (replaces cat) |
+| **Markdown** | `glow` | Read rendered .md files |
+| **JSON** | `jless` | Interactive JSON browser (>50 lines) |
+| **JSON** | `fx` | Interactive JSON processor |
+| **YAML** | `yq` | Query YAML files |
+| **Text replace** | `sd` | Bulk find/replace across files |
+| **Git diff** | `delta` | Syntax-highlighted diffs |
+| **Git TUI** | `lazygit` | Interactive staging/committing |
+| **Processes** | `procs` | Find/list processes (replaces ps) |
+| **Monitor** | `btop` | GPU/CPU/RAM system monitor |
+| **HTTP** | `http` | API testing with httpie |
+| **Architecture** | `enola` | Codebase dependency graphs |
+| **Code graph** | `graphify` | Persistent MCP codebase context |
+| **Pair prog.** | `aider` | Multi-file AI coding with git |
+| **Python** | `uv` | Package management 10-100x faster |
+| **API→CLI** | `onlycli` | OpenAPI spec → CLI (35x cheaper than MCP) |
+| **Tokens** | `codeburn` | Agent cost and token observability |
+| **Compression** | `rtk` | Shrink CLI output 60-90% for LLM |
+| **Strip output** | `lowfat` | Remove verbose CLI noise for agents |
+| **Git commits** | `comet` | AI commit messages via local Ollama |
+| **Skills** | `tessl` | Agent skills package manager |
+| **Secrets** | `trufflehog` | Verify leaked credentials pre-commit |
+| **Security** | `semgrep` | SAST and code quality scanning |
+| **CVE scan** | `trivy` | Container/filesystem vulnerability scan |
+| **Secrets** | `gitleaks` | Git history secret scanning |
+| **Diagrams** | `d2` | Architecture/flow/ERD diagrams as code |
+| **PC info** | `fastfetch` | Hardware/OS snapshot |
+| **Benchmark** | `hyperfine` | Precision command benchmarking |
+| **Dirs** | `dust` | Directory space usage (replaces du) |
+| **Disk** | `duf` | Disk usage summary |
+| **Network** | `nmap` | Port/network scanning |
+| **File mgr** | `yazi` | Terminal file manager |
+| **History** | `atuin` | Shell history database with search |
+| **Jump** | `zoxide` | Smart directory jumping (replaces cd) |
+| **Fuzzy** | `fzf` | Universal fuzzy finder |
 
 ---
 
-## 🎨 Design Rules & Workspace Standards
+## 🌐 Running Services
 
-All development projects inside this workspace conform to the strict Apple HIG and Clinical/Dark Luxury standards documented in [`VIBE_CODER_GUIDE.md`](file:///home/aditya/Desktop/Projects/MEMORY/VIBE_CODER_GUIDE.md).
+| Service | Port | Purpose | Status |
+|---------|------|---------|--------|
+| Qdrant | 6333 | Supamem vector DB backend | ✅ tmux |
+| Memory Dashboard | 8082 | ChromaDB vector memory UI | ✅ tmux |
+| Graphify | — | Codebase knowledge graph MCP | ✅ tmux |
 
-For custom system diagram generation, use the python templates stored in:
-*   [templates/diagrams/](file:///home/aditya/Desktop/Projects/MEMORY/templates/)
+---
+
+## 🧠 Agent Rules (GEMINI.md)
+
+`GEMINI.md` is the single source of truth. Every AI tool (Claude Code, Cursor, Windsurf, Cline, Copilot, Opencode) symlinks to it. Contents:
+
+- Session start protocol & memory load
+- Zero-token CLI rulebook (60+ tool mappings)
+- ML/DL decision tree (model, dataset, VRAM, tracking)
+- UI/UX design standards (Apple HIG, dark luxury)
+- Architecture diagrams (D2, diagrams, matplotlib)
+- Code review & security audit protocols
+- Enterprise patterns (SAGA, CQRS, EDA)
+- Password security (Argon2, bcrypt)
+- And 15+ other domain-specific playbooks
+
+---
+
+## 🔄 Dotfiles Backup
+
+All configs version-controlled here and mirrored at `github.com/adityashirsatrao007/dotfiles`. On machine wipe:
+
+```bash
+git clone https://github.com/adityashirsatrao007/dotfiles.git && cd dotfiles && ./install.sh
+```
