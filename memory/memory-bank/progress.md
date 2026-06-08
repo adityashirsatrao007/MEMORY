@@ -58,3 +58,4 @@
 | 2026-06-09 | Removed Qdrant container (was using 89MB RAM, unused by anything). Switched to ChromaDB-only vector storage (disk-based SQLite, 0 RAM overhead). Updated 02-cli-tools.md references. |
 | 2026-06-09 | Makefile, .githooks, seed script upgrade, cross-project paths, 98-chunk vector DB, dashboard verified |
 | 2026-06-09 | Final cleanup: reviewed all restored files, kept templates as reference library (10 files, 2,301 lines), linked from 05-ui-ux.md, deleted 26 stale files |
+| 2026-06-09 | Compressed core modules 73%, behavioral token rules, read cache, rtk hook, silent CLI |

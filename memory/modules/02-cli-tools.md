@@ -100,11 +100,47 @@ Only THEN open files with `bat` if needed.
 | Log system event | `codeburn log --type system "msg"` |
 Costs auto-log to progress.md on shell exit.
 
+## Silent CLI (MANDATORY — saves 30-40% tokens)
+- EVERY bash command: suppress output unless error. Pattern: `cmd > /dev/null 2>&1 || echo "FAIL: cmd: $?"`
+- `git add/commit/push`: silent. Only show on conflict: `git add -A 2>&1 | grep -v "^$" || true`
+- Never `echo "Done"` or `echo "=== Section ==="` — those are wasted tokens
+- Success = zero output. Error = one line.
+- Reporting: one line max. `✅ N files, +X -Y` not prose paragraphs.
+
+## Ollama as Primary Workhorse (zero-token coding)
+- Simple edits (1-2 files), lint fixes, test writing → `aider --model ollama/qwen2.5-coder:3b --message "<task>"`
+- Complex multi-file tasks → `opencode run "<task>"` (uses your credits)
+- Coordination, questions, CLI → Antigravity directly
+- Ollama and opencode are free/billed workhorses. Antigravity context is the expensive resource — use it for orchestration only.
+
+## Vector DB First (search before load)
+Before loading any module, search the vector DB:
+```bash
+curl -s "localhost:8082/api/search?q=your+topic" | jq -r '.memories[0].content // empty'
+```
+If vector DB returns a relevant chunk (~200 tokens), USE IT instead of loading the module (500-1000 tokens). Only load module if vector DB misses.
+
+## Enola Pre-Flight for ALL Unfamiliar Repos
+Before reading ANY file in an unfamiliar repo:
+```bash
+enola generate_snapshot . && enola explore <module>
+```
+This gives architecture, symbols, deps in ~50 tokens. Reading files blindly costs 500-2000 tokens each.
+
+## Session Context Rules
+- **Stale unloading**: when switching between domains (ML→UI→Security), actively note that previous module context is stale. Do not reference rules from unloaded modules.
+- **No README loading**: README files are for humans. Never load them unless user explicitly asks.
+- **Binary check before read**: `file -b --mime-encoding path` — skip if returns "binary"
+- **Context budget**: if session feels bloated (>50K input), summarize and start fresh.
+
 ## Guardrails (auto-installed by session-start.sh)
-8 wrappers at `~/bin/guardrails/` shadow: grep→rg, cat→bat, ls→eza, find→fd, du→dust, top→btop, ps→procs, sed→sd. They warn then still run original command — switch tools immediately on warning.
+8 wrappers at `~/bin/guardrails/` shadow: grep→rg, cat→bat, ls→eza, find→fd, du→dust, top→btop, ps→procs, sed→sd.
 
 ## Auto-Dispatch
 `auto-dispatch <task>` suggests the right tool + module. Installed at `~/bin/auto-dispatch`.
 
-## rtk Auto-Pipe
-All long-output commands should pipe through rtk: `cmd | rtk`. If running interactively and output expected, use `cmd | lowfat`.
+## Output Compression
+- All CLI output → pipe through `lowfat` (strips verbose): `cmd | lowfat`
+- For known-verbose: `cmd | rtk` (60-90% compression)
+- Markdown files → `glow` (compact rendered view)
+- JSON files → `jq` or `jless` (never raw)
