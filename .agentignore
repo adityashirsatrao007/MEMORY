@@ -85,5 +85,10 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 
-# Vector DB
+# Vector DB (was at root, now at memory/)
 vector_db/
+memory/vector_db/
+
+# Reference project templates (not part of core config)
+templates/frontend-v0-reference/
+templates/fullstack-bolt-reference/
