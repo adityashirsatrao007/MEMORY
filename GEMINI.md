@@ -1462,6 +1462,9 @@ Before pushing branches or raising a Pull Request:
 
 This section defines the EXACT CLI tool to use for every operation. Using the wrong tool wastes tokens. This is non-negotiable.
 
+### Enforcement Layer
+There is a guardrail PATH wrapper at `~/bin/guardrails/` that shadows 8 slow tools (grep, cat, ls, find, du, top, ps, sed). If you try to use any of them, a warning fires telling you the modern replacement. **The warning is a signal — switch tools immediately.** Ignoring repeated guardrail warnings is a rule violation.
+
 ### 🔍 SEARCHING (Never use `grep` in bash — use `rg`)
 ```bash
 # Find text in files
