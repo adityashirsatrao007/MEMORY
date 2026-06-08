@@ -258,3 +258,17 @@ npx shadcn@latest init
 - Texture maps max 2K
 - Progressive loaders for WebGL assets
 - Graceful fallback for incompatible browsers
+
+### Reference Templates (in this repo)
+| File | Lines | What It Contains |
+|------|-------|-----------------|
+| `templates/animations/FRONTEND_LIBRARY_STACK.md` | 324 | Install commands, code samples for Three.js, Lenis, Motion, GSAP, ReactBits |
+| `templates/animations/MOTION_DEV_LIBRARY.md` | 282 | Motion.dev patterns and API reference |
+| `templates/animations/REACT_BITS_LIBRARY.md` | 156 | ReactBits component catalog (text, backgrounds, UI) |
+| `templates/animations/SCROLLING_PATTERNS.md` | 173 | 4 scroll patterns with decision guide |
+| `templates/animations/SPLINE_3D_GUIDE.md` | 181 | Spline 3D interactive design guide |
+| `templates/animations/UI_UX_PRO_MAX.md` | 273 | Premium UI critique and design system guide |
+| `templates/animations/SCROLLYTELLING_TEMPLATE.tsx` | ~120 | React scrollytelling component (image sequence) |
+| `templates/animations/SCROLLYTELLING_TOOLCHAIN.md` | ~120 | Image sequence + scroll pipeline docs |
+| `templates/ASTRO_STARTERKIT.md` | 308 | Astro starter kit with design system |
+| `templates/DEPLOYMENT_WORKFLOW.md` | 142 | GitHub + Vercel deployment workflow |
