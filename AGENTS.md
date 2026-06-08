@@ -3463,6 +3463,10 @@ The agent MUST use the following tools when the specific context arises:
   - **NVIDIA Triton / ONNX:** Export all production PyTorch/TensorFlow models to ONNX and serve them via high-performance inference servers, not raw Python scripts.
   - **Evidently AI / Grafana:** Monitor live data drift and prediction latency.
 
+### 13. Transparent Execution Protocol
+- **The Rule:** For any background execution that is expected to take longer than a few seconds (e.g., massive installations, compiling code, starting backend servers, or training ML models), the agent MUST execute the command inside a detached `tmux` session named `agent-tasks`.
+- **The Rationale:** This allows the user to open their terminal at any time and type `tmux attach -t agent-tasks` to watch the live compilation/execution stream natively on their machine.
+
 
 
 
