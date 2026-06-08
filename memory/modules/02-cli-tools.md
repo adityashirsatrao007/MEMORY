@@ -296,11 +296,12 @@ Session naming: `<project>-dev`, `<project>-api`, `<project>-train`.
 ### MCP Servers
 | Server | Command | Purpose |
 |--------|---------|---------|
-| supamem | uvx supamem | Cross-session agent memory (Qdrant) |
-| graphify | graphify serve ./graphify-out/graph.json | Auto codebase context |
+| chromadb | chromadb (in venv) | Disk-based vector search (SQLite, 0 RAM overhead) |
 
-### Qdrant (supamem backend)
-- `docker start qdrant` — URL: http://localhost:6333
+### Vector Database (ChromaDB)
+- Path: `memory/vector_db/chroma.sqlite3` — disk-based, no daemon needed
+- Dashboard: `http://localhost:8082` — search across all modules
+- API: `curl localhost:8082/api/search?q=<query>`
 
 ### Claude Code Skills (~/.claude/skills/)
 | Slash Command | Token Savings |
