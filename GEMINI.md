@@ -85,6 +85,26 @@ Run this as your VERY FIRST action in every single conversation, no exceptions:
 This script reads memory, checks services, and loads environment context.
 You MUST NOT respond to the user's first message until this has run.
 
+### Mandatory Pre-Done Audit (Never Skip)
+Before marking ANY task "done" or "completed", you MUST run the structural integrity checks. If the session involved editing GEMINI.md, LESSONS_LEARNED.md, or any repo restructure, run this:
+
+```bash
+# 1. Tools documented vs installed
+for tool in $(rg "^\`([a-z][a-z-]+)\`" GEMINI.md -o --no-filename 2>/dev/null | sort -u); do
+  which "$tool" &>/dev/null || echo "MISSING TOOL: $tool"
+done
+# 2. Empty directories
+find . -type d -empty -not -path './.git/*' -delete 2>/dev/null
+# 3. Stale absolute paths
+rg "/home/aditya/Desktop/Projects/MEMORY/" GEMINI.md 2>/dev/null && echo "WARN: hardcoded paths remain"
+# 4. Stale .agentignore patterns
+for pattern in $(rg "^[a-z_./]" .agentignore -o 2>/dev/null); do
+  find . -path "./${pattern}" -type f 2>/dev/null | head -1 &>/dev/null || echo "STALE IGNORE: ${pattern}"
+done
+```
+
+If ANY of these returns a warning, fix it before proceeding. Do not wait for the user to point it out.
+
 ### Why this exists:
 - Prevents hallucination by grounding the agent in verified real state
 - Ensures memory-bank knowledge is loaded before any decisions
