@@ -4,19 +4,30 @@
 > Read this at the START of every session to resume without re-analysis.
 
 ## Current Status
-<!-- Agent updates: what state is the project in right now? -->
+Token optimization phase complete. Session overhead: 900+ → ~220 lines (76% reduction).
 
 ## What's Done
-- [ ] Project scaffolded
+- [x] 54-tool dispatch table + auto-dispatch script
+- [x] 8 tool guardrails (grep→rg, cat→bat, etc.)
+- [x] GEMINI.md modularized: index (20 lines) + 8 on-demand modules
+- [x] Core modules compressed 73%: 01-core-rules 334→83, 02-cli-tools 409→146
+- [x] Vector DB seeded with 89 semantic chunks
+- [x] ChromaDB dashboard at localhost:8082
+- [x] session-start.sh silent (127→36 lines, 94% less output)
+- [x] Behavioral rules: silent CLI, ollama first, vector DB first, enola pre-flight, no re-read
 
 ## What's In Progress
-<!-- Nothing yet -->
+<!-- Nothing — optimization phase complete -->
 
 ## What's Next
-<!-- Agent fills based on plan -->
+<!-- Future work if desired: context budget enforcement, auto-wrap sessions -->
+- [ ] Context budget enforcement (auto-summarize at 50K input tokens)
+- [ ] Makefile targets for vector DB re-seed + dashboard restart
 
 ## Known Issues / Tech Debt
-<!-- Agent notes anything that needs attention later -->
+- session-start.sh receives stale "true" from `:` no-ops (benign)
+- Dashboard /health endpoint missing (use / instead)
+- Vector DB needs re-seeding after module content changes
 
 ## Session Log
 <!-- Agent appends a one-line summary after each session -->
@@ -59,3 +70,4 @@
 | 2026-06-09 | Makefile, .githooks, seed script upgrade, cross-project paths, 98-chunk vector DB, dashboard verified |
 | 2026-06-09 | Final cleanup: reviewed all restored files, kept templates as reference library (10 files, 2,301 lines), linked from 05-ui-ux.md, deleted 26 stale files |
 | 2026-06-09 | Compressed core modules 73%, behavioral token rules, read cache, rtk hook, silent CLI |
+| 2026-06-09 | Silent session-start (127→36 lines, -94% output), ollama workhorse, vector DB first, context budget rules, enola pre-flight, 10+ remaining wins implemented |
