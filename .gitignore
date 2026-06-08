@@ -47,6 +47,10 @@ venv/
 *.egg-info/
 dist/
 
+# Large reference projects (not part of core MEMORY config)
+templates/frontend-v0-reference/
+templates/fullstack-bolt-reference/
+
 # Misc
 .cache/
 *.tmp

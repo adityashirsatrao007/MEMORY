@@ -1369,7 +1369,7 @@ When a project is too large for a single agent session, utilize these tools to c
 ### 3. Repository Auditing, Linting, & Health
 AI-generated code needs checks to keep it clean and performant:
 - **`AgentLint`** ([0xmariowu/AgentLint](https://github.com/0xmariowu/AgentLint)) — 33 evidence-backed checks for AI-friendly repos (verifies file structure, instruction quality, build setup, session continuity, and security posture).
-- **`sober-coding`** ([mansourfaye229-dot/sober-coding](https://github.com/mansourfaye229-dot/sober-coding)) — Language-agnostic vibe code quality analyzer. Performs 27 checks across security (secrets, path traversal), architecture (god files, deep nesting), code duplication, and error handling. Provides sobriety scoring (SOBER, TIPSY, BLACKOUT) and CLI fix suggestions.
+- **`semgrep`** ([semgrep.dev](https://semgrep.dev)) — Static analysis security and code quality scanner. Performs SAST, secrets detection, and custom rule-based linting across 30+ languages. Much faster than ESLint/Ruff and catches logic-level bugs.
 - **`toprank`** ([nowork-studio/toprank](https://github.com/nowork-studio/toprank)) — Open-source Claude Code plugin with 9 SEO and Google Ads skills to fetch PageSpeed/Search Console metrics and ship fixes directly.
 
 ### 4. Context & Cost Tracking
@@ -1396,7 +1396,7 @@ This protocol governs how the agent audits, reviews, and documents all changes b
 
 ### 1. Automated Code Quality Audits (Self-Healing Check)
 Before declaring any task done, the agent MUST run the following checks and resolve all failures autonomously:
-- **Sobriety Audit:** Run `sober check .` (or `sober-coding` command) to analyze code health. The codebase sobriety score must exceed `85`. If any issues are flagged as TIPSY, HUNGOVER, or BLACKOUT, the agent must fix them using `sober fix <ID>`.
+- **Static Analysis Audit:** Run `semgrep scan --config auto .` to analyze code for security vulnerabilities and logic bugs. Alternatively run `bandit -r .` for Python-specific security checks. If critical issues are found, fix them.
 - **AI-Friendliness Audit:** Run `agentlint check` (or similar command) to ensure the codebase remains readable, structured, and continuous for other agents.
 - **Pre-commit Checks:** Run `pre-commit run --all-files` locally to verify that linters, formatters, and secret scans (`gitleaks`) pass successfully.
 - **Unit Testing:** Execute `make test` or `bun test` and ensure all tests pass with zero failures.
@@ -1438,9 +1438,9 @@ rg "pattern" -C 3 .                    # show 3 lines of context around match
 rg "pattern" --json .                  # machine-readable JSON output
 
 # Find files by name
-fdfind "*.env" .                       # replaces: find . -name "*.env"
-fdfind "component" --type f .          # files only
-fdfind . --type d --max-depth 2        # directories only, 2 levels deep
+fd "*.env" .                           # replaces: find . -name "*.env"
+fd "component" --type f .              # files only
+fd . --type d --max-depth 2            # directories only, 2 levels deep
 ```
 
 ### 📁 LISTING FILES (Never use `ls` — use `eza`)
@@ -1570,6 +1570,24 @@ The following tools are installed but under-used. These rules make them **mandat
 | Downloading repo without git | ZIP trick | Append `/archive/refs/heads/main.zip` to repo URL |
 
 **Rule:** If the agent uses `cat` on a JSON file, it has FAILED. Use `jless`. If the agent starts a project session without `onefetch`, it has FAILED. If the agent manually re-runs a build after editing source files, it should have used `entr`.
+
+### 🎯 EXTRA AUTO-TRIGGER RULES — Architecture, AI & Code Quality
+
+| Condition | Tool to Fire | Why |
+|-----------|-------------|-----|
+| Need architecture diagram | `d2` | Text → PNG/SVG, version-controllable, dark theme |
+| Need codebase dependency graph | `enola explore` | Instant symbols, imports, call chains — no file reads |
+| Need to understand a new repo | `enola generate_snapshot` | Full architectural snapshot with patterns |
+| Need AI pair programming (multi-file) | `aider --model <model>` | Git-first, auto-commits, multi-file aware |
+| Need Python dependency management | `uv add / uv sync` | 10-100x faster than pip, single binary |
+| Need token/cost observability | `codeburn optimize` | Finds token waste, suggests BASH_MAX_OUTPUT_LENGTH |
+| Need process monitoring | `btop` or `procs` | GPU/CPU/RAM in one TUI |
+| Need JSON interactive processing | `fx` | Interactive JSON viewer, better than raw jq for exploration |
+| Need git commit message | `comet` | AI-generated git messages via local Ollama |
+| Need to manage agent skills | `tessl` | Install/remove agent skills from curated catalog |
+| Need CLI via OpenAPI spec | `onlycli <spec>` | 35x cheaper than running MCP servers |
+| Need output compression for LLM | `rtk` | Compress shell output 60-90% before agent context |
+| Need architecture impact analysis | `enola impact_analysis <target>` | Shows blast radius of changes |
 
 ---
 
@@ -3403,14 +3421,19 @@ opencode run "<task description>"
 These tools are installed on this machine. Use them proactively:
 
 ### Binaries (globally available)
-| Tool | Binary Path | Purpose |
-|------|------------|---------|
-| rtk | /home/aditya/.local/bin/rtk | Compress shell outputs 60-90% before agent context |
-| lowfat | /home/aditya/.cargo/bin/lowfat | Strip verbose CLI output for LLMs |
-| onlycli | /home/aditya/go/bin/onlycli | OpenAPI spec → CLI binary (35x cheaper than MCP) |
-| comet | /home/aditya/.local/bin/comet | AI git commit messages via local Ollama |
-| graphify | /home/aditya/.local/bin/graphify | Codebase knowledge graph MCP server |
-| tessl | /home/aditya/.local/bin/tessl | Agent skills package manager |
+| Tool | Path (via `which`) | Purpose |
+|------|-------------------|---------|
+| rtk | `which rtk` | Compress shell outputs 60-90% before agent context |
+| lowfat | `which lowfat` | Strip verbose CLI output for LLMs |
+| onlycli | `which onlycli` | OpenAPI spec → CLI binary (35x cheaper than MCP) |
+| comet | `which comet` | AI git commit messages via local Ollama |
+| graphify | `which graphify` | Codebase knowledge graph MCP server (running via tmux) |
+| tessl | `which tessl` | Agent skills package manager |
+| enola | `which enola` | Architecture analysis — symbols, dependencies, call graphs |
+| aider | `which aider` | Git-first AI pair programmer for terminal |
+| uv | `which uv` | Python package manager (10-100x faster than pip) |
+| codeburn | `which codeburn` | AI agent cost/token observability |
+| fx | `which fx` | Interactive JSON viewer and processor |
 
 ### MCP Servers (add to claude_desktop_config.json as needed)
 | Server | Command | Purpose |
@@ -3432,6 +3455,11 @@ These tools are installed on this machine. Use them proactively:
 
 ### Cloned Repos (~/tools/agent-tools/)
 agent-tact, agentguard, ai-plugin-gatekeeper, claude-deepseek-bridge, claude-smart-model-router, clawpiggy, lean-code, mcp-graphify-autotrigger, openclaw-litecache, pomelo-context, skill-model-router, smart-library-app, trache
+
+### symlink Fixes (Tools in PATH via symlink)
+| Tool | Installed At | Symlinked To |
+|------|-------------|-------------|
+| onlycli | `/home/aditya/go/bin/onlycli` | `/usr/local/bin/onlycli` |
 
 ### Claude→DeepSeek Bridge (avoid Claude Pro limits)
 ```bash
@@ -3455,13 +3483,15 @@ The agent MUST use the following tools when the specific context arises:
 - **When to use:** When generating System Architectures, Entity-Relationship Diagrams (ERDs), Sequence Diagrams, or Data Flows.
 - **Why:** Replaces manual image generation with pure, version-controllable text that compiles locally into high-quality SVGs/PNGs at zero cost.
 
-### 3. Z4nzu HackingTool (`hackingtool`)
-- **When to use:** When the user requests a deep security audit, penetration testing, or vulnerability scanning of an application or network.
-- **Why:** It aggregates all major InfoSec tools (SQLMap, Nmap, payloads, steganography) into a single automated CLI interface for streamlined pentesting.
+### 3. Enola (`enola`)
+- **When to use:** When you need architecture analysis, dependency impact analysis, or codebase graph exploration of a repository.
+- **Why:** Returns rich architectural snapshots with symbols, dependencies, call graphs, and impact zones — replaces manual file-by-file code reading.
+- **Command:** `enola explore <module>` or `enola impact_analysis <target>`
 
-### 4. Feast Feature Store (`feast`)
-- **When to use:** When building production Machine Learning pipelines that require real-time feature serving or offline training data management.
-- **Why:** Centralizes ML features, prevents data leakage between training/serving, and acts as the bridge between raw data lakes and model inference.
+### 4. Graphify (`graphify`)
+- **When to use:** When building or updating the codebase knowledge graph for persistent cross-session context.
+- **Why:** Runs as a background MCP server, auto-provides repo structure to agents without file reads.
+- **Command:** `graphify serve <output-path>/graph.json`
 
 ### 5. GitHub Starter Workflows (`actions/starter-workflows`)
 - **When to use:** When initializing CI/CD pipelines for a new repository.
@@ -3471,15 +3501,26 @@ The agent MUST use the following tools when the specific context arises:
 - **When to use:** When doing a static analysis security check on container images, file systems, and Git repositories.
 - **Why:** It instantly finds known vulnerabilities (CVEs), IaC misconfigurations, SBOM issues, and hardcoded secrets before deployment.
 
-### 7. Milvus (`milvus-io/milvus`)
-- **When to use:** When building Generative AI applications, RAG (Retrieval-Augmented Generation) pipelines, or massive-scale image/text similarity search engines.
-- **Why:** It is a highly scalable, purpose-built Vector Database capable of handling billions of high-dimensional embeddings far more efficiently than standard relational databases.
+### 7. Aider (`aider`)
+- **When to use:** When the user asks for pair-programming, multi-file refactoring, or automated code generation with git integration.
+- **Why:** Git-first AI coding agent that works autonomously in the terminal.
+- **Command:** `aider --model <model>`
 
-### 8. TruffleHog (`trufflesecurity/trufflehog`)
+### 8. Uv (`uv`)
+- **When to use:** For ALL Python package management — install deps, create venvs, run scripts. Replaces pip + pipenv + poetry.
+- **Why:** 10-100x faster than pip, single binary, no Python required to install.
+- **Command:** `uv add <package>`, `uv run <script>`, `uv sync`
+
+### 9. Codeburn (`codeburn`)
+- **When to use:** For AI agent cost and token observability, context optimization, and identifying token waste.
+- **Why:** Provides real-time cost analytics, recommends BASH_MAX_OUTPUT_LENGTH, and finds under-used custom agents.
+- **Command:** `codeburn status`, `codeburn optimize`
+
+### 10. TruffleHog (`trufflesecurity/trufflehog`)
 - **When to use:** Before committing/pushing code, and when auditing a repository's security.
 - **Why:** It scans Git repositories, files, and S3 buckets to find and explicitly verify leaked credentials and API keys by actively testing them against the provider.
 
-### 9. Dynamic Tool Prioritization Strategy (Performance First)
+### 11. Dynamic Tool Prioritization Strategy (Performance First)
 - **The Rule:** The agent MUST prioritize tools based on performance, speed, and exact fit for the context, rather than blindly selecting a tool just because it is available.
 - **Decision Engine:**
   - *Speed vs Detail:* If the task requires extreme speed, use lightweight tools (e.g., `fastfetch` over deep system audits, `rg` over `find`).
@@ -3487,7 +3528,7 @@ The agent MUST use the following tools when the specific context arises:
   - *Token Optimization:* Always select the tool that returns the exact data needed with the smallest text footprint (avoid heavy ASCII outputs when reading raw data is faster).
   - *Continuous Re-evaluation:* As new tools are added, the agent autonomously drops older tools if a newer, higher-performance alternative fits the current scenario better.
 
-### 10. Elite GitHub Marketplace Stack (Zero-Cost / High-Performance)
+### 12. Elite GitHub Marketplace Stack (Zero-Cost / High-Performance)
 - **The Rule:** When building or deploying a new project, the agent MUST automatically integrate the following free GitHub Marketplace Actions into the `.github/workflows/` directory to ensure production-grade quality without incurring costs.
 - **The Stack:**
   - **CodeQL (`github/codeql-action`)**: For semantic, deep-level security and vulnerability scanning on every PR.
@@ -3496,7 +3537,7 @@ The agent MUST use the following tools when the specific context arises:
   - **Codecov (`codecov/codecov-action`)**: For visual test coverage reporting.
   - **Cloudflare Pages / Vercel Deploy**: For instant, global CDN deployments of frontend applications.
 
-### 11. Elite Developer Terminal Stack (Industry Standard)
+### 13. Elite Developer Terminal Stack (Industry Standard)
 - **The Rule:** The agent must always substitute legacy CLI tools with their modern, Rust-based or high-performance replacements.
 - **The Stack Categories:**
   - **Terminal & Shell Enhancements:** 
@@ -3521,7 +3562,7 @@ The agent MUST use the following tools when the specific context arises:
   - **Documentation & Markdown:**
     - `glow` (Terminal-native Markdown viewer)
 
-### 12. Senior MLOps Pipeline Strategy
+### 14. Senior MLOps Pipeline Strategy
 - **The Rule:** The agent MUST treat ML projects as software engineering pipelines, never as just standalone training scripts.
 - **The Stack:**
   - **DVC (Data Version Control):** Automatically initialize DVC to track datasets and map models exactly to their data versions.
@@ -3530,13 +3571,13 @@ The agent MUST use the following tools when the specific context arises:
   - **NVIDIA Triton / ONNX:** Export all production PyTorch/TensorFlow models to ONNX and serve them via high-performance inference servers, not raw Python scripts.
   - **Evidently AI / Grafana:** Monitor live data drift and prediction latency.
 
-### 13. Transparent Execution Protocol (Auto-Display)
+### 15. Transparent Execution Protocol (Auto-Display)
 - **The Rule:** The user should never have to manually type commands to see the agent's work. For any background execution that takes longer than a few seconds, the agent MUST run it inside `tmux`, and then immediately pop open a physical terminal window on the user's monitor.
 - **The Execution:** The agent will use `export DISPLAY=:0` (or Wayland equivalent) and launch `wezterm start -- bash -c "tmux attach -t agent-tasks"` so the execution stream automatically appears on the user's screen.
 
-### 14. Global Error Logging & Self-Correction Protocol
-- **The Rule:** The agent is strictly forbidden from repeating the same mistake twice across any project. Whenever a command exits with an error code, a build crashes, or a bug is detected, the agent MUST autonomously diagnose it, fix it, and then log the error signature and the standard resolution pattern into `/home/aditya/Desktop/Projects/MEMORY/LESSONS_LEARNED.md`.
-- **The Execution:** Before writing code or fixing a bug in any project, the agent will implicitly cross-reference `LESSONS_LEARNED.md`. If the error is a known issue, the agent will instantly apply the standard fix without trial and error.
+### 16. Global Error Logging & Self-Correction Protocol
+- **The Rule:** The agent is strictly forbidden from repeating the same mistake twice across any project. Whenever a command exits with an error code, a build crashes, or a bug is detected, the agent MUST autonomously diagnose it, fix it, and then log the error signature and the standard resolution pattern into `/home/aditya/Desktop/Projects/MEMORY/memory/LESSONS_LEARNED.md`.
+- **The Execution:** Before writing code or fixing a bug in any project, the agent will implicitly cross-reference `memory/LESSONS_LEARNED.md`. If the error is a known issue, the agent will instantly apply the standard fix without trial and error.
 
 
 

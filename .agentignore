@@ -84,3 +84,6 @@ Thumbs.db
 *.db
 *.sqlite
 *.sqlite3
+
+# Vector DB
+vector_db/

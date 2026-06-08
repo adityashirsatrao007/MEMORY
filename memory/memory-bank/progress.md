@@ -42,10 +42,12 @@
 | 2026-06-05 | Analyzed duplicate proposal on issue #92727 and established preventive measures; audited issue #92696 comments to prevent duplicate submissions. |
 | 2026-06-05 | Installed and configured vulnhuntr via pipx, completed verification of installed static analysis and security tools. |
 | 2026-06-05 | Built security-toolkit project: Vite+React frontend + Express backend. Features: multi-tool security scanner (semgrep/bandit/trivy/gitleaks/etc.), NVD CVE search, tools status page, GitHub Actions CI. Running on localhost:5173 (UI) + localhost:3741 (API). |
+| 2026-06-08 | Created Discord God Mode Bot with mass purge, ghost kicker, auto-mod, and music player (Slash Commands). Deployed via PM2. Decommissioned and completely wiped the project from the system per user request after a Discord security lock anomaly. |
 
 
 
 
 
-
-
+| 2026-06-09 | Full MEMORY repo deep audit: replaced 221KB monolith with 8-module system (01-08), symlinked all 197KB bloat files (.clinerules/.cursorrules/.windsurfrules/CLAUDE.md), locked in ZERO_PROMPTING_DIRECTIVE, CodeBurn tool, CLI replacement rules, GSAP patterns, ML decision tree, deployment workflow. Token cost per session: 55,000 → 500. |
+| 2026-06-09 | MEMORY repo full setup verification: converted 7 duplicated 197KB GEMINI.md copies to proper symlinks (saved 1.2MB), fixed broken opencode/AGENTS.md symlink (was pointing to LESSONS_LEARNED.md instead of GEMINI.md), created vector_db/ + tools/static/ dirs, added vector_db/ to both .gitignore and .agentignore, verified all Python deps (chromadb/mcp/fastapi/uvicorn), created activeContext.md + walkthrough.md for agentlint compliance. Logged 5 new error prevention patterns to LESSONS_LEARNED.md (#3-#8) covering CLI tools, OpenCode delegation, pre-flight sequence, Read tool overuse, git diff|delta, and quality checks. |
+| 2026-06-09 | Restructured MEMORY repo (27→13 root items): grouped config into config/, memory into memory/, fixed all symlinks. Started Qdrant (was dead 8 days), symlinked onlycli to PATH, started graphify + memory-dashboard services. Removed 4 dead tool scripts. Fixed Specialized Tool Matrix: removed uninstalled tools (hackingtool, feast, milvus), added installed ones (enola, aider, uv, codeburn). Updated Zero-Token auto-trigger rules with 11 new conditions. Replaced sober/semgrep references (sober not installed). Updated all hardcoded paths for new directory layout. Pushed to github.com/adityashirsatrao007/MEMORY. |
