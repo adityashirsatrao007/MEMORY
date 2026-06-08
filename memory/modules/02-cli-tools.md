@@ -100,6 +100,13 @@ Only THEN open files with `bat` if needed.
 | Log system event | `codeburn log --type system "msg"` |
 Costs auto-log to progress.md on shell exit.
 
+## Mode: MEMORY_MODE=lazy (RECOMMENDED — 95% token savings)
+Set `export MEMORY_MODE=lazy` and GEMINI.md instructs agent to skip module preloads.
+Instead, search vector DB on demand with `memory-search "<task>"`.
+- Lazy: ~70 tokens per session (search only)
+- Full: ~1420 tokens per session (preloaded modules)
+- Switching: restart session with `MEMORY_MODE=full` for rapid-fire CLI mode
+
 ## Silent CLI (MANDATORY — saves 30-40% tokens)
 - EVERY bash command: suppress output unless error. Pattern: `cmd > /dev/null 2>&1 || echo "FAIL: cmd: $?"`
 - `git add/commit/push`: silent. Only show on conflict: `git add -A 2>&1 | grep -v "^$" || true`

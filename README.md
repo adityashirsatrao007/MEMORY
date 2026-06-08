@@ -75,7 +75,8 @@ alias gl='lazygit'
 source ~/.cargo/env 2>/dev/null
 source ~/.local/bin/pipx ensurepath 2>/dev/null
 export MEMORY_ROOT="$HOME/Desktop/Projects/MEMORY"
-export PATH="$MEMORY_ROOT/tools/static:$PATH"
+export MEMORY_MODE=lazy  # ~70 tokens/session (full=~1420)
+export PATH="$MEMORY_ROOT/tools:$PATH"
 export EDITOR=nvim
 BASHRC_EOF
 source ~/.bashrc
