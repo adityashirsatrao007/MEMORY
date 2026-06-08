@@ -195,3 +195,21 @@ eval "$(starship init bash)"
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 eval "$(atuin init bash)"
+
+# ── Zero-Token CLI Aliases ─────────────────────────────────────────────────────
+alias grep='rg'
+alias du='dust -n 10'
+alias ps='procs'
+alias top='btop'
+alias sed='sd'
+alias find='fd'
+alias curl='echo "USE: http (not curl)" && command curl'
+# markdown reading
+alias readme='glow'
+
+# ── Agent Read Cache ──────────────────────────────────────────────────────────
+# Agent checks this before reading files. Append path after each read.
+# Check: grep -qxF "/abs/path" /tmp/.agent-read-cache 2>/dev/null && echo "CACHED"
+__ARC="/tmp/.agent-read-cache"
+mark-read() { echo "$(realpath "$1")" >> "$__ARC" 2>/dev/null; }
+is-read()   { grep -qxF "$(realpath "$1")" "$__ARC" 2>/dev/null; }
