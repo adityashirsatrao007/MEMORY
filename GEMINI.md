@@ -1587,45 +1587,86 @@ When starting work on any codebase, follow this EXACT sequence:
 
 This 5-step pre-flight reads the ENTIRE codebase context in 5 commands instead of 50+ file reads. Saves up to 90% of session tokens.
 
-### 🎯 AUTO-TRIGGER RULES — Tool Must Fire Automatically on These Conditions
+### 🎯 COMPLETE TOOL DISPATCH TABLE — 54 Tools, Zero Thinking Required
 
-The following tools are installed but under-used. These rules make them **mandatory triggers** so the agent reaches for them reflexively:
+Every installed CLI tool has an exact trigger condition. When the condition is met, the agent MUST fire the tool without deliberating. This is not optional.
 
-| Condition | Tool to Fire | Command |
-|-----------|-------------|---------|
-| Any JSON file > 50 lines | `jless` | `jless file.json` — interactive browse, don't open in editor |
-| Building a jq query interactively | `jnv` | `cat file.json \| jnv` — live jq query builder |
-| Starting work on ANY existing project | `onefetch` | `onefetch` — instant repo summary before reading files |
-| Starting work on ANY existing project | `eza --tree` | `eza --tree --level 2 --git-ignore` — understand structure |
-| Dev server running + editing source | `entr` | `fd -e ts -e tsx \| entr -r npm run build` — auto-rebuild on save |
-| Bulk rename/replace across files | `sd` | `sd 'old' 'new' **/*.ts` — never use sed or file-edit for bulk |
-| Debugging what processes are running | `procs` | `procs --tree` — process tree with resources |
-| System resource overview with GPU | `btm` | `btm` — CPU/RAM/GPU/network in one TUI |
-| Exploring an unfamiliar open-source repo | `gitingest` | Change `github.com` → `gitingest.com` in URL — AI-friendly summary |
-| Feeding a repo to AI for deep analysis | `gitmcp` | Paste URL into `gitmcp.io` — converts repo to AI-readable format |
-| Viewing any GitHub file for copy/paste | `?plain=1` | Append `?plain=1` to GitHub file URL — raw view, no UI clutter |
-| Quick-editing a file in browser | `.` key | Press `.` on any GitHub repo page → instant VS Code in browser |
-| Downloading repo without git | ZIP trick | Append `/archive/refs/heads/main.zip` to repo URL |
+| # | Condition → Agent Sees This | Tool to Fire | Why / What It Does |
+|---|----------------------------|-------------|-------------------|
+| 1 | Starting work on any project | `onefetch` | Instant repo summary (lang, commits, contributors) |
+| 2 | Starting work on any project | `eza --tree --level 2 --git-ignore` | Directory structure with git status |
+| 3 | Starting work on any project | `tokei` | Language breakdown, line counts |
+| 4 | Starting work on any project | `fastfetch` | CPU/RAM/GPU/OS snapshot |
+| 5 | Need to understand a new repo | `enola generate_snapshot` | Full arch snapshot with patterns |
+| 6 | Need codebase dependency graph | `enola explore` | Symbols, imports, call chains in one cmd |
+| 7 | Need blast radius / impact analysis | `enola impact_analysis <target>` | Shows what breaks if X changes |
+| 8 | Need architecture diagram | `d2` | Text → PNG/SVG, version-controllable |
+| 9 | Need AI pair programming (multi-file) | `aider --model ollama/qwen2.5-coder:3b` | Git-first auto-committing pair coder |
+| 10 | Need token/cost observability | `codeburn optimize` | Finds waste, suggests fixes |
+| 11 | Need token/cost status | `codeburn status` | Today + month spend in one line |
+| 12 | Need git commit message | `comet` | AI-generated via local Ollama |
+| 13 | Need git diff | `git diff \| delta` | Syntax-highlighted, beautiful diffs |
+| 14 | Need git TUI | `lazygit` | Full git operations in TUI |
+| 15 | Need git history | `git log --oneline -20` | Compact history |
+| 16 | Need GitHub operations | `gh` | PRs, issues, repos, releases |
+| 17 | Searching text in files | `rg` (NOT grep) | 3-5x faster than grep |
+| 18 | Reading any file | `bat` (NOT cat) | Syntax highlighting, line numbers |
+| 19 | Listing directory | `eza` (NOT ls) | Icons, git status, sort by time |
+| 20 | Finding files by name | `fd` (NOT find) | 10x faster, simpler syntax |
+| 21 | Disk usage analysis | `dust` (NOT du) | Visual tree, human-readable |
+| 22 | Disk usage summary | `duf` (NOT df) | Mount points with graphs |
+| 23 | Process monitoring | `procs` (NOT ps) | Colorized, tree view, searchable |
+| 24 | System resource overview | `btm` or `btop` (NOT top) | GPU/CPU/RAM/network in one TUI |
+| 25 | Text replacement across files | `sd` (NOT sed for bulk) | Clearer syntax, faster |
+| 26 | JSON processing | `jq` | Query/modify JSON |
+| 27 | Large JSON file interactive browse | `jless` | Don't open in editor |
+| 28 | Building jq queries interactively | `jnv` | Live jq query builder |
+| 29 | JSON interactive processing | `fx` | Better than raw jq for exploration |
+| 30 | YAML processing | `yq` | Query/modify YAML |
+| 31 | Markdown reading | `glow` (NOT cat/bat for .md) | Rendered markdown in terminal |
+| 32 | API calls | `http` (NOT curl) | Cleaner syntax, JSON support |
+| 33 | Shell history search | `atuin` | Database-backed, fuzzy, contextual |
+| 34 | Directory navigation | `zoxide` | Smart cd — jump to any dir |
+| 35 | Fuzzy finding | `fzf` | Universal fuzzy finder for anything |
+| 36 | Quick CLI help | `tldr` (not man) | Practical examples, not wall of text |
+| 37 | Postgres queries | `pgcli` (not psql) | Auto-complete, syntax highlight |
+| 38 | Container management | `docker` | Start/stop/exec containers |
+| 39 | Environment variables | `direnv` | Per-directory env loading |
+| 40 | Secret scanning (git) | `gitleaks` | Scan git history for secrets |
+| 41 | Secret scanning (files) | `trufflehog` | Scan files/S3 for secrets |
+| 42 | Vulnerability scanning | `trivy` | Scan containers, fs, repos for CVEs |
+| 43 | Static analysis / code health | `semgrep` | Find bugs, enforce patterns |
+| 44 | Command benchmarking | `hyperfine` | Precision timing, warmup, comparison |
+| 45 | Network scanning | `nmap` | Port scanning, host discovery |
+| 46 | Python deps | `uv` (NOT pip) | 10-100x faster, single binary |
+| 47 | Node deps | `bun` (NOT npm) | 10x faster, built-in test runner |
+| 48 | Python tool installs | `pipx` (NOT pip install --global) | Isolated tool installs |
+| 49 | Process management (daemons) | `pm2` | Keep servers alive, auto-restart |
+| 50 | Session management (long tasks) | `tmux` | Survives terminal close |
+| 51 | CLI via OpenAPI spec | `onlycli <spec>` | 35x cheaper than MCP servers |
+| 52 | Output compression for LLM | `rtk` | Compress shell output 60-90% |
+| 53 | Output stripping for LLM | `lowfat` | Strip verbose CLI to essentials |
+| 54 | Agent skills management | `tessl` | Install/remove agent skills |
+| — | Dev server + editing source | `entr` | Auto-rebuild on file change |
+| — | Architecture diagram | `d2` | Text → PNG/SVG |
+| — | Knowledge graph | `graphify` | Codebase knowledge graph MCP |
 
-**Rule:** If the agent uses `cat` on a JSON file, it has FAILED. Use `jless`. If the agent starts a project session without `onefetch`, it has FAILED. If the agent manually re-runs a build after editing source files, it should have used `entr`.
+**Failure conditions** (these are rule violations, not suggestions):
+- Using `grep` = FAILED. Use `rg`.
+- Using `cat` on any file = FAILED. Use `bat` or `glow` (for .md).
+- Using `ls` = FAILED. Use `eza`.
+- Using `find` = FAILED. Use `fd`.
+- Using `du` = FAILED. Use `dust`.
+- Using `ps` = FAILED. Use `procs`.
+- Using `top` = FAILED. Use `btop` or `btm`.
+- Using `curl` for API calls = FAILED. Use `http`.
+- Starting a session without `onefetch` + `eza --tree` = FAILED.
+- Using `sed` for batch rename/replace across files = FAILED. Use `sd`.
+- Reading a JSON file without `jless`/`jq`/`jnv`/`fx` = FAILED.
+- Using `npm` or `pip` = FAILED. Use `bun` or `uv`.
+- Leaving a long process without `tmux` = FAILED.
 
-### 🎯 EXTRA AUTO-TRIGGER RULES — Architecture, AI & Code Quality
-
-| Condition | Tool to Fire | Why |
-|-----------|-------------|-----|
-| Need architecture diagram | `d2` | Text → PNG/SVG, version-controllable, dark theme |
-| Need codebase dependency graph | `enola explore` | Instant symbols, imports, call chains — no file reads |
-| Need to understand a new repo | `enola generate_snapshot` | Full architectural snapshot with patterns |
-| Need AI pair programming (multi-file) | `aider --model <model>` | Git-first, auto-commits, multi-file aware |
-| Need Python dependency management | `uv add / uv sync` | 10-100x faster than pip, single binary |
-| Need token/cost observability | `codeburn optimize` | Finds token waste, suggests BASH_MAX_OUTPUT_LENGTH |
-| Need process monitoring | `btop` or `procs` | GPU/CPU/RAM in one TUI |
-| Need JSON interactive processing | `fx` | Interactive JSON viewer, better than raw jq for exploration |
-| Need git commit message | `comet` | AI-generated git messages via local Ollama |
-| Need to manage agent skills | `tessl` | Install/remove agent skills from curated catalog |
-| Need CLI via OpenAPI spec | `onlycli <spec>` | 35x cheaper than running MCP servers |
-| Need output compression for LLM | `rtk` | Compress shell output 60-90% before agent context |
-| Need architecture impact analysis | `enola impact_analysis <target>` | Shows blast radius of changes |
+**Enforcement:** Guardrails at `~/bin/guardrails/` shadow 8 slow tools (grep, cat, ls, find, du, top, ps, sed). Running any of these prints a warning with the replacement. Ignoring the warning is a rule violation. `session-start.sh` also runs `onefetch` + `tokei` + `eza --tree` automatically at step 6. Use `auto-dispatch <task>` for a quick tool suggestion, or `auto-dispatch --suggest` for CWD-based suggestions.
 
 ---
 
