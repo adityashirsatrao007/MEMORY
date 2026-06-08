@@ -57,6 +57,7 @@ If ANY of these returns a warning, fix it before proceeding. Do not wait for the
 - If unsure → run a command to check → then state the result
 - Never say "the server is running" without `curl`-ing the health endpoint
 - Never say "the file exists" without `ls` confirming it
+- **ZERO ASSUMPTION PROTOCOL (files):** Never delete or classify a file as "stale" without: (1) reading it fully, (2) comparing every unique phrase against modules, (3) checking for dependents, (4) verifying vector DB. See lesson 14 in LESSONS_LEARNED.md for the full checklist.
 - Never say "it's installed" without `which` or `--version` confirming it
 
 ### OpenCode Delegation — MANDATORY:

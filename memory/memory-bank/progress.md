@@ -57,3 +57,4 @@
 | 2026-06-09 | Split monolithic GEMINI.md (3,622 lines) into 9 module files under memory/modules/ (2,278 lines total). GEMINI.md is now a 63-line index that tells agents which modules to load by task. Core modules (01-core-rules, 02-cli-tools) pre-loaded by session-start.sh; task-specific modules (03-09) loaded on demand. Re-seeded vector DB with 69 chunks across all 9 modules. ML sections rewritten to industry-standard MLOps (K8s, FSDP, Triton, Evidently, Feast, Great Expectations). |
 | 2026-06-09 | Removed Qdrant container (was using 89MB RAM, unused by anything). Switched to ChromaDB-only vector storage (disk-based SQLite, 0 RAM overhead). Updated 02-cli-tools.md references. |
 | 2026-06-09 | Makefile, .githooks, seed script upgrade, cross-project paths, 98-chunk vector DB, dashboard verified |
+| 2026-06-09 | Final cleanup: reviewed all restored files, kept templates as reference library (10 files, 2,301 lines), linked from 05-ui-ux.md, deleted 26 stale files |

@@ -235,6 +235,41 @@ done
 ```
 
 ### 13. Empty Directories Survive Cleanup
+
+### 14. NEVER Delete Files Based on Assumptions — Full Verification Required
+**Error Signature:**
+```
+Files deleted: 26 files across config/, docs/, memory-bank/, templates/, dotfiles/
+Method: read first 5 lines + grep headers → assumed "stale" → deleted
+Should have done: read each file fully, compare line-by-line with modules
+```
+
+**Root Cause:**
+Systematic assumption error — files classified as "stale" based on path + header grep only. None of these constitute "complete knowledge."
+
+**Standard Resolution — The "Zero Assumption" Protocol:**
+Before ANY deletion of existing tracked files, ALL 5 checks must pass:
+
+```
+1. READ THE FULL FILE — `bat file.md` or `glow file.md` (never head/tail only)
+
+2. COMPARE CONTENT — for every section, verify it exists in modules:
+   → `rg "unique phrase from paragraph" memory/modules/*.md`
+   If any phrase is NOT found → file has UNIQUE content → DO NOT DELETE.
+
+3. TRACE DEPENDENCIES — check if anything depends on this file:
+   → `rg "filename" .` — symlinks, references, imports
+   → `find ~ -type l 2>/dev/null | xargs -I{} sh -c 'readlink "{}" | grep -q "filename" && echo "{}"'`
+
+4. CHECK VECTOR DB — file might be chunked into ChromaDB:
+   → `curl -s "http://localhost:8082/api/search?q=key+phrase"`
+
+5. THE 24-HOUR RULE (files > 100 lines):
+   → If uncertain, leave it. Tag for next session.
+   → If > 500 lines and not fully read → DO NOT DELETE.
+
+EXECUTE ONLY AFTER ALL 5 PASS. Failure = critical error.
+```
 **Error Signature:**
 ```
 scratch/          — empty
