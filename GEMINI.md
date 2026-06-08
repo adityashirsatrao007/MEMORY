@@ -37,4 +37,4 @@ The result tells you which module file has the answer. Open only that file with 
 | Misc | `09-misc.md` (210) |
 
 ## Quick
-`MEMORY_ROOT=$MEMORY_ROOT` | `memory-search` | Makefile: `make {validate,seed,stats}`
+`MEMORY_ROOT=$MEMORY_ROOT` | `memory-search` | Dashboard: `localhost:8083` | Makefile: `make {validate,seed,stats}`

@@ -171,5 +171,6 @@ def ask_ai(req: AskRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    print("Starting Dashboard on http://localhost:8082")
-    uvicorn.run(app, host="0.0.0.0", port=8082)
+    port = int(os.environ.get("MEMORY_DASHBOARD_PORT", "8083"))
+    print(f"Starting Dashboard on http://localhost:{port}")
+    uvicorn.run(app, host="0.0.0.0", port=port)
