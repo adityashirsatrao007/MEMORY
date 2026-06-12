@@ -425,6 +425,35 @@ This is a **living system**. These tools are cued for the next integration pass:
 
 ---
 
+## 🔑 License Activation System
+
+MEMORY includes a built-in license activation system for commercial deployments.
+
+```bash
+# Start the license server
+make license-server
+
+# Activate on client
+python3 tools/license-cli/cli.py activate MEM-PRO-XXXX-XXXX-XXXX
+
+# Verify status
+python3 tools/license-cli/cli.py verify
+```
+
+**Architecture:** FastAPI backend → PostgreSQL → RS256 signed JWTs → machine-bound tokens.
+
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /activate` | Validate key, return JWT |
+| `POST /verify` | Check token validity |
+| `POST /refresh` | Renew expiring tokens |
+| `POST /revoke` | Invalidate a license |
+
+See [SECURITY.md](SECURITY.md) for threat model and deployment checklist.  
+Admin panel: `http://localhost:8443/admin`
+
+---
+
 ## 📜 License
 ## 📜 License & Commercial Use
 

@@ -97,3 +97,19 @@ fix-paths:  ## Update relative paths in all modules to use $MEMORY_ROOT
 		fi; \
 	done; \
 	echo "  ✅ Done"
+
+# ─── License System ────────────────────────────────────────────
+
+license-server:  ## Start the license activation server
+	@echo "=== Starting MEMORY License Server ==="
+	@cd tools/license-server && pip install -q -r requirements.txt 2>/dev/null; \
+	echo "  Server starting on http://localhost:8443"; \
+	echo "  Admin panel: http://localhost:8443/admin"; \
+	python3 main.py
+
+license-cli:  ## Run the license CLI (activate / verify / status)
+	@echo "=== MEMORY License CLI ==="
+	@python3 tools/license-cli/cli.py $(filter-out $@,$(MAKECMDGOALS))
+
+%:
+	@true
