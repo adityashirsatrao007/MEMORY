@@ -71,7 +71,7 @@
         <mxCell id="m11" value="11 Errors" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
           <mxGeometry x="625" y="95" width="130" height="34" as="geometry"/>
         </mxCell>
-        <mxCell id="m12" value="12 Repo Teachings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+        <mxCell id="m12" value="Architectural Patterns" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
           <mxGeometry x="770" y="95" width="130" height="34" as="geometry"/>
         </mxCell>
 

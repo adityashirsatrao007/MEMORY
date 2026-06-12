@@ -1,107 +1,67 @@
-# 12 — Research Notes: Cross-Repo Architectural Patterns
+# 12 — Cross-Repo Architectural Patterns
 
-Personal research notes by Aditya Shirsatrao — architectural patterns extracted from studying 18 reference repositories. These are not dependencies or sources of MEMORY; they are studied references.
+Personal research notes — architectural patterns extracted from industry study. These are not dependencies or sources of MEMORY.
 
 ---
 
-## 1. OpenBB (Financial Terminal & SDK)
-- **Architecture**: Monorepo with an SDK engine that aggregates financial data providers and a visual CLI terminal wrapper.
-- **Integration**: We can pull market metrics directly into quant tools by importing their python SDK.
-- **Setup**:
-  ```bash
-  pip install openbb
-  ```
+## CLI / SDK Engines
+- **Pattern**: Monorepo with SDK engine aggregating data providers + CLI terminal wrapper.
+  - *Use case*: Pull external metrics into tools via SDK imports.
+- **Pattern**: Rust-based linter/formatter replacing a multiple-tool chain.
+  - *Use case*: Run single binary for lint+format in CI hooks.
 
-## 2. Ruff (Rust-Based Python Toolchain)
-- **Architecture**: A linter and formatter written in Rust, replacing Flake8, Black, and isort.
-- **Integration**: Configured locally in `/tools/` to run checks on git commits.
-- **Setup**:
-  ```bash
-  pipx install ruff
-  ```
+## LLM & Workflow Orchestration
+- **Pattern**: Node-based chaining framework for models, memory, routing, tool calling.
+  - *Use case*: Expand subagents into multi-step memory workflows.
+- **Pattern**: Postgres-backed workflow runner (Python, TS, Go) with auto-generated UIs.
+  - *Use case*: Replace Cron/PM2 for distributed task execution.
 
-## 3. LangChain (LLM Orchestration)
-- **Architecture**: Node-based chaining framework for models, memory, routing, and tool calling.
-- **Integration**: Used when expanding our subagents into multi-step custom memory workflows.
-- **Setup**:
-  ```bash
-  pip install langchain
-  ```
+## Observability & Monitoring
+- **Pattern**: OpenTelemetry-native APM (Go/React, ClickHouse backend).
+  - *Use case*: Track latency, queries, errors in web apps.
+- **Pattern**: Graphical system resource monitor in Rust (TUI).
+  - *Use case*: Terminal-based system vitals.
 
-## 4. Windmill (Developer Workflows & Script UI)
-- **Architecture**: Postgres-backed workflow runner supporting Python, TypeScript, and Go scripts with auto-generated UIs.
-- **Integration**: Alternative to Cron or PM2 for executing tasks on a distributed worker pool.
-- **Setup**: Runs via Docker Compose (requires windmill postgres database).
+## Build & CI/CD
+- **Pattern**: Concurrent cache-efficient build engine.
+  - *Use case*: Speed up Docker image generation in CI loops.
 
-## 5. SigNoz (Observability & APM)
-- **Architecture**: OpenTelemetry native APM built in Go/React, using ClickHouse for storing traces and metrics.
-- **Integration**: Integrated with local web applications to track latency, database queries, and errors.
-- **Setup**: Deployed via SigNoz docker-compose stack.
+## Notifications & Messaging
+- **Pattern**: Microservice-based notifications manager (Email, SMS, Slack, Push).
+  - *Use case*: Replace custom mailing scripts with unified API.
+- **Pattern**: Distributed commit-log messaging for high-throughput event queues.
+  - *Use case*: Async telemetry streaming between microservices.
 
-## 6. Bottom (System Monitor)
-- **Architecture**: A graphical process and system resource monitor built in Rust using `ratatui`.
-- **Integration**: Executable via `btm` for monitoring system vitals in the terminal.
-- **Setup**:
-  ```bash
-  cargo install bottom --locked
-  ```
+## Validation & Type Safety
+- **Pattern**: TypeScript-first runtime schema parsing + type inference.
+  - *Use case*: Input validation on API endpoints for type safety.
 
-## 7. BuildKit (Docker Build Engine)
-- **Architecture**: Concurrent, cache-efficient build engine powering modern `docker buildx`.
-- **Integration**: Speeds up Vite/Next.js Docker image generation in CI/CD loops.
+## Identity & Access Management
+- **Pattern**: Cloud-native OIDC/OAuth2 server (Go) with multi-tenancy + audit logs.
+  - *Use case*: Enterprise sign-ins and user management.
 
-## 8. Novu (Notification Engine)
-- **Architecture**: Microservice-based notifications manager handling Email, SMS, Slack, and Push templates.
-- **Integration**: Replaces custom mailing scripts with a single unified API endpoint.
+## HR / Payroll
+- **Pattern**: Python/MariaDB extension framework.
+  - *Use case*: Custom accounting hooks integration.
 
-## 9. Zod (TypeScript Schema Validation)
-- **Architecture**: TypeScript-first runtime schema parsing and type inference library.
-- **Integration**: Used for input validation on all Next.js API endpoints to ensure type safety.
-- **Setup**:
-  ```bash
-  npm install zod
-  ```
+## Self-Hosted Infrastructure
+- **Pattern**: All-In-One Docker packaging with multiple service nodes.
+  - *Use case*: Self-hosted storage vault for backups and agent logs.
+- **Pattern**: PHP/Laravel asset inventory manager with REST API.
+  - *Use case*: Query server configs and hardware assignments.
 
-## 10. Apache Kafka (Event Streaming)
-- **Architecture**: Distributed commit-log messaging system built for high-throughput event queues.
-- **Integration**: Used for logging traces or streaming telemetry events asynchronously between microservices.
+## Secrets Management
+- **Pattern**: End-to-end encrypted vault syncing to dev machines.
+  - *Use case*: Pull env configs into terminal runs.
 
-## 11. Zitadel (Cloud-Native IAM)
-- **Architecture**: OIDC/OAuth2 identity server written in Go, focused on multi-tenancy and audit logs.
-- **Integration**: Replaces Clerk or Auth0 for enterprise sign-ins and user management.
+## Cryptography
+- **Pattern**: Lightweight C library for TLS + crypto primitives.
+  - *Use case*: Low-level secure sockets, local DB encryption.
 
-## 12. Frappe HRMS (HR & Payroll Core)
-- **Architecture**: Python-based extension built on the Frappe ERPNext framework, backed by MariaDB.
-- **Integration**: Custom script integration for corporate accounting hooks.
+## Deterministic Environments
+- **Pattern**: Nix-based deterministic developer shells (no Nix files).
+  - *Use case*: Isolated software runtimes per project.
 
-## 13. Nextcloud AIO (Private Cloud Suite)
-- **Architecture**: All-In-One Docker packaging for Nextcloud file sharing, office, and talk nodes.
-- **Integration**: Used as the self-hosted storage vault for backups and agent logs.
-
-## 14. Snipe-IT (Asset Management)
-- **Architecture**: Laravel/PHP-based asset inventory manager.
-- **Integration**: Accessible via REST API to query current server configurations and hardware assignments.
-
-## 15. Infisical (Secrets Manager)
-- **Architecture**: Vault alternative for developers, encrypting secrets end-to-end and syncing them to dev machines.
-- **Integration**: Used to pull environment configs into local terminal runs automatically.
-- **Setup**:
-  ```bash
-  curl -1sLf 'https://dl.cloudsmith.io/public/infisical/cli/setup.deb.sh' | sudo -E bash && sudo apt-get install -y infisical
-  ```
-
-## 16. MbedTLS (Cryptographic Core)
-- **Architecture**: Lightweight C library providing TLS and basic cryptographic primitives.
-- **Integration**: Referenced when building low-level secure sockets or encrypting local database blocks.
-
-## 17. Devbox (Nix Environments)
-- **Architecture**: Nix package manager wrapper allowing deterministic developer shells without writing Nix files.
-- **Integration**: Run `devbox shell` to activate isolated software runtimes locally.
-- **Setup**:
-  ```bash
-  curl -fsSL https://get.jetpack.io/devbox | bash -s -- -f
-  ```
-
-## 18. Reth (Rust Ethereum Client)
-- **Architecture**: Optimized Ethereum execution layer node focusing on read-throughput and Rust modularity.
-- **Integration**: Connects local web3 systems to the blockchain network.
+## Blockchain
+- **Pattern**: Optimized execution-layer node for read-throughput (Rust).
+  - *Use case*: Connect local web3 systems to blockchain networks.

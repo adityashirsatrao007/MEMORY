@@ -58,7 +58,7 @@ Every AI coding session has a limited context window. A monolithic instruction f
 | 09 Misc | 255 | 1,275 | 7.0% |
 | 10 Lessons | 17 | 85 | 0.5% |
 | 11 Errors | 30 | 150 | 0.8% |
-| 12 Repo Teachings | 107 | 535 | 3.0% |
+| 12 Architectural Patterns | 107 | 535 | 3.0% |
 
 **Total:** 2,045 lines / ~10,225 tokens (full load)
 **With lazy:** ~200 lines / ~1,000 tokens (95% reduction)

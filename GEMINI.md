@@ -50,7 +50,7 @@ Open ONLY that file: `bat --line-range :80 "$MEMORY_ROOT/memory/modules/XX-*.md"
 | Job hunt | `07-job-hunt.md` |
 | Architecture | `08-architecture.md` |
 | Misc | `09-misc.md` |
-| 18 Repos Reference | `12-repo-teachings.md` |
+| Architectural Patterns | `12-repo-teachings.md` |
 
 ## Tools
 `cat ~/.config/agent-tools/manifest.json` — 15 installed tools (CLI + infra + skills). Read once, cache in context, match task desc to tool.

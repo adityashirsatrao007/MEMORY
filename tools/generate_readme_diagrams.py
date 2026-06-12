@@ -92,7 +92,7 @@ def generate_module_sizes():
         ("09 Misc", 255, "#6B5A4A"),
         ("10 Lessons Learned", 17, MUTED),
         ("11 Error Logs", 30, MUTED),
-        ("12 Repo Teachings", 107, "#4A6B7A"),
+        ("12 Architectural Patterns", 107, "#4A6B7A"),
     ]
 
     names = [m[0] for m in modules]

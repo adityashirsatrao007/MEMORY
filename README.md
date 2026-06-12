@@ -7,7 +7,6 @@
 <p align="center">
   <img alt="Modules" src="https://img.shields.io/badge/Modules-12-2E4036?style=flat-square">
   <img alt="Tools" src="https://img.shields.io/badge/CLI%20Tools-54-CC5833?style=flat-square">
-  <img alt="Stars" src="https://img.shields.io/badge/Starred%20Repos-120%2B-2E4036?style=flat-square">
   <img alt="Vector" src="https://img.shields.io/badge/Vector%20DB-ChromaDB-CC5833?style=flat-square">
   <img alt="License" src="https://img.shields.io/badge/License-MIT-1A1A1A?style=flat-square">
 </p>
@@ -87,7 +86,7 @@ Each module is a markdown file under `memory/modules/XX-*.md`. The agent loads O
 | 09 | **Misc** | 255 | Roadmaps, GitHub tricks, OSM, AlgoTracker | Everything else |
 | 10 | **Lessons Learned** | 17 | Hardcoded agent directives, configuration gotchas | Pre-flight check |
 | 11 | **Error Logs** | 30 | OOMs, PEP 668, Wayland, token exhaustion history | Before risky ops |
-| 12 | **Repo Teachings** | 107 | Aditya's cross-repo research notes | Personal reference |
+| 12 | **Architectural Patterns** | 107 | Industry pattern research notes | Personal reference |
 
 ```bash
 # Quick stats
@@ -234,7 +233,7 @@ Tracks active agent task states. Current: swarms, NeoAgent, MiMo-Code, taste-ski
 
 **MEMORY** is an original project by **Aditya Shirsatrao** — built from scratch, every module, every tool, every pattern. Researched, designed, and implemented independently.
 
-The 120+ starred repos in Module 12 are **research references** — repos Aditya has studied to extract patterns. MEMORY is not a fork, not a copy, and not derived from any of them. All code, documentation, and design is original.
+All code, documentation, and design is original — researched, designed, and implemented from scratch.
 
 ---
 
