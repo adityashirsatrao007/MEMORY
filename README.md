@@ -566,10 +566,18 @@ This is a **living system**. These tools are cued for the next integration pass:
 ---
 
 ## 📜 License
+## 📜 License & Commercial Use
 
 MIT License — Copyright © 2026 **Aditya Shirsatrao**
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the conditions in the [LICENSE](LICENSE) file.
+| Use Case | License |
+|----------|---------|
+| Personal / open-source | ✅ MIT — free |
+| Startup (5-20 users) | 💰 [$99/yr](PRICING.md) |
+| Business (21-100) | 💰 [$499/yr](PRICING.md) |
+| Enterprise (100+) | 💰 [Custom](COMMERCIAL_LICENSE.md) |
+
+📄 [MIT License](LICENSE) · 💼 [Commercial License](COMMERCIAL_LICENSE.md) · 🏷️ [Pricing](PRICING.md)
 
 ---
 
@@ -581,6 +589,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
   <sub>
     <a href="https://github.com/adityashirsatrao007/MEMORY">GitHub</a> ·
     <a href="https://github.com/adityashirsatrao007/MEMORY/issues">Issues</a> ·
-    <a href="https://github.com/adityashirsatrao007/MEMORY/discussions">Discussions</a>
+    <a href="TOKEN_SAVINGS.md">💰 Token Savings</a> ·
+    <a href="BENCHMARKS.md">📊 Benchmarks</a> ·
+    <a href="ARCHITECTURE.md">🏗️ Architecture</a> ·
+    <a href="API_REFERENCE.md">🔌 API Reference</a> ·
+    <a href="SECURITY.md">🔐 Security</a> ·
+    <a href="PRICING.md">🏷️ Pricing</a>
   </sub>
 </p>

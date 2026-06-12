@@ -1,31 +1,37 @@
 #!/usr/bin/env python3
-"""Generate architecture diagram for MEMORY system."""
+"""Generate architecture diagram for MEMORY system (WHITE background)."""
 
 import os
 from pathlib import Path
 from diagrams import Diagram, Edge, Cluster
-from diagrams.onprem.workflow import Airflow
 from diagrams.onprem.database import Mongodb
 from diagrams.onprem.client import User
 from diagrams.programming.language import Python
 from diagrams.generic.os import LinuxGeneral
-from diagrams.generic.blank import Blank
 
 ROOT = Path(__file__).resolve().parent.parent
 IMAGES = ROOT / "docs" / "images"
 os.makedirs(IMAGES, exist_ok=True)
 
 graph_attr = {
-    "bgcolor": "#1C1C1E",
-    "fontcolor": "#E5E5E7",
+    "bgcolor": "white",
+    "fontcolor": "#1D1D1F",
     "fontsize": "14",
     "pad": "0.5",
     "dpi": "200",
+    "color": "#D2D2D7",
 }
 
 node_attr = {
-    "fontcolor": "#E5E5E7",
+    "fontcolor": "#1D1D1F",
     "fontsize": "10",
+}
+
+cluster_attr = {
+    "bgcolor": "#F5F5F7",
+    "fontcolor": "#6E6E73",
+    "bordercolor": "#D2D2D7",
+    "style": "rounded",
 }
 
 with Diagram(
@@ -38,7 +44,7 @@ with Diagram(
     direction="TB",
 ):
 
-    with Cluster("Agent Tools (symlinks to GEMINI.md)", graph_attr={"bgcolor": "#2C2C2E", "fontcolor": "#A1A1A6"}):
+    with Cluster("Agent Tools (symlinks to GEMINI.md)", graph_attr=cluster_attr):
         claude = User("Claude Code\nCLAUDE.md")
         opencode = User("OpenCode\nAGENTS.md")
         cursor = User("Cursor\n.cursorrules")
@@ -47,7 +53,7 @@ with Diagram(
 
     gemini = LinuxGeneral("GEMINI.md\n(Router / Decision Engine)")
 
-    with Cluster("12 Memory Modules (lazy-loaded on demand)", graph_attr={"bgcolor": "#2C2C2E", "fontcolor": "#A1A1A6"}):
+    with Cluster("12 Memory Modules (lazy-loaded on demand)", graph_attr=cluster_attr):
         m1 = Python("01 Core Rules")
         m2 = Python("02 CLI Tools")
         m3 = Python("03 ML Eng.")
@@ -65,16 +71,16 @@ with Diagram(
 
     agents = [claude, opencode, cursor, windsurf, copilot]
     for a in agents:
-        a >> Edge(color="#CC5833", style="dashed", label="symlink") >> gemini
+        a >> Edge(color="#CC5833", style="dashed", fontcolor="#6E6E73", label="symlink") >> gemini
 
     modules = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12]
-    gemini >> Edge(color="#2E4036", label="lazy load") >> modules[0]
+    gemini >> Edge(color="#2E4036", fontcolor="#6E6E73", label="lazy load") >> modules[0]
     for i in range(len(modules) - 1):
-        modules[i] >> Edge(color="#555557") >> modules[i + 1]
+        modules[i] >> Edge(color="#D2D2D7") >> modules[i + 1]
 
     for m in modules:
-        m >> Edge(color="#4A7C6F", style="dotted", label="seed") >> chroma
+        m >> Edge(color="#4A7C6F", style="dotted", fontcolor="#6E6E73", label="seed") >> chroma
 
-    chroma >> Edge(color="#57cda4", style="bold", label="search") >> gemini
+    chroma >> Edge(color="#2E4036", style="bold", fontcolor="#6E6E73", label="search") >> gemini
 
-print("  ✅ Architecture diagram saved")
+print("  ✅ Architecture diagram saved (white bg)")

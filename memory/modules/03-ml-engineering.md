@@ -276,9 +276,14 @@ All diagram files MUST be saved to `docs/images/` with descriptive filenames.
 | Training curves / EDA | Matplotlib + seaborn | PNG |
 | Statistical plots / metrics | Plotly + kaleido | PNG |
 
+### DIAGRAM BACKGROUND RULE (HARD — Never Violate)
+ALL generated diagrams, charts, and visualizations MUST use a **WHITE background** (`#FFFFFF`). Axes background `#F5F5F7`, text `#1D1D1F`. Never dark backgrounds — charts appear in docs, READMEs, print, slides, and embedded web pages where dark backgrounds break.
+
 ### Matplotlib Visual Quality Standards
-- Figure background: `#1C1C1E` (Apple dark)
-- Axes background: `#2C2C2E`
+- Figure background: `#FFFFFF` (white)
+- Axes background: `#F5F5F7` (light gray)
+- Text color: `#1D1D1F` (dark, not white)
+- Grid color: `#D2D2D7` with alpha 0.5
 - Font size: 12, Titles: 14 bold
 - Line width: 2.5
 - Save DPI: 200 (high-res PNG)

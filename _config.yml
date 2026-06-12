@@ -1,0 +1,3 @@
+# GitHub Pages: serve static files, no Jekyll processing
+exclude: [".git/", ".gitignore", "AGENTS.md", "CLAUDE.md", "GEMINI.md", "LICENSE", "opencode.json", "Makefile", "tools/", "memory/", ".agents/", ".github/", ".venv/"]
+include: ["docs/"]
