@@ -12,7 +12,7 @@ Every AI coding session has a limited context window. A monolithic instruction f
 | **Full Mode** (core + CLI + task) | 1,420 | ~7,100 | **−60%** |
 | **Lazy Mode** (vector search) | 200 | ~1,000 | **−95%** |
 
-![Token Savings](docs/images/token-savings.png)
+![Token Savings](images/token-savings.png)
 
 ## Cost Impact
 
@@ -24,7 +24,7 @@ Every AI coding session has a limited context window. A monolithic instruction f
 | freellmapi + MEMORY Lazy | **$0** | **$0** | **$0** |
 | freellmapi + MEMORY Full | **$0** | **$0** | **$0** |
 
-![Cost Comparison](docs/images/cost-comparison.png)
+![Cost Comparison](images/cost-comparison.png)
 
 ## The Math
 

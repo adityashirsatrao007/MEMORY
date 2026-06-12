@@ -4,7 +4,7 @@
 
 ## Agent Performance Metrics
 
-![Benchmark Times](docs/images/benchmark-times.png)
+![Benchmark Times](images/benchmark-times.png)
 
 | Metric | Time | vs Old Monolith |
 |--------|------|-----------------|
@@ -16,7 +16,7 @@
 
 ## Before vs After
 
-![Before vs After](docs/images/before-after.png)
+![Before vs After](images/before-after.png)
 
 | Dimension | Old (Monolithic) | MEMORY (Modular) | Improvement |
 |-----------|-----------------|-------------------|-------------|
