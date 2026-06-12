@@ -195,6 +195,8 @@ Place under `docs/`:
 - **DESIGNDOC:** Copy `/home/aditya/bin/templates/specs/DESIGNDOC.md` to `docs/DESIGNDOC.md`
 - **TECHSTACK:** Copy `/home/aditya/bin/templates/specs/TECHSTACK.md` to `docs/TECHSTACK.md`
 - **Claude Codes:** Use the prompt stacking cheat sheet at [$MEMORY_ROOT/templates/CLAUDE_CODES.md](file:///home/aditya/Desktop/Projects/MEMORY/templates/CLAUDE_CODES.md) for custom formatting, tones, and expert modules.
+- **Quant Red Flag Analyst:** Use the system instructions at [$MEMORY_ROOT/templates/QUANT_RED_FLAG_ANALYST.md](file:///home/aditya/Desktop/Projects/MEMORY/templates/QUANT_RED_FLAG_ANALYST.md) for Bloomberg-style institutional financial terminal applications.
+
 
 
 ## Google Stitch API Frontend Protocol
