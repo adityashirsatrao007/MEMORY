@@ -7,9 +7,9 @@ import re
 import uuid
 import json
 import hashlib
-import smtplib
 import logging
-from email.mime.text import MIMEText
+from urllib.request import Request, urlopen
+from urllib.error import URLError
 from datetime import datetime, timedelta, timezone
 from contextlib import asynccontextmanager
 
@@ -33,12 +33,9 @@ PUBLIC_KEY = os.getenv("LICENSE_PUBLIC_KEY", "").replace("\\n", "\n")
 ADMIN_TOKEN = os.getenv("LICENSE_ADMIN_TOKEN", "change-me-in-production")
 ISSUER = "memory-license-server"
 
-# SMTP config (optional — if unset, keys print to console)
-SMTP_HOST = os.getenv("SMTP_HOST", "")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-SMTP_USER = os.getenv("SMTP_USER", "")
-SMTP_PASS = os.getenv("SMTP_PASS", "")
-SMTP_FROM = os.getenv("SMTP_FROM", "noreply@memory.dev")
+# Resend email config (optional — if unset, keys print to console/log)
+RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
+EMAIL_FROM = os.getenv("EMAIL_FROM", "MEMORY <onboarding@resend.dev>")
 
 # Generate keys on first run if not provided
 if not PRIVATE_KEY:
@@ -99,23 +96,22 @@ def sign_jwt(license_key: str, tier: str, email: str, machine_fp: str,
 def verify_jwt(token: str) -> dict:
     return jwt.decode(token, PUBLIC_KEY, algorithms=["RS256"], issuer=ISSUER)
 
-# ─── Email ───
+# ─── Email (Resend API) ───
+
+RESEND_API = "https://api.resend.com/emails"
 
 def send_email(to: str, subject: str, body: str) -> bool:
-    if not SMTP_HOST:
+    if not RESEND_API_KEY:
         logger.info(f"[EMAIL DISABLED] Would send to {to}: {subject}")
         return False
     try:
-        msg = MIMEText(body, "plain", "utf-8")
-        msg["Subject"] = subject
-        msg["From"] = SMTP_FROM
-        msg["To"] = to
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as s:
-            s.starttls()
-            s.login(SMTP_USER, SMTP_PASS)
-            s.send_message(msg)
-        logger.info(f"Email sent to {to}: {subject}")
-        return True
+        payload = json.dumps({"from": EMAIL_FROM, "to": to, "subject": subject, "text": body}).encode()
+        req = Request(RESEND_API, data=payload, method="POST")
+        req.add_header("Authorization", f"Bearer {RESEND_API_KEY}")
+        req.add_header("Content-Type", "application/json")
+        with urlopen(req, timeout=15) as resp:
+            logger.info(f"Email sent to {to}: {subject} ({resp.status})")
+            return True
     except Exception as e:
         logger.error(f"Email failed to {to}: {e}")
         return False
