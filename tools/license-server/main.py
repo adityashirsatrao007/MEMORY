@@ -110,7 +110,7 @@ def send_email(to: str, subject: str, body: str) -> bool:
         msg["Subject"] = subject
         msg["From"] = SMTP_FROM
         msg["To"] = to
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as s:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as s:
             s.starttls()
             s.login(SMTP_USER, SMTP_PASS)
             s.send_message(msg)
