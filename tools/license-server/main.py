@@ -9,7 +9,7 @@ import json
 import hashlib
 import logging
 from urllib.request import Request, urlopen
-from urllib.error import URLError
+from urllib.error import URLError, HTTPError
 from datetime import datetime, timedelta, timezone
 from contextlib import asynccontextmanager
 
@@ -110,8 +110,16 @@ def send_email(to: str, subject: str, body: str) -> bool:
         req.add_header("Authorization", f"Bearer {RESEND_API_KEY}")
         req.add_header("Content-Type", "application/json")
         with urlopen(req, timeout=15) as resp:
-            logger.info(f"Email sent to {to}: {subject} ({resp.status})")
+            resp_body = resp.read().decode()
+            logger.info(f"Email sent to {to}: {subject} ({resp.status}) {resp_body}")
             return True
+    except HTTPError as e:
+        body = e.read().decode()
+        logger.error(f"Email failed to {to}: {e.code} {body}")
+        return False
+    except URLError as e:
+        logger.error(f"Email failed to {to}: {e}")
+        return False
     except Exception as e:
         logger.error(f"Email failed to {to}: {e}")
         return False
