@@ -50,6 +50,7 @@ Open ONLY that file: `bat --line-range :80 "$MEMORY_ROOT/memory/modules/XX-*.md"
 | Job hunt | `07-job-hunt.md` |
 | Architecture | `08-architecture.md` |
 | Misc | `09-misc.md` |
+| 18 Repos Reference | `12-repo-teachings.md` |
 
 ## Quick
 `MEMORY_ROOT=$MEMORY_ROOT` | `memory-search` | Dashboard: `localhost:8083` | Makefile: `make {validate,seed,stats}`
