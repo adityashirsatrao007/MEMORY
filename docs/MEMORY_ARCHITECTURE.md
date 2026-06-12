@@ -40,4 +40,4 @@
 5. Agent executes with context → result returned
 6. On error: Module 11 (Error Logs) + self-healing protocol
 
-For the visual diagram, see [docs/images/architecture.png](docs/images/architecture.png).
+For the visual diagram, see [images/architecture.png](images/architecture.png).

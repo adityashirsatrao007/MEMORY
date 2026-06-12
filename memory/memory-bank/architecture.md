@@ -14,7 +14,6 @@
 ## Key Files
 | File | Purpose |
 |------|---------|
-| [docs/codeburn.md](file:///home/aditya/Desktop/Projects/MEMORY/docs/codeburn.md) | Analysis of the CodeBurn TUI cost observability repository and its integration details with the Antigravity provider |
 
 
 ## Data Flow

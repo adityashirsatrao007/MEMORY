@@ -7,7 +7,7 @@ MEMORY is dual-licensed:
 1. **MIT License** — free for personal use, open source, and hackathon projects
 2. **Commercial License** — required for business, enterprise, and commercial deployment
 
-See [LICENSE](LICENSE) (MIT) and [docs/COMMERCIAL_LICENSE.md](docs/COMMERCIAL_LICENSE.md) for full terms.
+See [LICENSE](../LICENSE) (MIT) and [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md) for full terms.
 
 ## Use Restrictions
 
@@ -22,4 +22,4 @@ MEMORY is provided "as is" without warranty of any kind. The authors are not lia
 
 ## Pricing
 
-Current pricing is detailed at [docs/pricing.html](docs/pricing.html). Prices are in USD and INR. All commercial plans are annual subscriptions unless noted otherwise.
+Current pricing is detailed at [pricing.html](pricing.html). Prices are in USD and INR. All commercial plans are annual subscriptions unless noted otherwise.

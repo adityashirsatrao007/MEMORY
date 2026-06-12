@@ -34,7 +34,7 @@ make seed
 
 ## Architecture Walkthrough
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full architecture diagram and module descriptions.
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the full architecture diagram and module descriptions.
 
 ## Video Demo
 

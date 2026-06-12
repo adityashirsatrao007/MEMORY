@@ -14,11 +14,7 @@ import os
 import sys
 import json
 import socket
-import shutil
-import tempfile
 import argparse
-import tarfile
-from pathlib import Path
 from urllib.request import Request, urlopen
 from urllib.error import URLError
 from datetime import datetime, timezone
@@ -171,102 +167,6 @@ def cmd_fingerprint(args):
     print(f"SHA-256: {fingerprint()}")
 
 
-PREMIUM_DIR = Path.home() / ".config" / "memory" / "premium"
-
-
-def cmd_premium_list(args):
-    """List available premium modules from the server."""
-    token = get_token()
-    if not token:
-        print("No license activated. Activate first with 'memory activate'.")
-        sys.exit(1)
-
-    fp = fingerprint()
-    try:
-        resp = api_post("/premium/modules", {"token": token, "machine_fingerprint": fp})
-    except RuntimeError as e:
-        print(f"Failed to fetch premium modules: {e}")
-        sys.exit(1)
-
-    if not resp.get("modules"):
-        print("No premium modules available for your tier.")
-        return
-
-    print(f"Premium Modules — Tier: {resp.get('tier', 'unknown')}")
-    print("=" * 50)
-    for mod in resp["modules"]:
-        installed = "✓" if (PREMIUM_DIR / mod["slug"]).exists() else " "
-        print(f" [{installed}] {mod['name']} v{mod['version']}")
-        print(f"     {mod['description']}")
-        if installed == " ":
-            print(f"     memory premium install {mod['slug']}")
-        print()
-
-
-def cmd_premium_install(args):
-    """Download and install a premium module."""
-    token = get_token()
-    if not token:
-        print("No license activated. Activate first with 'memory activate'.")
-        sys.exit(1)
-
-    fp = fingerprint()
-    try:
-        resp = api_post("/premium/modules", {"token": token, "machine_fingerprint": fp})
-    except RuntimeError as e:
-        print(f"Failed to fetch premium modules: {e}")
-        sys.exit(1)
-
-    slug = args.module
-    module = next((m for m in resp.get("modules", []) if m["slug"] == slug), None)
-    if not module:
-        print(f"Module '{slug}' not found or not available for your tier.")
-        print("Run 'memory premium list' to see available modules.")
-        sys.exit(1)
-
-    print(f"Downloading {module['name']} v{module['version']}...")
-    try:
-        data = api_post(f"/premium/download/{slug}", {"token": token, "machine_fingerprint": fp})
-    except RuntimeError as e:
-        print(f"Download failed: {e}")
-        sys.exit(1)
-
-    PREMIUM_DIR.mkdir(parents=True, exist_ok=True)
-    dest = PREMIUM_DIR / slug
-    if dest.exists():
-        shutil.rmtree(dest)
-
-    # The server returns the module content as a base64-encoded tarball
-    import base64
-    tarball = base64.b64decode(data["archive"])
-    with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as f:
-        f.write(tarball)
-        f.flush()
-        with tarfile.open(f.name, "r:gz") as tar:
-            tar.extractall(path=PREMIUM_DIR)
-    os.unlink(f.name)
-
-    # Save metadata
-    meta = PREMIUM_DIR / slug / ".meta.json"
-    with open(meta, "w") as mf:
-        json.dump(module, mf, indent=2)
-
-    print(f"Installed to {PREMIUM_DIR / slug}")
-    if module.get("docs"):
-        print(f"Read more: {module['docs']}")
-
-
-def cmd_premium_uninstall(args):
-    """Remove a premium module."""
-    slug = args.module
-    dest = PREMIUM_DIR / slug
-    if not dest.exists():
-        print(f"Module '{slug}' not installed.")
-        sys.exit(1)
-    shutil.rmtree(dest)
-    print(f"Uninstalled {slug}")
-
-
 def main():
     parser = argparse.ArgumentParser(description="MEMORY License CLI")
     sub = parser.add_subparsers(dest="command")
@@ -278,9 +178,6 @@ def main():
     sub.add_parser("status", help="Show local license status")
     sub.add_parser("clear", help="Remove local license data")
     sub.add_parser("fingerprint", help="Show machine fingerprint")
-    p_premium = sub.add_parser("premium", help="Manage premium modules")
-    p_premium.add_argument("action", choices=["list", "install", "uninstall"], help="Action")
-    p_premium.add_argument("module", nargs="?", help="Module slug (for install/uninstall)")
 
     args = parser.parse_args()
     if args.command == "activate":
@@ -293,15 +190,6 @@ def main():
         cmd_clear(args)
     elif args.command == "fingerprint":
         cmd_fingerprint(args)
-    elif args.command == "premium":
-        if args.action == "list":
-            cmd_premium_list(args)
-        elif args.action == "install":
-            cmd_premium_install(args)
-        elif args.action == "uninstall":
-            cmd_premium_uninstall(args)
-        else:
-            print("Usage: memory premium {list|install|uninstall} [module]")
     else:
         parser.print_help()
 

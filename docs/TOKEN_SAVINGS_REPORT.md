@@ -43,4 +43,4 @@ MEMORY reduces per-session token consumption by **60–95%** compared to a monol
 
 At 20 sessions/day, 250 working days: **~$30,000/year** saved vs. Claude Sonnet without MEMORY.
 
-See [docs/token-savings.html](docs/token-savings.html) for interactive charts.
+See [token-savings.html](token-savings.html) for interactive charts.

@@ -43,4 +43,4 @@ make stats      # shows module sizes
 make seed       # (re)seeds ChromaDB
 ```
 
-See [docs/SETUP.md](docs/SETUP.md) for the full setup guide including agent handoff protocol, API key configuration, and troubleshooting.
+See [SETUP.md](SETUP.md) for the full setup guide including agent handoff protocol, API key configuration, and troubleshooting.
