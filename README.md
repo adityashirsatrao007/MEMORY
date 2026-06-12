@@ -36,47 +36,6 @@ No more 3 AM context dumps. No more repeated explanations. No more burned credit
 
 ![Architecture Diagram](docs/images/architecture.png)
 
-```mermaid
-flowchart TB
-    subgraph AGENTS["Agent Tools (symlinks to GEMINI.md)"]
-        CLAUDE["Claude Code<br/>(CLAUDE.md)"]
-        OPENCODE["OpenCode<br/>(AGENTS.md)"]
-        CURSOR["Cursor<br/>(.cursorrules)"]
-        WINDSURF["Windsurf<br/>(.windsurfrules)"]
-        COPILOT["Copilot<br/>(copilot-instructions)"]
-    end
-
-    GEMINI["GEMINI.md<br/>(Router / Decision Engine)"]
-
-    subgraph MODULES["12 Memory Modules (lazy-loaded on demand)"]
-        M1["01 Core Rules"]
-        M2["02 CLI Tools"]
-        M3["03 ML Engineering"]
-        M4["04 Security"]
-        M5["05 UI/UX"]
-        M6["06 Web Dev"]
-        M7["07 Job Hunt"]
-        M8["08 Architecture"]
-        M9["09 Misc"]
-        M10["10 Lessons"]
-        M11["11 Errors"]
-        M12["12 Repo Teachings"]
-    end
-
-    CHROMA["ChromaDB<br/>(Vector Search)"]
-
-    CLAUDE -.->|symlink| GEMINI
-    OPENCODE -.->|symlink| GEMINI
-    CURSOR -.->|symlink| GEMINI
-    WINDSURF -.->|symlink| GEMINI
-    COPILOT -.->|symlink| GEMINI
-    GEMINI ==>|lazy load| M1
-    M1 --> M2 --> M3 --> M4 --> M5 --> M6 --> M7 --> M8 --> M9 --> M10 --> M11 --> M12
-    M1 -.->|seed| CHROMA
-    M2 -.->|seed| CHROMA
-    CHROMA -.->|search| GEMINI
-```
-
 ---
 
 ## 🔗 Symlink Architecture — One Source of Truth
