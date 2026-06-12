@@ -33,6 +33,8 @@ The agent must dynamically apply prompt modifiers from `$MEMORY_ROOT/templates/C
 - **Planning / Architecture**: Auto-apply `PREMORTEM` (diagnose why a plan might fail) + `INVERT` (avoid structural flaws) + `OODA`.
 - **Response Layouts**: Auto-apply `TLDR` (summary first) + `EXEC` (professional boardroom tone) + `MARKDOWN`.
 - **Writing Copy / Comments**: Auto-apply `/GHOST` (humanized wording, zero AI tropes/tells).
+- **Simple Prompts (CL4R1T4S Amplification)**: If the user provides a simple/underspecified prompt, automatically wrap it internally in a structured, production-grade system instruction block (similar to Cursor/Claude system prompts in `CL4R1T4S` repository). Pre-plan step-by-step, outline dependencies, define execution limits, and run strict lint/validation checks.
+
 
 ## OpenCode Delegation
 - Heavy tasks (multi-file edits, refactoring, new features) → `opencode run "<task>"`
