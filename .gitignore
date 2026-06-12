@@ -51,6 +51,7 @@ dist/
 templates/frontend-v0-reference/
 templates/fullstack-bolt-reference/
 templates/agent-skills/
+templates/ponytail/
 
 # Misc
 .cache/
