@@ -1,11 +1,15 @@
 """
 MEMORY License Activation Server
-FastAPI + PostgreSQL + JWT (RS256)
+FastAPI + PostgreSQL + JWT (RS256) + Email delivery
 """
 import os
+import re
 import uuid
 import json
 import hashlib
+import smtplib
+import logging
+from email.mime.text import MIMEText
 from datetime import datetime, timedelta, timezone
 from contextlib import asynccontextmanager
 
@@ -19,12 +23,22 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from models import Base, User, License, Machine, Activation
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(levelname)s: %(message)s")
+logger = logging.getLogger("memory-license")
+
 # ─── Config ───
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg2://memory:memory@localhost:5432/memory_licenses")
 PRIVATE_KEY = os.getenv("LICENSE_PRIVATE_KEY", "").replace("\\n", "\n")
 PUBLIC_KEY = os.getenv("LICENSE_PUBLIC_KEY", "").replace("\\n", "\n")
 ADMIN_TOKEN = os.getenv("LICENSE_ADMIN_TOKEN", "change-me-in-production")
 ISSUER = "memory-license-server"
+
+# SMTP config (optional — if unset, keys print to console)
+SMTP_HOST = os.getenv("SMTP_HOST", "")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SMTP_USER = os.getenv("SMTP_USER", "")
+SMTP_PASS = os.getenv("SMTP_PASS", "")
+SMTP_FROM = os.getenv("SMTP_FROM", "noreply@memory.dev")
 
 # Generate keys on first run if not provided
 if not PRIVATE_KEY:
@@ -85,6 +99,27 @@ def sign_jwt(license_key: str, tier: str, email: str, machine_fp: str,
 def verify_jwt(token: str) -> dict:
     return jwt.decode(token, PUBLIC_KEY, algorithms=["RS256"], issuer=ISSUER)
 
+# ─── Email ───
+
+def send_email(to: str, subject: str, body: str) -> bool:
+    if not SMTP_HOST:
+        logger.info(f"[EMAIL DISABLED] Would send to {to}: {subject}")
+        return False
+    try:
+        msg = MIMEText(body, "plain", "utf-8")
+        msg["Subject"] = subject
+        msg["From"] = SMTP_FROM
+        msg["To"] = to
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as s:
+            s.starttls()
+            s.login(SMTP_USER, SMTP_PASS)
+            s.send_message(msg)
+        logger.info(f"Email sent to {to}: {subject}")
+        return True
+    except Exception as e:
+        logger.error(f"Email failed to {to}: {e}")
+        return False
+
 # ─── Schemas ───
 
 class ActivateRequest(BaseModel):
@@ -124,6 +159,50 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 @app.get("/health")
 def health():
     return {"status": "ok", "timestamp": datetime.now(timezone.utc).isoformat()}
+
+class RequestTrialRequest(BaseModel):
+    email: str
+    name: str = ""
+
+@app.post("/request-trial")
+def request_trial(req: RequestTrialRequest, db: Session = Depends(get_db)):
+    lk = make_license_key("TRIAL")
+    user = db.query(User).filter(User.email == req.email).first()
+    if not user:
+        user = User(email=req.email, name=req.name or req.email.split("@")[0])
+        db.add(user)
+        db.flush()
+    existing = db.query(License).filter(
+        License.user_id == user.id, License.tier == "trial", License.revoked == False
+    ).first()
+    if existing and existing.expires_at and existing.expires_at > datetime.now(timezone.utc):
+        raise HTTPException(400, "Active trial already exists for this email")
+    expires_at = datetime.now(timezone.utc) + timedelta(days=3)
+    license = License(
+        license_key=lk, user_id=user.id, tier="trial",
+        max_machines=1, expires_at=expires_at
+    )
+    db.add(license)
+    db.commit()
+
+    body = (
+        f"Your MEMORY trial license:\n\n"
+        f"  Key: {lk}\n"
+        f"  Tier: Trial (3 days)\n"
+        f"  Expires: {expires_at.strftime('%Y-%m-%d %H:%M UTC')}\n\n"
+        f"Activate: memory license activate --key {lk}\n"
+    )
+    sent = send_email(req.email, "Your MEMORY Trial License", body)
+    if not sent:
+        logger.info(f"Trial key for {req.email}: {lk}")
+
+    return {
+        "license_key": lk,
+        "tier": "trial",
+        "expires_at": expires_at.isoformat(),
+        "email": req.email,
+        "email_delivered": sent
+    }
 
 @app.post("/activate", response_model=ActivateResponse)
 def activate(req: ActivateRequest, db: Session = Depends(get_db)):
@@ -297,6 +376,25 @@ def admin_generate(req: AdminGenerateRequest, authorization: str = "", db: Sessi
         "user": req.email
     }
 
+@app.post("/admin/send-license")
+def admin_send_license(req: AdminGenerateRequest, authorization: str = "", db: Session = Depends(get_db)):
+    verify_admin(authorization)
+    license = db.query(License).join(User).filter(User.email == req.email).order_by(License.issued_at.desc()).first()
+    if not license:
+        raise HTTPException(404, "No license found for this email")
+    tier_display = license.tier.upper()
+    body = (
+        f"Your MEMORY {tier_display} license:\n\n"
+        f"  Key: {license.license_key}\n"
+        f"  Tier: {tier_display}\n"
+        f"  Expires: {license.expires_at.strftime('%Y-%m-%d %H:%M UTC') if license.expires_at else 'Never'}\n\n"
+        f"Activate: memory license activate --key {license.license_key}\n"
+    )
+    sent = send_email(req.email, f"Your MEMORY {tier_display} License", body)
+    if not sent:
+        logger.info(f"License {license.license_key} for {req.email} (email disabled)")
+    return {"status": "sent" if sent else "printed", "license_key": license.license_key, "email": req.email, "delivered": sent}
+
 @app.get("/admin/licenses")
 def admin_list(authorization: str = "", db: Session = Depends(get_db)):
     verify_admin(authorization)
@@ -328,7 +426,7 @@ ADMIN_HTML = """<!doctype html>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; background: #FAF9F5; color: #3D3D3A; padding: 32px; }
-  .wrap { max-width: 800px; margin: 0 auto; }
+  .wrap { max-width: 900px; margin: 0 auto; }
   h1 { font-family: ui-serif, Georgia, serif; font-weight: 500; font-size: 32px; margin-bottom: 24px; }
   .card { background: #fff; border: 1px solid #D1CFC5; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
   .card h2 { font-size: 18px; margin-bottom: 16px; }
@@ -337,16 +435,21 @@ ADMIN_HTML = """<!doctype html>
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   button { background: #141413; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 12px; }
   button:hover { background: #D97757; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #E6E3DA; }
-  th { font-family: monospace; font-size: 10px; text-transform: uppercase; color: #87867F; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+  .btn-sm { font-size: 11px; padding: 4px 10px; margin: 0 2px; }
+  .btn-ok { background: #5E7A47; }
+  .btn-rv { background: #B85450; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { padding: 6px 8px; text-align: left; border-bottom: 1px solid #E6E3DA; }
+  th { font-family: monospace; font-size: 9px; text-transform: uppercase; color: #87867F; white-space: nowrap; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
   .badge-ok { background: #E3F0D9; color: #5E7A47; }
   .badge-no { background: #F8E0DE; color: #B85450; }
+  .badge-warn { background: #FDF3D0; color: #9A7D2A; }
   .msg { margin-top: 8px; font-size: 13px; padding: 8px 12px; border-radius: 6px; }
   .msg-ok { background: #E3F0D9; color: #5E7A47; }
   .msg-er { background: #F8E0DE; color: #B85450; }
   .key { font-family: monospace; font-size: 14px; font-weight: 600; color: #141413; background: #F0EEE6; padding: 8px 12px; border-radius: 6px; display: inline-block; margin-top: 8px; }
+  .btn-wrap { white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -371,23 +474,57 @@ ADMIN_HTML = """<!doctype html>
   </div>
 
   <div class="card">
+    <h2>Send License Key via Email</h2>
+    <form hx-post="/admin/send-license" hx-target="#email-result" hx-headers='{"Authorization":"Bearer " + document.getElementById("admin-token").value}'>
+      <div class="row">
+        <div><label>Email</label><input type="email" name="email" required placeholder="user@example.com"></div>
+      </div>
+      <button type="submit">Send License Key</button>
+    </form>
+    <div id="email-result"></div>
+  </div>
+
+  <div class="card">
     <h2>All Licenses</h2>
     <button hx-get="/admin/licenses" hx-target="#licenses" hx-headers='{"Authorization":"Bearer " + document.getElementById("admin-token").value}' style="background:transparent;color:#141413;border:1px solid #D1CFC5;padding:8px 16px;">Refresh</button>
     <div id="licenses" style="margin-top:12px;"><p style="color:#87867F;">Click refresh to load.</p></div>
   </div>
 </div>
 <script>
+function adminToken() { return document.getElementById('admin-token').value; }
 document.getElementById('admin-token').value = prompt('Admin Token:') || '';
-document.querySelector('form').addEventListener('htmx:beforeRequest', function(e) {
-  e.detail.headers['Authorization'] = 'Bearer ' + document.getElementById('admin-token').value;
+document.body.addEventListener('htmx:configRequest', function(e) {
+  e.detail.headers['Authorization'] = 'Bearer ' + adminToken();
 });
 document.addEventListener('htmx:afterRequest', function(e) {
-  if (e.detail.xhr.status === 200 && e.detail.elt.id === 'gen-result') {
-    const data = JSON.parse(e.detail.xhr.responseText);
-    e.detail.elt.innerHTML = '<div class="msg msg-ok">Key generated</div><div class="key">' + data.license_key + '</div>';
+  var el = e.detail.elt;
+  if (e.detail.xhr.status === 200 && el.id === 'gen-result') {
+    var d = JSON.parse(e.detail.xhr.responseText);
+    el.innerHTML = '<div class="msg msg-ok">Key generated</div><div class="key">' + d.license_key + '</div>';
+  }
+  if (e.detail.xhr.status === 200 && el.id === 'email-result') {
+    var d = JSON.parse(e.detail.xhr.responseText);
+    el.innerHTML = '<div class="msg msg-ok">License sent to ' + d.email + (d.delivered ? ' (email)' : ' (printed to server log)') + '</div>';
+  }
+  if (e.detail.xhr.status === 200 && el.id === 'licenses') {
+    var list = JSON.parse(e.detail.xhr.responseText);
+    if (!list.length) { el.innerHTML = '<p style="color:#87867F;">No licenses yet.</p>'; return; }
+    var h = '<table><tr><th>Key</th><th>Tier</th><th>Email</th><th>Expires</th><th>Status</th><th>Machines</th></tr>';
+    list.forEach(function(l) {
+      var status = l.revoked ? '<span class="badge badge-no">Revoked</span>' :
+                   l.expires_at === 'never' ? '<span class="badge badge-ok">Active</span>' :
+                   new Date(l.expires_at) < new Date() ? '<span class="badge badge-no">Expired</span>' :
+                   '<span class="badge badge-ok">Active</span>';
+      h += '<tr><td style="font-family:monospace;font-size:11px;">' + l.license_key + '</td>' +
+           '<td>' + l.tier + '</td><td>' + l.email + '</td>' +
+           '<td style="font-size:11px;">' + (l.expires_at === 'never' ? 'Never' : new Date(l.expires_at).toLocaleDateString()) + '</td>' +
+           '<td>' + status + '</td><td>' + l.activations + '</td></tr>';
+    });
+    h += '</table>';
+    el.innerHTML = h;
   }
   if (e.detail.xhr.status !== 200 && e.detail.xhr.status !== 0) {
-    e.detail.elt.innerHTML = '<div class="msg msg-er">' + (e.detail.xhr.responseJSON?.detail || 'Error') + '</div>';
+    el.innerHTML = '<div class="msg msg-er">' + (e.detail.xhr.responseJSON?.detail || 'Error') + '</div>';
   }
 });
 </script>
