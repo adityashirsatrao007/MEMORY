@@ -26,6 +26,25 @@
 3. **Offline grace**: Cache verification for 24h if server unreachable
 4. **Tamper detection**: Verify JWT signature locally if server is down
 
+## Offline Grace (Server Down)
+
+The client handles server outages gracefully:
+
+1. **Server reachable** → online RS256 verify → cache result + extend grace
+2. **Server down** → fall back to local JWT signature verify (RS256 via cached public key)
+3. **Token expired but within 7-day grace period** → allow with warning
+4. **Beyond grace** → block, prompt to visit website
+
+This is the standard pattern used by JetBrains, VS Code, and Sublime Text.
+
+```
+Startup:
+  ├─ Online verify OK? ──→ RUN (cache last_verified)
+  ├─ Server down, token valid? ──→ RUN (offline)
+  ├─ Server down, token expired, <7d grace? ──→ RUN with ⚠️
+  └─ Beyond grace? ──→ BLOCK
+```
+
 ## Deployment Checklist
 
 - [ ] Generate unique RS256 key pair per deployment
