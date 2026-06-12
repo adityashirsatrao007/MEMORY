@@ -92,3 +92,4 @@ memory/vector_db/
 # Reference project templates (not part of core config)
 templates/frontend-v0-reference/
 templates/fullstack-bolt-reference/
+templates/agent-skills/

@@ -50,6 +50,7 @@ dist/
 # Large reference projects (not part of core MEMORY config)
 templates/frontend-v0-reference/
 templates/fullstack-bolt-reference/
+templates/agent-skills/
 
 # Misc
 .cache/
