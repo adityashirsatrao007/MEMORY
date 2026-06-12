@@ -6,47 +6,46 @@ MEMORY is currently in **active testing/development**. All pricing below is **pr
 
 ---
 
-## MEMORY — Free & Commercial Tiers
-
-MEMORY is **free for individuals and open-source projects** under the MIT License. Commercial teams can purchase licenses for support, custom modules, and legal coverage.
-
 ## Comparison
 
-| Feature | Free (MIT) | Startup | Business | Enterprise |
+| Feature | Hackathon | Startup | Business | Enterprise |
 |---------|-----------|---------|----------|------------|
 | Core 12 modules | ✅ | ✅ | ✅ | ✅ |
 | ChromaDB vector search | ✅ | ✅ | ✅ | ✅ |
 | CLI guardrails | ✅ | ✅ | ✅ | ✅ |
 | GitHub Pages site | ✅ | ✅ | ✅ | ✅ |
-| Multi-agent support | 1-4 users | Up to 20 users | Up to 100 users | Unlimited |
-| Commercial license | ❌ | ✅ | ✅ | ✅ |
+| Multi-agent support | Up to 5 users | Up to 20 users | Up to 100 users | Unlimited |
+| Commercial license | ✅ (2 months) | ✅ | ✅ | ✅ |
 | Priority email support | ❌ | ✅ (48h) | ✅ (24h) | ✅ (4h) |
 | Custom modules | ❌ | ❌ | Up to 3 | Unlimited |
 | Dedicated engineer | ❌ | ❌ | ❌ | ✅ |
 
 ## Pricing
 
-| Tier | USD (per year) | INR (per year) |
-|------|---------------|----------------|
-| 🆓 Free (MIT) | $0 | ₹0 |
-| 🚀 Startup | $49 | ₹4,699 |
-| 🏢 Business | $199 | ₹18,999 |
+| Tier | USD | INR |
+|------|-----|-----|
+| 🏕️ Hackathon teams (2 months) | — | **₹2,000** |
+| 🚀 Startup (per year) | $49 | ₹4,699 |
+| 🏢 Business (per year) | $199 | ₹18,999 |
 | 🏛️ Enterprise | Custom | Custom |
-| 🏕️ Hackathon (one-time) | — | **₹2,000** |
 
-> Prices in INR are approximate equivalents at ₹95/USD (mid-market rate, Jun 2026). Actual billing in either currency.
+> INR at ~₹95/USD (Jun 2026). Billing in either currency.
 
 ## What You Get at Each Tier
 
-### 🆓 Free (MIT) — $0 / ₹0
+### 🏕️ Hackathon Teams — ₹2,000 (2 months)
 - Full access to all 12 memory modules
 - ChromaDB vector database integration
 - 54-CLI dispatch system with guardrails
-- GitHub Pages landing page
-- MIT license — use in any open-source project
+- Commercial license for your hackathon project
+- Up to 5 team members
+- Priority GitHub issues
+- Perfect for college hackathons, buildathons, and coding competitions
 
 ### 🚀 Startup — $49/year (₹4,699/year)
-Everything in Free, plus:
+- Full access to all 12 memory modules
+- ChromaDB vector database integration
+- 54-CLI dispatch system with guardrails
 - Commercial license for up to 20 users
 - Email support within 48 hours
 - Priority GitHub issues
@@ -57,13 +56,6 @@ Everything in Startup, plus:
 - 3 custom memory modules for your stack
 - 24-hour response SLA
 - Quarterly architecture reviews
-
-### 🏕️ Hackathon — ₹2,000 (one-time)
-Everything in Free, plus:
-- Full commercial license for your hackathon project
-- 30-day support during and after the event
-- Priority GitHub issues
-- Perfect for college hackathons, buildathons, and coding competitions
 
 ### 🏛️ Enterprise — Custom Pricing
 Everything in Business, plus:
@@ -76,13 +68,11 @@ Everything in Business, plus:
 
 ## FAQ
 
-**Is the MIT version limited?** No. The MIT version is fully functional. Commercial licenses add legal coverage, support, and custom work.
-
 **Is this a finished product?** No — MEMORY is in testing phase. Expect changes. Early adopters help shape the roadmap.
 
-**Can I try before buying?** Yes. Start with the MIT version, test everything, then upgrade when you need support or legal coverage.
+**Can I try before buying?** The MIT-licensed version on GitHub is fully functional. Test everything, then upgrade when you need support or legal coverage.
 
-**Do I need a commercial license for a startup?** Only if you have 5+ people using MEMORY in your company. Solo founders and small teams are covered by MIT.
+**What if my hackathon extends beyond 2 months?** Upgrade to Startup or contact us.
 
 **Can I pay in INR?** Yes. We accept both USD and INR payments.
 
