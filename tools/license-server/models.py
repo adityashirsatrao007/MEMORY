@@ -25,7 +25,7 @@ class License(Base):
     issued_at = Column(DateTime(timezone=True), default=datetime.utcnow)
     expires_at = Column(DateTime(timezone=True), nullable=True)
     revoked = Column(Boolean, default=False)
-    metadata = Column(JSON, default=dict)
+    extra_meta = Column(JSON, default=dict)
     user = relationship("User", back_populates="licenses")
     activations = relationship("Activation", back_populates="license")
 
