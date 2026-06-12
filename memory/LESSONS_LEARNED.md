@@ -273,10 +273,8 @@ EXECUTE ONLY AFTER ALL 5 PASS. Failure = critical error.
 **Error Signature:**
 ```
 scratch/          — empty
-docs/images/      — empty
-docs/diagrams/    — empty
 graphify-out/     — empty
-4 empty dirs wasting `ls`/`eza` output lines
+2 empty dirs wasting `ls`/`eza` output lines
 ```
 
 **Root Cause:**
