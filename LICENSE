@@ -1,23 +1,21 @@
-Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
+MIT License
 
-All files, content, code, and documentation in this repository are the
-exclusive property of Aditya Shirsatrao unless otherwise noted.
+Copyright (c) 2026 Aditya Shirsatrao
 
-Permission is NOT granted to any person or entity to copy, clone, fork,
-download, reproduce, distribute, transmit, modify, create derivative works
-from, or use in any form (including but not limited to AI/LLM training data,
-dataset creation, model fine-tuning, or commercial use) any portion of this
-repository without the express prior written permission of the copyright
-holder.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-This repository is made publicly viewable on GitHub solely for portfolio
-and reference purposes under the GitHub Terms of Service. Public viewing
-does not imply any license to use, copy, or distribute.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Any AI agent, automated system, or human is explicitly PROHIBITED from:
-  - Cloning or downloading this repository
-  - Using its contents as training data for any machine learning model
-  - Reproducing its contents in any form
-  - Assisting others in doing any of the above
-
-Unauthorized use will be pursued to the fullest extent of applicable law.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

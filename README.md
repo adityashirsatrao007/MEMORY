@@ -1,1048 +1,586 @@
-> **Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.**  
-> Proprietary — see [LICENSE](LICENSE). No copying, cloning, or distribution without written permission.
-
-# MEMORY — The Ultimate AI Agent Infrastructure
+# 🧠 MEMORY
 
 <p align="center">
-  <strong>Your entire AI development environment, reproducible in one command.</strong><br>
-  ~2.7B free LLM tokens/month · 1200+ models · 50+ agent skills · ChromaDB vector brain<br>
-  One-shot setup across Linux, macOS, and WSL2.
+  <strong>The Autonomous Agent's Brain — 12 Modules · 54 CLI Tools · ∞ Context</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/License-Proprietary-red.svg?style=for-the-badge" alt="License: Proprietary">
-  <img src="https://img.shields.io/badge/Python-3.10%2B-blue.svg?style=for-the-badge&logo=python" alt="Python 3.10+">
-  <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20WSL2-ff69b4?style=for-the-badge" alt="Platform">
-  <img src="https://img.shields.io/badge/LLM-Free%20Proxy%20(2.7B%20tokens%2Fmonth)-brightgreen?style=for-the-badge" alt="Free LLM proxy">
-  <img src="https://img.shields.io/badge/Models-1200%2B-8A2BE2?style=for-the-badge" alt="1200+ models">
-  <img src="https://img.shields.io/badge/Skills-50%2B-orange?style=for-the-badge" alt="50+ skills">
-  <img src="https://img.shields.io/badge/GPG%20Signing-Enabled-success?style=for-the-badge" alt="GPG Signing">
-  <img src="https://img.shields.io/badge/API%20Keys-12%20Providers-blue?style=for-the-badge" alt="API Keys">
+  <img alt="Modules" src="https://img.shields.io/badge/Modules-12-2E4036?style=flat-square">
+  <img alt="Tools" src="https://img.shields.io/badge/CLI%20Tools-54-CC5833?style=flat-square">
+  <img alt="Stars" src="https://img.shields.io/badge/Starred%20Repos-120%2B-2E4036?style=flat-square">
+  <img alt="Vector" src="https://img.shields.io/badge/Vector%20DB-ChromaDB-CC5833?style=flat-square">
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-1A1A1A?style=flat-square">
 </p>
 
 ---
 
-## Table of Contents
+## 💀 The Problem That Built This
 
-- [Why MEMORY?](#why-memory)
-- [What's Inside — Complete File Catalog](#whats-inside--complete-file-catalog)
-  - [Root Files](#root-files)
-  - [`memory/` — Agent Knowledge Base](#memory--agent-knowledge-base)
-  - [`config/` — IDE & Tool Configurations](#config--ide--tool-configurations)
-  - [`dotfiles/` — Shell Environment & Aliases](#dotfiles--shell-environment--aliases)
-  - [`tools/` — Agent Utilities](#tools--agent-utilities)
-  - [`.agents/skills/` — 46 Reusable Agent Skills](#agentsskills--46-reusable-agent-skills)
-  - [`.githooks/` — Local Git Automation](#githooks--local-git-automation)
-  - [`.github/` — CI/CD & Copilot](#github--cicd--copilot)
-  - [`templates/` — Project Scaffolds & References](#templates--project-scaffolds--references)
-- [Global Key Infrastructure](#global-key-infrastructure)
-  - [API Keys Database](#api-keys-database)
-  - [SSH Key Management](#ssh-key-management)
-  - [GPG Commit Signing](#gpg-commit-signing)
-- [LLM Layer — All Models Available](#llm-layer--all-models-available)
-  - [freellmapi Proxy (90+ Models)](#freellmapi-proxy-90-models)
-  - [fcc-server (1130 Models)](#fcc-server-1130-models)
-- [Agent Frameworks — In-Depth](#agent-frameworks--in-depth)
-  - [Swarms v13.0.0](#swarms-v1300)
-  - [NeoAgent v2.4.3](#neoagent-v243)
-  - [MiMo-Code](#mimo-code)
-  - [Hermes Agent v0.15.2 (Nous Research)](#hermes-agent-v0152-nous-research)
-  - [Free Claude Code (fcc-claude)](#free-claude-code-fcc-claude)
-  - [Mistral Vibe CLI v2.15.0](#mistral-vibe-cli-v2150)
-- [Internet Access Layer — Agent-Reach v1.5](#internet-access-layer--agent-reach-v15)
-- [Agent Skills — Complete Catalog of 50+](#agent-skills--complete-catalog-of-50)
-- [Agent Memory — ChromaDB Vector Database](#agent-memory--chromadb-vector-database)
-- [Shell Environment — Every Tool Explained](#shell-environment--every-tool-explained)
-- [Automated GitHub Project Creation](#automated-github-project-creation)
-- [Architecture — How Everything Connects](#architecture--how-everything-connects)
-- [Quick Start](#quick-start)
-- [Platform Compatibility](#platform-compatibility)
-- [License](#license)
+It's 3 AM. You've been in the zone for 6 hours — agent is flying through code, shipping features, fixing bugs. Then it hits.
+
+**Context budget exhausted.**
+
+The agent forgets everything. Your project structure, the auth pattern you established, the coding conventions — gone. It starts hallucinating file paths it already created, suggesting patterns it already rejected, asking questions it already answered. Each response degrades. You're burning money on tokens just to re-explain what you already said.
+
+**Sound familiar?**
+
+This repo is the antidote. MEMORY is a modular, cross-agent knowledge system designed so your AI agents never forget. Instead of dumping 3,622 lines of rules into one monolithic file that burns through your context budget in minutes, MEMORY lazy-loads only what the agent needs — ~200 tokens for quick lookups, ~1,420 for deep work. That's **60-95% fewer tokens per session** than the old way.
+
+Six agents (Claude Code, OpenCode, Cursor, Windsurf, Copilot, Cline) point at one source of truth through symlinks. Twelve brain modules cover every domain. A vector database lets agents search before they load. And if one agent hits token limits, another picks up seamlessly with a handoff file.
+
+No more 3 AM context dumps. No more repeated explanations. No more burned credits on re-learning.
 
 ---
 
-## Why MEMORY?
+## 🏗️ Architecture
 
-AI agents are useless without infrastructure. Every new machine means hours of setup — installing tools, configuring shells, hunting for API keys, wiring up models, setting up GPG signatures, configuring git, and debugging environment variables. MEMORY eliminates that entirely.
+![Architecture Diagram](docs/images/architecture.png)
 
-**One `git clone` + one pasted prompt = a production-ready agent workstation with:**
+```mermaid
+flowchart TB
+    subgraph AGENTS["Agent Tools (symlinks to GEMINI.md)"]
+        CLAUDE["Claude Code<br/>(CLAUDE.md)"]
+        OPENCODE["OpenCode<br/>(AGENTS.md)"]
+        CURSOR["Cursor<br/>(.cursorrules)"]
+        WINDSURF["Windsurf<br/>(.windsurfrules)"]
+        COPILOT["Copilot<br/>(copilot-instructions)"]
+    end
 
-- **1200+ LLM models** at zero cost (~2.7B free tokens/month combined across 12+ providers)
-- **46 agent skills** — reusable instruction sets for diagnose, review, TDD, prototype, design, writing, and more
-- **12 LLM providers** — DeepSeek, Google Gemini, Mistral, Groq, Cohere, Cloudflare, OpenRouter, NVIDIA NIM, Moonshot (Kimi), Z.AI, OpenAI-compat, and Liquid
-- **7 integrated agent frameworks** — Swarms, NeoAgent, MiMo, Hermes, Free Claude Code, Mistral Vibe, and Agent-Reach
-- **Persistent vector memory** — ChromaDB with semantic search, auto-updated on every commit
-- **Pre-configured shell** — eza, bat, ripgrep, fd, zoxide, fzf, starship, tmux, delta, lazygit
-- **Global key infrastructure** — centralized API keys database, SSH key pair, GPG commit signing
-- **Auto-loaded environment** — every bash session automatically sources all API keys, paths, and aliases
-- **GitHub-ready** — `gh` CLI authenticated, GPG-signed commits, `delta` diff viewer, `lazygit` TUI
-- **CI/CD** — Trivy vulnerability scanning and Gitleaks secret detection on every push
-- **Cross-platform** — same setup works on Linux, macOS, and Windows (WSL2)
+    GEMINI["GEMINI.md<br/>(Router / Decision Engine)"]
 
-**What takes a day to set up now takes 60 seconds.**
+    subgraph MODULES["12 Memory Modules (lazy-loaded on demand)"]
+        M1["01 Core Rules"]
+        M2["02 CLI Tools"]
+        M3["03 ML Engineering"]
+        M4["04 Security"]
+        M5["05 UI/UX"]
+        M6["06 Web Dev"]
+        M7["07 Job Hunt"]
+        M8["08 Architecture"]
+        M9["09 Misc"]
+        M10["10 Lessons"]
+        M11["11 Errors"]
+        M12["12 Repo Teachings"]
+    end
 
----
+    CHROMA["ChromaDB<br/>(Vector Search)"]
 
-## What's Inside — Complete File Catalog
-
-### Root Files
-
-| File | Purpose |
-|------|---------|
-| `GEMINI.md` | **Master agent configuration.** The single source of truth loaded by every agent (Claude Code, Gemini CLI, OpenCode, Antigravity, Cursor, Windsurf, Continue.dev, Copilot). Contains all behavioral rules, tool dispatching, guardrails, token optimization, and references to 12 modular knowledge files. All other agent configs symlink to this file. |
-| `AGENTS.md` → `GEMINI.md` | Symlink — loaded by OpenCode and any agent that reads `AGENTS.md` by convention. |
-| `CLAUDE.md` → `GEMINI.md` | Symlink — loaded by Claude Code on startup. |
-| `opencode.json` | OpenCode configuration — points to `AGENTS.md` for instructions, sets the workspace root. |
-| `LICENSE` | **Proprietary "All Rights Reserved" license.** Explicitly forbids copying, cloning, forking, downloading, distributing, or using as AI training data. This repository is viewable for portfolio/reference purposes only under GitHub ToS. Unauthorized use will be pursued to the fullest extent of law. |
-| `README.md` | This file — complete documentation for the entire repository. |
-| `SETUP.md` | The one-shot setup prompt for agents. Copy and paste into any AI agent on a new machine — 13 steps that automatically install everything: system packages, language runtimes, CLIs, Ollama, opencode, guardrails, ChromaDB dashboard, vector DB seeding, and verification. |
-| `Makefile` | Automation targets: `make validate` (check module integrity), `make seed` (re-seed vector DB), `make stats` (token savings report), `make hooks` (install git hooks), `make fix-paths` (fix relative paths), `make all` (validate + seed). |
-| `skills-lock.json` | Lockfile mapping all 46 skills to their source repositories with content hashes. Prevents drift and enables deterministic re-installation. |
-| `.agentignore` | **96 rules** telling agents which files to NEVER read. Prevents token waste on build outputs, dependencies, lock files, media, IDE files, database files, and binary artifacts. Each rule saves 100-5000 tokens per session. |
-| `.gitignore` | Standard Git ignore rules for the repository. |
-| `.agent-progress.md` | Dynamic handoff document — updated at the end of every agent session so the next agent can resume without re-analysis. Contains git status, diff summary, session notes, and directives. |
-
----
-
-### `memory/` — Agent Knowledge Base
-
-The brain of the system. 13 modular knowledge files + 5 session tracking files + 1 cross-project error memory.
-
-#### Modules (13 files, ~2100 lines total)
-
-| Module | Lines | Purpose |
-|--------|-------|---------|
-| `01-core-rules.md` | 115 | **Core agent behavior.** Zero-prompting directive (agent must never ask for permission), Karpathy's "vibe coding" standards, Ponytail optimization protocol, production code quality rules, "no broken windows" principle, code review protocol with mandatory lint+typecheck steps, agent-to-agent handoff rules. |
-| `02-cli-tools.md` | 160 | **54-tool dispatch table.** Complete catalog of every CLI tool with usage patterns, failure conditions, and token costs. Includes: silent CLI protocol (no verbose flags), token optimization priority order (ollama → vector DB → enola → proxy), guardrail bypass instructions, enola pre-flight sequence. |
-| `03-ml-engineering.md` | 292 | **ML/DL engineering workflow.** Docker and Kubernetes patterns, GPU setup (CUDA/cuDNN), API keys for ML providers, data pipeline design (ETL, feature stores, versioning), model training lifecycle, experiment tracking (MLflow, W&B), MLOps best practices. |
-| `04-security.md` | 147 | **Repository security.** Hygiene rules (no hardcoded secrets, no `.env` commits), secret scanning with Gitleaks/TruffleHog, `semgrep` SAST rules, git guardrails (block dangerous commands), password hashing standards, dependency vulnerability management. |
-| `05-ui-ux.md` | 274 | **Apple HIG design standards.** Complete design system reference: color palettes with neutral/slate requirements, typography scale (SF Pro, Inter), spacing grid (4px increments), animation patterns and timing functions, component library conventions, validation rules that `validate_ui.py` enforces. |
-| `06-web-dev.md` | 305 | **Web development.** Full-stack project setup workflow (Next.js, Astro, SvelteKit), SEO optimization checklist, Core Web Vitals, performance budgets, deployment workflows (Vercel, Netlify, Docker), CODVYN patterns. |
-| `07-job-hunt.md` | 145 | **Career management.** ATS resume optimization with keyword targeting, LinkedIn profile strategy, interview preparation framework, salary negotiation tactics, portfolio presentation. |
-| `08-architecture.md` | 198 | **Enterprise architecture patterns.** SAGA orchestration, CQRS, event sourcing (CDC/Kafka), LLM proxy architecture design, system decomposition strategies, anti-corruption layers. |
-| `09-misc.md` | 255 | **General reference.** AI development roadmap, GitHub tips and tricks, OpenStreetMap integration, AlgoTracker setup, terminal productivity, infrastructure management notes (antigravity ports, token budgets, API key rotation). |
-| `10-lessons-learned.md` | 17 | **Hardcoded directives.** Zero pushback rule (never argue with user), multi-agent token management, Claude Code routing protocol, priority override instructions. |
-| `11-error-logs.md` | 30 | **Historical error records.** OOM errors and their fixes, PEP 668 Python packaging failures, system freeze prevention (memory limits), all past failure modes with verified solutions. |
-| `12-repo-teachings.md` | 107 | **18 starred repositories** — architectural knowledge extracted from OpenBB, Ruff, Claude-Code-Rust, and 15 other projects. Patterns, conventions, and design decisions from real-world codebases. |
-
-#### Memory Bank (5 files)
-
-| File | Purpose |
-|------|---------|
-| `activeContext.md` | Current session focus, active decisions, open questions the agent is working on. Updated by the agent during sessions. |
-| `architecture.md` | Tech stack overview, directory structure map, environment variable documentation, data flow diagrams. Auto-populated by agents as the project evolves. |
-| `decisions.md` | Key architectural and technical decisions with rationale. Prevents agents from second-guessing or redoing past choices. Documents OpenCode CLI delegation pattern. |
-| `progress.md` | Complete session log with 57+ entries spanning the project's history. Documents what's done, what's in progress, what's next, and known issues. |
-| `walkthrough.md` | Quick repository orientation — architecture diagram, key file map, setup steps. |
-
-#### Additional
-
-| File | Purpose |
-|------|---------|
-| `LESSONS_LEARNED.md` | **Permanent cross-project error memory.** 14 documented failure patterns with root cause analysis and standardized resolution protocols. Agents read this before every task to avoid repeating mistakes. Topics: broken PPAs, broken symlinks, legacy CLI usage, OpenCode delegation, pre-flight sequence, token bloat, missing quality checks, documented-but-uninstalled tools, hardcoded paths, bloat creep, agentignore drift, empty directories, and deletion protocol. |
-
----
-
-### `config/` — IDE & Tool Configurations
-
-| File | Purpose |
-|------|---------|
-| `.aider.conf.yml` | **Aider AI pair programmer configuration.** Instructs Aider to read `GEMINI.md` as its rules file, ensuring consistent behavior across all coding agents. |
-| `.continuerc.json` | **Continue.dev extension configuration.** Instructs the Continue.dev VS Code/JetBrains extension to always read `GEMINI.md` before making changes. |
-| `.editorconfig` | **Editor formatting standards.** Enforces 2-space indentation, LF line endings, UTF-8 encoding, and trailing newline across all editors. |
-| `opencode/AGENTS.md` → `../../GEMINI.md` | **OpenCode agent rules.** Symlink to master config for OpenCode's agent mode. |
-
----
-
-### `dotfiles/` — Shell Environment & Aliases
-
-Every terminal session is pre-configured with modern CLI replacements, aliases, environment variables, and tools.
-
-| File | Contents | Key Features |
-|------|----------|--------------|
-| `bash/bashrc` | **249-line bash configuration** | — Zero-token CLI aliases (`grep`→`rg`, `cat`→`bat`, `ls`→`eza`, `find`→`fd`, `du`→`dust`, `ps`→`procs`, `top`→`btop`, `sed`→`sd`)<br>— `$MEMORY_ROOT` environment variable (points to repo)<br>— `$MEMORY_MODE=lazy` (optimizes agent token usage)<br>— Global API keys auto-loader `source ~/.config/global-apikeys/load_keys.sh`<br>— Zoxide smart navigation (`cd`→`z`)<br>— Starship prompt initialization<br>— Atuin shell history with encrypted sync<br>— NVM, Conda, Cargo path setup<br>— Battery/GPU power management aliases<br>— Agent read cache (`mark-read`, `is-read` functions)<br>— `$PATH` includes MEMORY tools, local bin, cargo, nvm, bun, opencode, guardrails |
-| `bash/rtk-hook.sh` | **Output compression hook.** Auto-pipes verbose CLI output through `rtk` to compress lengthy terminal output before it enters context. Prevents token bloat from verbose commands. |
-| `git/gitconfig` | **35-line git configuration** | — GPG-signed commits (`signingkey = 0027EFBE3F4CD520`, `gpgsign = true`)<br>— `gh` CLI credential helper (no manual token entry)<br>— `delta` as default pager with syntax highlighting and word-level diffs<br>— `zdiff3` merge conflict style (shows base, ours, theirs)<br>— `main` as default branch<br>— LFS filter support<br>— 500MB post buffer for large pushes |
-| `starship/starship.toml` | Starship prompt theme. Minimal, fast, informative shell prompt. |
-| `tmux/tmux.conf` | Tmux terminal multiplexer configuration. |
-| `install.sh` | **Dotfile installer.** Symlinks all configs to their proper `~` locations in one command. |
-| `Makefile` | Make targets for dotfile-specific operations. |
-| `.editorconfig` | Editor formatting rules (2-space, LF, UTF-8). |
-| `.gitignore` | Gitignore rules for dotfiles. |
-
----
-
-### `tools/` — Agent Utilities
-
-| Tool | Language | Purpose |
-|------|----------|---------|
-| `dashboard.py` | **Python (FastAPI)** | ChromaDB vector search dashboard. Runs on port 8083. Provides web UI, search API, and health endpoint. Agents query this for semantic memory recall. Now uses freellmapi proxy for all LLM calls (zero cost). |
-| `seed_vector_db.py` | **Python** | Seeds ChromaDB from all 13 module files. Features **content-hash dedup** — skips files that haven't changed since last seed unless `--force` is passed. Auto-runs on post-merge and post-commit hooks. |
-| `validate_ui.py` | **Python** | UI quality scanner. Checks all HTML files for: Apple HIG font compliance, banned colors (raw red/green/blue), placeholder text, and missing design tokens. Runs as a pre-commit hook to enforce design standards. |
-| `memory-search` | **Bash** | CLI wrapper for ChromaDB semantic search. Example: `memory-search "token optimization"` returns relevant chunks from the knowledge base in milliseconds. |
-| `handoff` | **Bash** | Agent session handoff utility. Writes current state (git status, diff, session notes) to `.agent-progress.md` so the next agent picks up without context loss. |
-
----
-
-### `.agents/skills/` — 46 Reusable Agent Skills
-
-Each skill is a self-contained instruction set the agent loads on demand. Skills are organized by source:
-
-**8 from plannotator/effective-html:**
-| Skill | Purpose |
-|-------|---------|
-| `html` | Create self-contained HTML files for any purpose — reports, explainers, comparisons, decks, prototypes. Includes 20 reference HTML files demonstrating effectiveness patterns. |
-| `html-diagram` | Create full-screen SVG architecture diagrams in self-contained HTML. Visualizes system architecture, data flow, component relationships. Includes reference library of 20 HTML effectiveness examples. |
-| `html-plan` | Create visually organized plan pages in HTML. Pragmatic, clear structure for project plans, roadmaps, and specs. Includes 20 reference HTML files. |
-
-**15 from Leonxlnx/taste-skill:**
-| Skill | Purpose |
-|-------|---------|
-| `brandkit` | Brand identity creation — logos, color palettes, typography, brand guidelines. |
-| `design-taste-frontend` | Frontend design with taste-based styling — modern, aesthetic UI generation. |
-| `design-taste-frontend-v1` | Alternative version of taste-driven frontend design. |
-| `full-output-enforcement` | Ensures agents produce complete, non-truncated output. Prevents "..." and "would continue" patterns. |
-| `gpt-taste` | Taste-aware content generation that matches brand aesthetic. |
-| `high-end-visual-design` | Premium/enterprise visual design patterns — luxury aesthetics, polished UI. |
-| `image-to-code` | Convert design images/screenshots to working code. |
-| `imagegen-frontend-mobile` | Mobile-optimized image generation frontend. |
-| `imagegen-frontend-web` | Web-optimized image generation frontend. |
-| `industrial-brutalist-ui` | Industrial brutalism design style — raw, structural, utilitarian aesthetics. |
-| `minimalist-ui` | Minimalist UI design — clean, sparse, content-first. |
-| `redesign-existing-projects` | Redesign existing interfaces with improved aesthetics and UX. |
-| `stitch-design-taste` | Combine multiple taste/style systems into a cohesive design. |
-| `taste-skill` | Self-contained plugin with 10+ sub-skills, `.claude-plugin/` hooks, research directory, and examples. |
-
-**23 from mattpocock/skills:**
-| Skill | Purpose |
-|-------|---------|
-| `caveman` | **Ultra-compressed communication.** Cuts token usage ~75% by dropping filler, articles, and pleasantries while keeping full technical accuracy. Activated by "caveman mode" or "/caveman". |
-| `design-an-interface` | Generate multiple radically different interface designs using parallel sub-agents. "Design it twice" methodology. |
-| `diagnose` | **Disciplined debugging loop** for hard bugs and performance regressions. Reproduce → minimise → hypothesise → instrument → fix → regression-test. Includes HITL loop template script. |
-| `edit-article` | Edit and improve articles — restructuring, clarity, tightening prose. |
-| `git-guardrails-claude-code` | Set up Claude Code hooks that block dangerous git commands (push, reset --hard, clean, branch -D). Includes `block-dangerous-git.sh` script. |
-| `grill-me` | **Stress-test interviews.** The agent relentlessly questions the user's plan or design until reaching shared understanding. "Grill me" mode for decision clarity. |
-| `grill-with-docs` | Grilling session that challenges plans against the existing domain model (CONTEXT.md) and documented decisions (ADRs). Updates docs inline as decisions crystallise. |
-| `handoff` | Compact the current conversation into a handoff document for another agent — preserves context across agent switches. |
-| `improve-codebase-architecture` | Find refactoring opportunities, consolidate tightly-coupled modules, make codebases more testable and AI-navigable. Generates DEEPENING.md, HTML-REPORT.md, INTERFACE-DESIGN.md, LANGUAGE.md. |
-| `migrate-to-shoehorn` | Migrate test files from `as` type assertions to `@total-typescript/shoehorn`. |
-| `obsidian-vault` | Search, create, and manage notes in an Obsidian vault with wikilinks and index notes. |
-| `prototype` | **Build throwaway prototypes.** Two branches: terminal app for state/logic exploration, or multiple UI variations toggleable from one route. Includes LOGIC.md and UI.md guidance. |
-| `qa` | Interactive QA session — user reports bugs conversationally, agent files GitHub issues with proper labels and reproduction steps. |
-| `request-refactor-plan` | Create detailed refactor plans with incremental commits via user interview. Files as GitHub issues. |
-| `review` | **Dual-axis code review.** Reviews changes against two axes simultaneously: Standards (does code follow repo conventions?) and Spec (does code match the originating PRD/issue?). Reports both side-by-side. |
-| `scaffold-exercises` | Create exercise directory structures with sections, problems, solutions, and explainers that pass linting. |
-| `setup-matt-pocock-skills` | Sets up agent skills documentation block in AGENTS.md/CLAUDE.md and docs/agents/. Configures issue tracker (GitHub/GitLab/local) and triage labels. |
-| `setup-pre-commit` | Set up Husky pre-commit hooks with lint-staged, type checking, and tests. |
-| `tdd` | **Full test-driven development** with red-green-refactor loop. Includes deep modules on: testing strategies, mocking patterns, interface design, refactoring, and advanced techniques. |
-| `teach` | Teach the user new skills with structured mission/glossary/learning-record/resources format. |
-| `to-issues` | Break plans, specs, or PRDs into independently-grabbable GitHub issues using vertical slice decomposition. |
-| `to-prd` | Convert conversation context into a Product Requirements Document and publish to the issue tracker. |
-| `triage` | **Full issue triage state machine** — intake, refinement, prioritization, assignment. Includes AGENT-BRIEF.md and OUT-OF-SCOPE.md for autonomous triage delegation. |
-| `ubiquitous-language` | Extract DDD-style domain glossary from conversations. Flags ambiguities, proposes canonical terms. Saves to UBIQUITOUS_LANGUAGE.md. |
-| `write-a-skill` | Create new agent skills with proper structure, progressive disclosure, and bundled resources. |
-| `writing-beats` | Shape articles as narrative journeys — user picks a starting beat, agent writes it, offers options for the next beat. |
-| `writing-fragments` | Mine the user for raw writing material (claims, vignettes, sharp sentences) and append to a document for future use. |
-| `writing-shape` | Take raw material markdown and shape it into an article through conversational iteration — openings, structure, formatting. |
-| `zoom-out` | Get broader context or higher-level perspective on unfamiliar code sections. "Tell me how this fits into the bigger picture." |
-
----
-
-### `.githooks/` — Local Git Automation
-
-Three hooks that automate vector DB maintenance and quality enforcement:
-
-| Hook | Trigger | Action |
-|------|---------|--------|
-| `pre-commit` | Before every commit | Runs `make validate-ui` — scans all changed files for banned colors, placeholder text, and design violations. Blocks the commit if violations found. |
-| `post-merge` | After every pull/merge | Checks if `memory/modules/` files changed. If yes, auto-re-seeds ChromaDB so the vector brain stays in sync with the knowledge base. |
-| `post-commit` | After every commit | Same as post-merge — re-seeds ChromaDB if module files changed. Ensures the vector database is never stale. |
-
----
-
-### `.github/` — CI/CD & Copilot
-
-| File | Purpose |
-|------|---------|
-| `workflows/ci.yml` | **GitHub Actions CI pipeline.** Triggers on push/PR to main/master. Two jobs: Trivy filesystem scan (CRITICAL/HIGH severity vulnerabilities) and Gitleaks secret detection. Runs on every push — no secrets leak into the repo. |
-| `copilot-instructions.md` → `../../GEMINI.md` | **GitHub Copilot instructions.** Symlink to master config — Copilot follows the same rules as every other agent. |
-
----
-
-### `templates/` — Project Scaffolds & References
-
-| Path | Contents | Purpose |
-|------|----------|---------|
-| `agent-skills/` | Full skill plugin template — commands, hooks, docs, 16+ reference skills, build scripts, Kof commands. | Scaffold for creating new agent skill repositories. |
-| `ponytail/` | Full "Ponytail" skill plugin — hooks, pi-extension, benchmarks, tests, Python/Deno/Node implementations, GUI, task files. | Reference implementation of a complete skill system. |
-| `animations/` | 8 animation reference files — scrollytelling examples, Framer Motion patterns, Spline 3D references, CSS animation guides. | Resource library for UI animation generation. |
-| `CLAUDE_CODES.md` | 100 stacked Claude prompt modifiers — systematic prompt engineering references. | Prompt crafting reference. |
-
----
-
-## Global Key Infrastructure
-
-### API Keys Database
-
-**Location:** `~/.config/global-apikeys/`
-
-Centralized, auto-loaded credential management for all API keys. Every bash session automatically sources these keys.
-
-| File | Purpose |
-|------|---------|
-| `keys.env` | **All API keys** stored as `KEY=VALUE` pairs. Last updated 2026-06-12. |
-| `load_keys.sh` | **Bash loader** — `source` this file to export all keys (`set -a; source keys.env; set +a`). Called from `~/.bashrc` line 246. |
-| `load_keys.py` | Python equivalent — loads keys into `os.environ`. |
-| `load_keys.js` | Node.js equivalent — loads keys into `process.env`. |
-| `add_key.sh` | Utility script for adding new keys to the database. |
-| `project_template.envrc` | Direnv template for per-project environment variable scoping. |
-
-**Currently configured providers (12 total):**
-
-| Provider | Env Variable | Service |
-|----------|-------------|---------|
-| Groq | `GROQ_API_KEY` | Ultra-low latency LLM inference |
-| Google Gemini | `GEMINI_API_KEY` | Gemini 2.5 Flash/Pro |
-| OpenRouter | `OPENROUTER_API_KEY` | 200+ model router |
-| Cerebras | `CEREBRAS_API_KEY` | Ultra-fast inference |
-| NVIDIA NIM | `NVIDIA_NIM_API_KEY` | Enterprise model hosting |
-| Hugging Face | `HF_TOKEN` | Model hub + inference |
-| OpenCode | `OPENCODE_API_KEY` | OpenCode AI |
-| Z.AI | `ZAI_API_KEY` | GLM models |
-| DeepSeek | `DEEPSEEK_API_KEY` | DeepSeek V4 |
-| Moonshot/Kimi | `KIMI_API_KEY` | Kimi K2 |
-| Fireworks | `FIREWORKS_API_KEY` | Fast serverless inference |
-| Wafer | `WAFER_API_KEY` | Anthropic-compatible Messages API |
-
-**Unified proxy:** All keys are also routed through `freellmapi` at `http://localhost:3001/v1` — agents can use a single endpoint and key instead of managing 12 separate credentials.
-
-**Auto-load mechanism (`~/.bashrc` line 246):**
-```bash
-[[ -f "$HOME/.config/global-apikeys/load_keys.sh" ]] && source "$HOME/.config/global-apikeys/load_keys.sh"
-```
-This runs in every interactive shell — no manual sourcing ever needed.
-
----
-
-### SSH Key Management
-
-**Key pair location:** `~/.ssh/`
-
-| File | Purpose |
-|------|---------|
-| `id_ed25519` | **Private key** — Ed25519 algorithm (modern, fast, secure). Created 2026-06-12. |
-| `id_ed25519.pub` | **Public key** — registered with GitHub for authentication. |
-| `authorized_keys` | Authorized keys file for SSH access to this machine. |
-| `known_hosts` | Verified SSH host fingerprints. |
-
-**Usage:** The SSH key enables:
-- Password-less `git push`/`git pull` to GitHub
-- SSH access to remote servers and VPS instances
-- Secure code deployment without credential prompts
-
-**How it's configured:**
-```bash
-# Generate (done once):
-ssh-keygen -t ed25519 -C "adityashirsatrao007@gmail.com"
-
-# GitHub authentication via gh CLI (configured in gitconfig):
-# [credential "https://github.com"]
-#     helper = !/usr/bin/gh auth git-credential
+    CLAUDE -.->|symlink| GEMINI
+    OPENCODE -.->|symlink| GEMINI
+    CURSOR -.->|symlink| GEMINI
+    WINDSURF -.->|symlink| GEMINI
+    COPILOT -.->|symlink| GEMINI
+    GEMINI ==>|lazy load| M1
+    M1 --> M2 --> M3 --> M4 --> M5 --> M6 --> M7 --> M8 --> M9 --> M10 --> M11 --> M12
+    M1 -.->|seed| CHROMA
+    M2 -.->|seed| CHROMA
+    CHROMA -.->|search| GEMINI
 ```
 
 ---
 
-### GPG Commit Signing
+## 🔗 Symlink Architecture — One Source of Truth
 
-Every git commit is cryptographically signed for authenticity verification.
+Five agents, six symlinks, one file. Every agent tool reads the same `GEMINI.md` as its instruction set, which acts as a router that loads only the memory modules relevant to the task.
+
+| Link | Target | Agent / Tool |
+|------|--------|-------------|
+| `CLAUDE.md` | `→ GEMINI.md` | Claude Code |
+| `AGENTS.md` | `→ GEMINI.md` | OpenCode / generic agents |
+| `.cursorrules` | `→ GEMINI.md` | Cursor AI |
+| `.windsurfrules` | `→ GEMINI.md` | Windsurf |
+| `.clinerules` | `→ GEMINI.md` | Cline |
+| `.github/copilot-instructions.md` | `→ GEMINI.md` | GitHub Copilot |
+
+```bash
+# Verify all symlinks resolve correctly
+for f in AGENTS.md CLAUDE.md .cursorrules .windsurfrules .clinerules .github/copilot-instructions.md; do
+  [ "$(readlink -f "$f")" = "$(readlink -f GEMINI.md)" ] || echo "BROKEN: $f"
+done
+```
+
+### opencode.json Config
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": ["/home/aditya/Desktop/Projects/MEMORY/GEMINI.md"]
+}
+```
+
+---
+
+## 🧩 The 12 Brain Modules
+
+Each module is a markdown file under `memory/modules/XX-*.md`. The agent loads ONLY what it needs.
+
+![Module Sizes](docs/images/module-sizes.png)
+
+| # | Module | Lines | Domain | Load When |
+|---|--------|-------|--------|-----------|
+| 01 | **Core Rules** | 115 | Session protocol, Karpathy, prod standards | Every full session |
+| 02 | **CLI Tools** | 160 | 54-tool dispatch, guardrails, token optimization | Every full session |
+| 03 | **ML Engineering** | 292 | FSDP training, Feast, Triton, MLflow | ML/MLOps tasks |
+| 04 | **Security** | 147 | Password hashing, Argon2, bcrypt, breach response | Security tasks |
+| 05 | **UI/UX** | 274 | Design system, GSAP, Three.js, Stitch API | UI/Frontend tasks |
+| 06 | **Web Dev** | 305 | SEO, CODVYN, vibe coding, project setup | Web projects |
+| 07 | **Job Hunt** | 145 | ATS resume, LinkedIn, n8n automation | Job hunting |
+| 08 | **Architecture** | 198 | SAGA, CQRS, EDA, LLM proxy, Playwright QA | Architecture tasks |
+| 09 | **Misc** | 255 | Roadmaps, GitHub tricks, OSM, AlgoTracker | Everything else |
+| 10 | **Lessons Learned** | 17 | Hardcoded agent directives, configuration gotchas | Pre-flight check |
+| 11 | **Error Logs** | 30 | OOMs, PEP 668, Wayland, token exhaustion history | Before risky ops |
+| 12 | **Repo Teachings** | 107 | 18 starred repos architectural patterns | Cross-repo reference |
+
+```bash
+# Quick stats
+make stats
+
+# Validate all modules
+make validate
+
+# Re-seed vector DB
+make seed
+```
+
+---
+
+## 💰 Token Economics
+
+![Token Savings](docs/images/token-savings.png)
+
+| Mode | Lines Loaded | vs Old 3,622-line Monolith |
+|------|-------------|---------------------------|
+| **Lazy** (vector search) | ~200 | **−95%** |
+| **Full** (core + CLI + task) | ~1,420 | **−60%** |
+| Old monolithic GEMINI.md | 3,622 | Baseline |
+
+### Cost Comparison
+
+![Cost Comparison](docs/images/cost-comparison.png)
+
+**The trick is simple:** agents search the vector DB first. If the answer exists in a cached chunk (~200 tokens), they use that instead of loading a 300-line module. Modules only load when the search misses.
+
+---
+
+## ⚡ Free Claude Code (FCC) — Zero-Cost Claude
+
+FCC routes Anthropic Messages API traffic to **17 free/paid/local providers**.
+
+### Provider Configuration
+| Provider | Key (prefix) | Base URL |
+|----------|-------------|----------|
+| **NVIDIA NIM** | `nvapi-...` | `api.nvcf.nvidia.com/v1` |
+| **OpenRouter** | `sk-or-v1-...` | `openrouter.ai/api/v1` |
+| **Mistral** | `AXub...` | `api.mistral.ai/v1` |
+| **Codestral** | `AXub...` | `codestral.mistral.ai/v1` |
+| **DeepSeek** | `sk-b2e...` | `api.deepseek.com/anthropic` |
+| **Kimi (Moonshot)** | `sk-NyN...` | `api.moonshot.ai/anthropic/v1` |
+| **Wafer** | `wfr_fb...` | `pass.wafer.ai/v1/messages` |
+| **OpenCode** | `sk-LDN...` | `opencode.ai/zen/v1` |
+| **freellmapi** | `freellmapi-...` | `localhost:3001/v1` |
+
+```bash
+fcc-server    # Run the proxy (admin UI: localhost:8082)
+fcc-claude    # Use Claude Code through FCC
+```
+
+**Critical config rules** (learned the hard way — see Module 10):
+- Base URL must NOT contain `/v1` (CLI auto-appends it)
+- Set `ANTHROPIC_AUTH_TOKEN` to target key, `ANTHROPIC_API_KEY` to `""`
+- Model profile parameter (`"model": "sonnet"`) is mandatory for CLI validation
+
+### freellmapi — 0-Cost Super Proxy
+Aggregates **16 free providers** behind one `/v1` endpoint (~1.7B tokens/month).
 
 | Detail | Value |
 |--------|-------|
-| **Algorithm** | RSA 4096-bit |
-| **Key ID** | `0027EFBE3F4CD520` |
-| **Fingerprint** | `2048 2AA3 B910 F525 B12C FB17 0027 EFBE 3F4C D520` |
-| **UID** | `Aditya <adityashirsatrao007@gmail.com>` |
-| **Capabilities** | Sign, Certify, Encrypt, Authenticate, Reserved |
-| **Created** | 2026-06-12 |
-| **Trust level** | Ultimate |
+| **Base URL** | `http://localhost:3001/v1` |
+| **Key** | `freellmapi-...c7632` |
+| **Model** | `auto` (routes across 12+ providers) |
+| **Failover** | Automatic |
+| **Dashboard** | `http://localhost:5173` |
 
-**Git configuration (dotfiles/git/gitconfig):**
-```ini
-[user]
-    signingkey = 0027EFBE3F4CD520
-[gpg]
-    format = openpgp
-[commit]
-    gpgsign = true
-```
-
-**Result:** Every commit displays a `✅ Verified` badge on GitHub, proving the commit came from the legitimate key holder and hasn't been tampered with. This is essential for:
-- Supply chain security
-- Open source credibility
-- Preventing commit spoofing
-- Automated CI/CD trust verification
+**Golden rule:** Route everything through freellmapi first. Direct premium API calls caused the token exhaustion Event #6 in Error Logs (Module 11).
 
 ---
 
-## LLM Layer — All Models Available
+## 🛠️ 54-CLI Dispatch Table — Modern Replacements
 
-### freellmapi Proxy (90+ Models)
+Every legacy command has a modern, token-optimized replacement. Guardrails auto-intercept the old ones.
 
-**Endpoint:** `http://localhost:3001/v1` (OpenAI-compatible)  
-**API Key:** `freellmapi-c72bebe9578ae453d5d77b79af6e988e19405950c2087632`  
-**Token Budget:** ~2.7B free tokens/month combined across providers  
-**Auth:** `Authorization: Bearer <key>`  
-**Chat:** `POST /v1/chat/completions`  
-**Dashboard:** Web UI at `http://localhost:3001`
+| Category | Legacy ❌ | Modern ✅ | Command |
+|----------|-----------|-----------|---------|
+| File listing | `ls` | `eza` | `eza --tree --level 2 --git-ignore` |
+| File content | `cat` | `bat` | `bat file` |
+| Markdown | `cat` | `glow` | `glow file.md` |
+| Text search | `grep` | `rg` | `rg "pattern" --type ts -l` |
+| Find files | `find` | `fd` | `fd "pattern"` |
+| Disk usage | `du` | `dust` | `dust` |
+| Disk free | `df` | `duf` | `duf` |
+| Processes | `ps` | `procs` | `procs` |
+| System monitor | `top` | `btop` | `btop` |
+| JSON | — | `jq` / `jless` / `jnv` | `jq '.key'` |
+| YAML | — | `yq` | `yq eval '.key'` |
+| API calls | `curl` | `http` | `http GET /api` |
+| Python deps | `pip` | `uv` | `uv add package` |
+| Node deps | `npm` | `bun` | `bun add package` |
+| Python tools | `pip --user` | `pipx` | `pipx install ruff` |
+| Git diff | `git diff` | `delta` | `git diff \| delta` |
+| Git TUI | — | `lazygit` | `lazygit` |
+| Bulk rename | `sed` | `sd` | `sd 'old' 'new'` |
+| History search | `Ctrl+R` | `atuin` | `atuin search` |
+| Navigation | `cd` | `zoxide` | `z dirname` |
+| Help | `man` | `tldr` | `tldr tar` |
+| Postgres | `psql` | `pgcli` | `pgcli -d db` |
+| Process mgmt | `nohup` | `pm2` | `pm2 start app.js` |
+| Session mgmt | `screen` | `tmux` | `tmux new -s session` |
 
-**Smart failover:** Auto-benches rate-limited keys and falls through to the next available provider. No configuration needed.
+### CLI Guardrails (Auto-Installed `session-start.sh`)
+8 shadow wrappers at `~/bin/guardrails/`:
+```
+grep → rg  |  cat → bat  |  ls → eza  |  find → fd
+du → dust  |  top → btop  |  ps → procs  |  sed → sd
+```
 
-#### Provider Breakdown
+These wrappers intercept legacy commands and transparently redirect to modern alternatives. If someone types `grep` in a session, it silently runs `rg` instead.
 
-| Provider | Models | Access |
-|----------|--------|--------|
-| **Cloudflare Workers AI** | 20+ | `@cf/*` prefix — qwen, deepseek, meta, google, nvidia, mistral, zai |
-| **DeepSeek** | 5+ | `deepseek-ai/*` — v4 flash, v4 pro, coder |
-| **Google (via API)** | 8+ | `gemini-*` — 2.5 flash/pro, 3.5 flash, 3.1 pro |
-| **Mistral AI** | 8+ | `mistral-*` — large 3, codestral, devstral, magistral, ministral |
-| **Groq** | 4+ | `groq/*` — compound, llama, mixtral |
-| **Meta (via Cloudflare)** | 4+ | `@cf/meta/*` — llama 3.3, 3.1, 4 |
-| **NVIDIA NIM** | 8+ | `nvidia/nemotron-*` — 3 super, 3 ultra, 3 nano |
-| **Cohere** | 4+ | `command-*` — command-a, command-r, command-r-plus |
-| **Moonshot/Kimi** | 4+ | `moonshotai/*` — kimi-k2.6, kimi-k2-thinking |
-| **Z.AI** | 4+ | `z-ai/*` — glm-5.1, glm-4.7, glm-4.5 |
-| **OpenRouter** | 3+ | `openrouter/*` — owl-alpha, various community models |
-| **OpenAI-compat** | 6+ | `openai/*` — gpt-oss, gpt-4.1, openai-fast |
-| **Liquid** | 2+ | `liquid/*` — lfm-2.5 models |
-| **MiniMax** | 1+ | `minimaxai/*` — m2.7 |
-| **Poolside** | 2+ | `poolside/*` — laguna models |
-| **IBM Granite** | 1+ | `@cf/ibm-granite/*` |
-| **Nous Research** | 1+ | `nousresearch/*` — hermes-3 |
-| **StepFun** | 1+ | `stepfun/*` |
+---
 
-#### Complete Model List (90+)
+## 🤖 Agent Infrastructure
+
+### Port Map
+| Port | Service | Status |
+|------|---------|--------|
+| 3001 | freellmapi API (LLM proxy) | PM2 permanent |
+| 5173 | freellmapi dashboard | On-demand dev |
+| 8082 | MEMORY vector DB / FCC admin | Optional |
+| 8083 | MEMORY dashboard (alt) | Optional |
+
+### 18 API Keys Available
+```bash
+source ~/.config/global-apikeys/load_keys.sh
+```
+GROQ · MISTRAL · GEMINI · OPENROUTER · CEREBRAS · NVIDIA_NIM · HUGGINGFACE · OPENCODE · ZAI · DEEPSEEK · KIMI · FIREWORKS · WAFER · GITHUB · COHERE · CLOUDFLARE · FREELLMAPI · ANTHROPIC
+
+### Antigravity Brain — Active Task State
+```bash
+~/.gemini/antigravity/brain/
+```
+Tracks active agent task states. Current: swarms, NeoAgent, MiMo-Code, taste-skill, hermes-agent, career-ops installs.
+
+---
+
+## ⭐ 120+ Starred Repos — Categorized Knowledge Base
+
+### 🧠 Agent Skills & AI Frameworks
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [obra/superpowers](https://github.com/obra/superpowers) | 225.9k | Agentic skills framework & SD methodology |
+| [affaan-m/ECC](https://github.com/affaan-m/ECC) | 214.2k | Agent harness optimization system |
+| [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) | 191.9k | The agent that grows with you |
+| [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) | 174.2k | Karpathy's LLM coding pitfalls |
+| [langchain-ai/langchain](https://github.com/langchain-ai/langchain) | 139.1k | Agent engineering platform |
+| [anthropics/claude-code](https://github.com/anthropics/claude-code) | 132.1k | Official Anthropic terminal agent |
+| [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents) | 112.3k | Complete AI agency framework |
+| [thedotmack/claude-mem](https://github.com/thedotmack/claude-mem) | 82.0k | Persistent context across sessions |
+| [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) | 56.7k | Production-grade engineering skills |
+| [hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) | 46.3k | Curated Claude Code skills |
+| [sickn33/antigravity-awesome-skills](https://github.com/sickn33/antigravity-awesome-skills) | 40.5k | 1,500+ agentic skills library |
+| [mattpocock/skills](https://github.com/mattpocock/skills) | 126.9k | Skills for real engineers |
+| [mindfold-ai/Trellis](https://github.com/mindfold-ai/Trellis) | 10.2k | The best agent harness |
+| [kyegomez/swarms](https://github.com/kyegomez/swarms) | 6.8k | Multi-agent orchestration |
+| [phuryn/pm-skills](https://github.com/phuryn/pm-skills) | 16.9k | 100+ PM agentic skills |
+| [NeoLabs-Systems/NeoAgent](https://github.com/NeoLabs-Systems/NeoAgent) | 14 | Self-hosted AI agent |
+
+### 🎨 UI/UX & Design
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 90.9k | Design intelligence for professional UI/UX |
+| [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) | 42.3k | Gives AI good taste — stops boring slop |
+| [saifyxpro/ui-ux-design-pro-skill](https://github.com/saifyxpro/ui-ux-design-pro-skill) | 37 | 107 styles, 127 palettes, 107 fonts |
+| [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | 6.0k | Stitch MCP server skill library |
+| [Agents365-ai/drawio-skill](https://github.com/Agents365-ai/drawio-skill) | 2.7k | Natural language → diagrams |
+
+### 💻 Developer Tools & CLI
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [stackblitz/bolt.new](https://github.com/stackblitz/bolt.new) | 16.4k | Prompt, run, edit, deploy |
+| [yetone/avante.nvim](https://github.com/yetone/avante.nvim) | 18.0k | Neovim → Cursor AI experience |
+| [RooCodeInc/Roo-Code](https://github.com/RooCodeInc/Roo-Code) | 24.2k | Dev team of AI agents in editor |
+| [continuedev/continue](https://github.com/continuedev/continue) | 33.7k | Source-controlled AI checks |
+| [enola-labs/enola](https://github.com/enola-labs/enola) | 33 | MCP architectural snapshot server |
+| [OnlyCLI/OnlyCLI](https://github.com/OnlyCLI/OnlyCLI) | 13 | OpenAPI spec → native CLI binary |
+| [DeepMyst/Mysti](https://github.com/DeepMyst/Mysti) | 1.1k | AI coding dream team in VS Code |
+
+### 🔧 Token Optimization & Cost Saving
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [chopratejas/headroom](https://github.com/chopratejas/headroom) | 24.5k | 60-95% fewer tokens, same answers |
+| [zdk/lowfat](https://github.com/zdk/lowfat) | 506 | Strip noise from command output |
+| [getagentseal/codeburn](https://github.com/getagentseal/codeburn) | 7.9k | Token cost observability TUI |
+| [EA-Studio-SHARK/lean-code](https://github.com/EA-Studio-SHARK/lean-code) | 27 | Save 40-80% tokens & costs |
+| [quilrai/AgentGuard](https://github.com/quilrai/AgentGuard) | 25 | Guardian agent & token savings |
+| [siropkin/budi](https://github.com/siropkin/budi) | 24 | Local-first cost analytics |
+| [guyu-adam/miser](https://github.com/guyu-adam/miser) | 1 | Local co-processor — save 60%+ tokens |
+| [memovai/memov](https://github.com/memovai/memov) | 193 | Git-based memory layer |
+| [OasAIStudio/ClawPiggy](https://github.com/OasAIStudio/ClawPiggy) | 9 | P2P token recycling network |
+
+### 📊 Data & Analytics
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [OpenBB-finance/OpenBB](https://github.com/OpenBB-finance/OpenBB) | 69.0k | Financial data platform |
+| [milvus-io/milvus](https://github.com/milvus-io/milvus) | 44.7k | High-performance vector database |
+| [apache/kafka](https://github.com/apache/kafka) | 32.8k | Distributed event streaming |
+| [SigNoz/signoz](https://github.com/SigNoz/signoz) | 27.3k | OpenTelemetry observability |
+| [feast-dev/feast](https://github.com/feast-dev/feast) | 7.1k | Feature store for AI/ML |
+| [windmill-labs/windmill](https://github.com/windmill-labs/windmill) | 16.7k | Scripts → workflows → UIs |
+
+### 🔐 Security & Secrets
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [Z4nzu/hackingtool](https://github.com/Z4nzu/hackingtool) | 77.4k | ALL IN ONE hacking tool |
+| [aquasecurity/trivy](https://github.com/aquasecurity/trivy) | 36.4k | Vulnerability scanner |
+| [Infisical/infisical](https://github.com/Infisical/infisical) | 27.3k | Open-source secrets manager |
+| [zitadel/zitadel](https://github.com/zitadel/zitadel) | 14.0k | Cloud-native IAM |
+| [Mbed-TLS/mbedtls](https://github.com/Mbed-TLS/mbedtls) | 6.7k | TLS/crypto library |
+
+### 🌐 Web Development
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [astral-sh/ruff](https://github.com/astral-sh/ruff) | 48.0k | Rust-based Python linter |
+| [colinhacks/zod](https://github.com/colinhacks/zod) | 43.0k | TypeScript schema validation |
+| [novuhq/novu](https://github.com/novuhq/novu) | 39.1k | Notification infrastructure |
+| [terrastruct/d2](https://github.com/terrastruct/d2) | 24.4k | Modern diagram scripting |
+| [VectifyAI/PageIndex](https://github.com/VectifyAI/PageIndex) | 33.0k | Reasoning-based RAG |
+| [supermemoryai/supermemory](https://github.com/supermemoryai/supermemory) | 26.9k | Memory and context engine |
+
+### 🚀 Infrastructure & DevOps
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [moby/buildkit](https://github.com/moby/buildkit) | 10.0k | Docker build engine |
+| [jetify-com/devbox](https://github.com/jetify-com/devbox) | 12.0k | Nix-based dev environments |
+| [nextcloud/all-in-one](https://github.com/nextcloud/all-in-one) | 9.9k | Private cloud suite |
+| [grokability/snipe-it](https://github.com/grokability/snipe-it) | 13.9k | IT asset management |
+| [fastfetch-cli/fastfetch](https://github.com/fastfetch-cli/fastfetch) | 23.2k | System info tool |
+| [ClementTsang/bottom](https://github.com/ClementTsang/bottom) | 13.5k | System monitor (btm) |
+
+### 🧪 Vibe Coding Ecosystem
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [BloopAI/vibe-kanban](https://github.com/BloopAI/vibe-kanban) | 27.0k | 10X Claude Code / Codex |
+| [coleam00/context-engineering-intro](https://github.com/coleam00/context-engineering-intro) | 13.5k | Context engineering for AI |
+| [filipecalegario/awesome-vibe-coding](https://github.com/filipecalegario/awesome-vibe-coding) | 4.7k | Curated vibe coding references |
+| [KhazP/vibe-coding-prompt-template](https://github.com/KhazP/vibe-coding-prompt-template) | 2.5k | PRD/Tech Design/MVP templates |
+| [superagent-ai/vibekit](https://github.com/superagent-ai/vibekit) | 1.8k | Agent sandbox with redaction |
+
+### 🎓 Education & Career
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [ByteByteGoHq/system-design-101](https://github.com/ByteByteGoHq/system-design-101) | 83.4k | Complex systems explained visually |
+| [santifer/career-ops](https://github.com/santifer/career-ops) | 53.2k | AI-powered job search system |
+| [Avik-Jain/100-Days-Of-ML-Code](https://github.com/Avik-Jain/100-Days-Of-ML-Code) | 51.2k | 100 days of ML coding |
+| [liquidslr/interview-company-wise-problems](https://github.com/liquidslr/interview-company-wise-problems) | 25.4k | Company-wise interview questions |
+| [emmabostian/developer-portfolios](https://github.com/emmabostian/developer-portfolios) | 24.2k | Developer portfolio inspiration |
+| [matiassingers/awesome-readme](https://github.com/matiassingers/awesome-readme) | 21.0k | Curated list of awesome READMEs |
+
+### 🎯 Multi-Agent Orchestration
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [eyaltoledano/claude-task-master](https://github.com/eyaltoledano/claude-task-master) | 27.4k | AI task management system |
+| [triggerdotdev/trigger.dev](https://github.com/triggerdotdev/trigger.dev) | 15.3k | AI agents and workflows |
+| [sipyourdrink-ltd/bernstein](https://github.com/sipyourdrink-ltd/bernstein) | 569 | Audit-grade multi-agent orchestration |
+| [hexo-ai/sia](https://github.com/hexo-ai/sia) | 1.6k | Self-improving AI framework |
+
+### 📚 Open Source Monetization (OSM)
+| Repo | Bounty | Fork |
+|------|--------|------|
+| [rudderlabs/rudder-server](https://github.com/rudderlabs/rudder-server) | $2,000/bounty | OSM-rudder-server |
+| [AppFlowy-IO/AppFlowy](https://github.com/AppFlowy-IO/AppFlowy) | $500/mo mentorship | OSM-AppFlowy |
+| [Expensify/App](https://github.com/Expensify/App) | $250-500/bounty | OSM-App |
+| [BusKill/buskill-app](https://github.com/BusKill/buskill-app) | ~$2,340/bounty | OSM-buskill-app |
+| [triggerdotdev/trigger.dev](https://github.com/triggerdotdev/trigger.dev) | $50-200/bounty | OSM-trigger.dev |
+| [ether/etherpad](https://github.com/ether/etherpad) | ~$80/bounty | OSM-etherpad-lite |
+
+### 📝 Prompt Engineering & Context
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [elder-plinius/CL4R1T4S](https://github.com/elder-plinius/CL4R1T4S) | 30.2k | Leaked system prompts |
+| [backnotprop/prompt-tower](https://github.com/backnotprop/prompt-tower) | 380 | Context management for LLMs |
+| [botingw/rulebook-ai](https://github.com/botingw/rulebook-ai) | 597 | Universal agent rules manager |
+| [GeiserX/LynxPrompt](https://github.com/GeiserX/LynxPrompt) | 41 | AI IDE rules management platform |
+
+### 🎯 Platforms & Enterprise
+| Repo | Stars | Description |
+|------|-------|-------------|
+| [AppFlowy-IO/AppFlowy](https://github.com/AppFlowy-IO/AppFlowy) | 72.3k | Open source Notion alternative |
+| [frappe/hrms](https://github.com/frappe/hrms) | 8.1k | Open source HR & payroll |
+| [Alishahryar1/free-claude-code](https://github.com/Alishahryar1/free-claude-code) | 34.1k | Free Claude Code in terminal |
+| [tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi) | 9.9k | 16 free LLM providers proxy |
+| [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | 849 | Lazy senior dev mindset |
+
+---
+
+## 🗺️ Infrastructure Map
 
 ```
-auto                                                        (smart router)
-deepseek-ai/deepseek-v4-flash                               (flagship reasoning)
-deepseek-ai/deepseek-v4-pro                                 (pro reasoning)
-deepseek-ai/DeepSeek-V4-Flash                               (alt endpoint)
-deepseek-v4-flash-free                                      (free tier)
-deepseek-ai/deepseek-v3.2                                   (v3.2)
-qwen/qwen3-coder:free                                       (coding specialist)
-qwen/qwen3-coder-480b-a35b-instruct                         (480B coder)
-qwen/qwen3-coder-next                                       (next-gen coder)
-qwen3-coder:480b, qwen3-coder-next                          (short names)
-qwen/qwen3-next-80b-a3b-instruct:free                       (80B MoE)
-qwen/qwen3-32b, qwen3-32b                                   (32B general)
-qwen-3-235b-a22b-instruct-2507                              (235B MoE)
-@cf/qwen/qwen3-30b-a3b-fp8                                  (Cloudflare)
-gemini-2.5-flash, gemini-2.5-flash-lite                     (Gemini 2.5)
-gemini-2.5-pro                                              (Gemini 2.5 Pro)
-gemini-3.5-flash                                            (latest gen)
-gemini-3.1-pro-preview                                      (preview)
-gemini-3.1-flash-lite-preview                               (flash lite)
-gemini-3-flash-preview                                      (3 flash)
-mistralai/mistral-large-3-675b-instruct-2512                (675B flagship)
-mistral-large-latest, mistral-medium-latest                 (standard tiers)
-mistral-small-latest, ministral-8b-latest                   (small + mini)
-codestral-latest, devstral-latest                           (coding optimized)
-devstral-2:123b                                             (devstral 2)
-magistral-medium-latest                                     (magistral)
-@cf/moonshotai/kimi-k2.6                                    (via Cloudflare)
-moonshotai/kimi-k2.6, moonshotai/Kimi-K2.6                  (Kimi K2)
-moonshotai/kimi-k2.6:free                                   (free tier)
-kimi-k2-thinking                                            (thinking mode)
-minimaxai/minimax-m2.7                                      (MiniMax M2.7)
-minimax-m3-free                                             (M3 free tier)
-meta/llama-4-maverick-17b-128e-instruct                     (Llama 4 Maverick)
-meta-llama/llama-4-scout-17b-16e-instruct                   (Llama 4 Scout)
-@cf/meta/llama-4-scout-17b-16e-instruct                     (via Cloudflare)
-meta-llama/llama-3.3-70b-instruct:free                      (Llama 3.3 free)
-meta-llama/llama-3.1-70b-instruct                           (Llama 3.1)
-@cf/meta/llama-3.3-70b-instruct-fp8-fast                    (Cloudflare)
-llama-3.3-70b-versatile                                     (Groq)
-llama-3.1-8b-instant                                        (8B instant)
-meta-llama/llama-3.2-3b-instruct:free                       (3B free)
-nvidia/nemotron-3-ultra-550b-a55b:free                      (550B ultra)
-nvidia/nemotron-3-super-120b-a12b                           (120B super)
-nvidia/nemotron-3-super-120b-a12b:free                      (free tier)
-nvidia/nemotron-3-nano-30b-a3b                              (30B nano)
-nvidia/nemotron-3-nano-30b-a3b:free                         (free tier)
-nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free          (reasoning)
-nemotron-3-ultra-free, nemotron-3-super-free                (short names)
-nvidia/nemotron-nano-12b-v2-vl:free                         (vision-language)
-nvidia/nemotron-nano-9b-v2:free                             (9B nano)
-@cf/nvidia/nemotron-3-120b-a12b                             (Cloudflare)
-@cf/nvidia/nvidia-nemotron-4-340b-instruct                  (via Cloudflare)
-command-a-03-2025, command-a-reasoning-08-2025              (Cohere)
-command-r-08-2024, command-r-plus-08-2024                   (Cohere legacy)
-z-ai/glm-5.1                                                (GLM 5.1)
-z-ai/glm-4.5-air:free, z-ai/glm-4.7-flash                  (GLM tiers)
-zai-glm-4.7, glm-4.7-flash, glm-4.5-flash, glm-4.6v-flash  (short names)
-openai/gpt-oss-120b, gpt-oss-120b, @cf/openai/gpt-oss-120b (120B OSS)
-openai/gpt-oss-120b:free, openai/gpt-oss-20b:free          (free tiers)
-openai/gpt-oss-20b, openai/gpt-oss-safeguard-20b           (20B variants)
-openai/gpt-4.1                                              (GPT-4.1)
-gpt-4o, openai-fast                                         (classic + fast)
-groq/compound, groq/compound-mini                           (Groq compound)
-big-pickle                                                  (community)
-@cf/google/gemma-4-26b-a4b-it                               (Gemma 4 via CF)
-google/gemma-4-31b-it, gemma-4-31b-it, gemma4:31b           (Gemma 4 31B)
-google/gemma-4-26b-a4b-it:free                              (Gemma 4 26B free)
-@cf/ibm-granite/granite-4.0-h-micro                         (IBM Granite)
-openrouter/owl-alpha                                        (OpenRouter)
-poolside/laguna-m.1:free, poolside/laguna-xs.2:free         (Poolside)
-liquid/lfm-2.5-1.2b-instruct:free                           (Liquid 1.2B)
-liquid/lfm-2.5-1.2b-thinking:free                           (Liquid thinking)
-nousresearch/hermes-3-llama-3.1-405b:free                   (Hermes 3 405B)
-stepfun/step-3.7-flash:free                                 (StepFun)
-cognitivecomputations/dolphin-mistral-24b-venice-edition:free (Dolphin)
-cogito-2.1:671b                                             (Cogito)
-mimo-v2.5-free                                              (MiMo free)
+~/.config/
+├── global-apikeys/
+│   ├── keys.env           # 18 API keys
+│   └── load_keys.sh       # Source this to load all keys
+├── agent-tools/
+│   └── manifest.json      # 15 installed agent tools
+└── stitch/
+    └── mcp-config.json    # Stitch UI builder MCP
+
+~/.gemini/antigravity/
+├── brain/                 # Active task state management
+└── skills/                # Installed agent skills
+
+~/.fcc/.env                # Free Claude Code provider configs
+
+~/bin/
+├── guardrails/            # 8 shadow CLI wrappers
+├── session-start.sh       # First action every session
+├── setup-project          # New project bootstrapper
+├── auto-dispatch          # Smart tool + module suggestion
+└── templates/
+    ├── architecture/      # SAGA, CQRS, EDA blueprints
+    ├── specs/             # PRD, DESIGNDOC, TECHSTACK
+    └── git/               # PR templates, issue templates
 ```
 
 ---
 
-### fcc-server (1130 Models)
-
-**Admin UI:** `http://localhost:8082/admin`  
-**Client:** `fcc-claude "your prompt"`  
-**Config:** `~/.fcc/.env`
-
-The Free Claude Code server routes requests across 1130 models from 12+ providers:
-
-| Provider | Models | Config Key |
-|----------|--------|------------|
-| DeepSeek | Full DeepSeek catalog | `DEEPSEEK_API_KEY` |
-| OpenRouter | 200+ community/open models | `OPENROUTER_API_KEY` |
-| Mistral | Mistral + Codestral + Devstral | `MISTRAL_API_KEY`, `CODESTRAL_API_KEY` |
-| Moonshot (Kimi) | Kimi K2 and family | `KIMI_API_KEY` |
-| Wafer | Anthropic-compatible models | `WAFER_API_KEY` |
-| NVIDIA NIM | Enterprise NIM catalog | `NVIDIA_NIM_API_KEY` |
-| OpenCode | OpenCode Zen + Go | `OPENCODE_API_KEY` |
-| Fireworks | Fast serverless (default) | `FIREWORKS_API_KEY` |
-| Groq | Ultra-low latency | `GROQ_API_KEY` |
-| Google | Gemini models | `GEMINI_API_KEY` |
-
-**How to switch models:** Open `http://localhost:8082/admin` → select provider + model → done.
-
----
-
-## Agent Frameworks — In-Depth
-
-### Swarms v13.0.0
-
-**Binary:** `swarms`  
-**Location:** `/home/aditya/.local/bin/swarms`  
-**Install:** `pipx install swarms`  
-**Purpose:** Multi-agent orchestration framework for coordinating swarms of AI agents.
-
-```
-╭─  👾 Swarms  ────────────────────────────────────────────────╮
-│  ▄     ▄    Swarms  v13.0.0                                  │
-│  ▀█████▀    Groq +3 more · Multi-Agent Framework             │
-╰──────────────────────────────────────────────────────────────╯
-```
-
-**Use cases:**
-- **Parallel code review** — spawn 5 agents to review different parts of a PR simultaneously
-- **Multi-agent research** — one agent searches, another synthesizes, a third critiques
-- **Hierarchical task execution** — manager agent decomposes tasks, worker agents execute
-- **Ensemble reasoning** — multiple models vote on the best answer
-- **Automated testing** — agents generate, run, and analyze test results in parallel
-
----
-
-### NeoAgent v2.4.3
-
-**Binary:** `neoagent`  
-**Location:** `/usr/local/bin/neoagent`  
-**Install:** `npm install -g neoagent`  
-**Purpose:** AutoGPT-style autonomous agent — set a goal, it plans and executes independently.
-
-```
-Usage: neoagent <command> [args]
-```
-
-**Use cases:**
-- **Long-running autonomous tasks** — "research the best architecture for this project and write a proposal"
-- **Recursive self-improvement** — agent reflects on its output, identifies gaps, and iterates
-- **Complex workflow automation** — multi-step pipelines with decision points and branching
-- **Data collection and analysis** — scrape, clean, analyze, and report without hand-holding
-
----
-
-### MiMo-Code
-
-**Binary:** `mimo`  
-**Location:** `/usr/local/bin/mimo`  
-**Install:** `npm install -g @mimo-ai/cli`  
-**Purpose:** AI coding assistant with native internet access via the MiMo platform.
-
-```
-█▀▄▀█ █ █▄ ▄█ █▀▀█ █▀▀ █▀▀█ █▀▀▄ █▀▀▀
-```
-
-**Use cases:**
-- **Code generation with live context** — reads web docs, API references, and Stack Overflow in real time
-- **API integration** — understands live API docs and generates correct integration code
-- **Documentation research** — searches the web, reads docs, and generates summaries
-- **Multi-modal coding** — supports MiMo's free tier (`mimo-v2.5-free`) through the proxy
-
----
-
-### Hermes Agent v0.15.2 (Nous Research)
-
-**Binaries:** `hermes`, `hermes-acp`, `hermes-agent`  
-**Location:** `/home/aditya/.local/bin/hermes`  
-**Install:** `pipx install hermes-agent`  
-**Purpose:** Self-improving AI agent with a built-in learning loop.
-
-```
-Hermes Agent v0.15.2 (2026.5.29.2)
-Project: .../hermes-agent
-Python: 3.14.4
-OpenAI SDK: 2.24.0
-Up to date
-```
-
-**Key capabilities:**
-- **Learning loop** — creates skills from experience, improves them during use, persists knowledge across sessions
-- **Multi-platform** — Telegram, Discord, Slack, WhatsApp, Signal, and CLI from a single gateway
-- **Scheduled automations** — built-in cron scheduler for daily reports, nightly backups, weekly audits
-- **Subagent delegation** — spawn isolated subagents for parallel workstreams
-- **Voice memo transcription** — across all platforms
-- **Persistent memory** — FTS5 session search, LLM summarization, Honcho dialectic user modeling
-- **Three terminal backends** — local, Docker, SSH, plus serverless (Modal, Daytona)
-- **Any model** — OpenRouter, NVIDIA, MiMo, Hugging Face, Google, OpenAI, or custom endpoints
-
----
-
-### Free Claude Code (fcc-claude)
-
-**Binary:** `fcc-claude`  
-**Location:** `/home/aditya/.local/bin/fcc-claude`  
-**Purpose:** Claude Code CLI with any model backend.
-
-**How it works:**
-1. `fcc-server` runs on port 8082, managing 1130 models across 12 providers
-2. `fcc-claude "prompt"` sends requests through the server
-3. Server routes to the selected provider/model
-4. Switch models anytime via the admin UI at `http://localhost:8082/admin`
-
-**Use cases:**
-- Full Claude Code experience without paying for Claude API
-- Swap between DeepSeek, Mistral, Gemini, Kimi, and 1000+ others
-- Test the same prompt across different models to compare outputs
-- Use Claude Code's tool-use and file-editing capabilities with any backend
-
----
-
-### Mistral Vibe CLI v2.15.0
-
-**Binaries:** `vibe`, `vibe-acp`  
-**Location:** `/home/aditya/.local/bin/vibe`  
-**Config:** `~/.vibe/.env` (API key stored)  
-**Purpose:** Mistral's agentic coding CLI with ACP (Agent Communication Protocol) support.
-
-**Use cases:**
-- **AI-native coding** — describe what you want, Vibe builds it
-- **ACP agent communication** — agents talk to each other through the ACP protocol
-- **Autonomous programming** — Vibe plans, codes, tests, and iterates without hand-holding
-- **Multi-agent coordination** — Vibe-acp enables agent-to-agent handoffs
-
----
-
-## Internet Access Layer — Agent-Reach v1.5
-
-**Binary:** `agent-reach`  
-**Location:** `/home/aditya/.local/bin/agent-reach`  
-**Install:** `pipx install agent-reach`  
-**Purpose:** Gives any AI agent full internet access across 13 platforms.
-
-```
-usage: agent-reach {setup,install,configure,doctor,uninstall,skill,format,transcribe,check-update,watch,version}
-```
-
-| Subcommand | Purpose |
-|------------|---------|
-| `setup` | Interactive configuration wizard |
-| `install` | One-shot installer with flags |
-| `configure` | Set config values or auto-extract from browser |
-| `doctor` | Platform availability diagnostics |
-| `uninstall` | Remove all config, tokens, and skills |
-| `skill` | Manage agent skill registration |
-| `format` | Clean and format platform API output |
-| `transcribe` | Transcribe audio/video content |
-| `check-update` | Check for new versions |
-| `watch` | Monitor platforms for changes |
-
-**Platform coverage:**
-
-| Platform | Access | Configuration |
-|----------|--------|---------------|
-| 🌐 **Web pages** | Read any URL | None needed |
-| 📺 **YouTube** | Subtitle extraction + video search | None needed |
-| 📡 **RSS/Atom** | Read any feed | None needed |
-| 🐙 **GitHub** | Repos, issues, PRs, discussions | None needed |
-| 🐦 **Twitter/X** | Read/search (via Nitter) | Optional cookie |
-| 💬 **Reddit** | Read/search | Optional cookie |
-| 📕 **Xiaohongshu** | Content reading | Cookie config |
-| 📺 **Bilibili** | Video content & subtitles | Cookie config |
-| 🎵 **Douyin** | Content reading | Cookie config |
-| 🎤 **Xiaoyuzhou** | Podcast transcriptions | Cookie config |
-| 📺 **YouTube Music** | Audio extraction | None needed |
-
-**Smart routing:** Each platform has "primary + fallback" backends. If one method gets blocked (e.g., yt-dlp banned by Bilibili), Agent-Reach transparently switches to the backup (bili-cli). Users experience zero downtime.
-
-**Self-diagnosis:** `agent-reach doctor` scans every platform and reports which ones work, which need configuration, and exactly how to fix them.
-
----
-
-## Agent Skills — Complete Catalog of 50+
-
-The skills system is the agent's toolbox — each skill is a self-contained instruction set the agent loads on demand for specific tasks. Skills are lazy-loaded (only read when needed), saving tokens on every session.
-
-### Engineering Skills (12)
-
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| `diagnose` | Disciplined debugging — reproduce → minimise → hypothesise → instrument → fix → reg-test | Hard bugs, crashes, performance regressions |
-| `tdd` | Red-green-refactor test-driven development | Building features with tests, fixing bugs |
-| `review` | Dual-axis code review (Standards + Spec) | PR review, branch review, WIP review |
-| `prototype` | Throwaway prototypes — terminal app or UI variations | Exploring designs, sanity-checking data models |
-| `improve-codebase-architecture` | Refactoring, consolidation, AI-navigability | Improving codebase structure |
-| `migrate-to-shoehorn` | Migrate `as` assertions to `@total-typescript/shoehorn` | Type safety improvements |
-| `scaffold-exercises` | Create exercise + solution + explainer structures | Course creation, tutorials |
-| `request-refactor-plan` | Detailed refactor plans with incremental commits | Safe refactoring |
-| `zoom-out` | Broader context and higher-level perspective | Unfamiliar code, onboarding |
-| `caveman` | Ultra-compressed communication (-75% tokens) | Token-constrained sessions |
-| `git-guardrails-claude-code` | Block dangerous git commands | Git safety |
-| `setup-pre-commit` | Husky + lint-staged + typecheck + tests | Project initialization |
-
-### Design & Visualization Skills (6)
-
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| `design-an-interface` | Multiple radically different interface designs | API design, module interfaces |
-| `html` | Self-contained HTML — reports, explainers, comparisons, decks | Any deliverable as HTML |
-| `html-diagram` | Full-screen SVG architecture diagrams | System visualization |
-| `html-plan` | Visually organized plan pages | Project plans, roadmaps |
-| `high-end-visual-design` | Premium/enterprise design patterns | Client-facing work |
-| `industrial-brutalist-ui` | Raw, structural design aesthetics | Experimental UI |
-| `minimalist-ui` | Clean, content-first design | Production UI |
-
-### Writing & Communication Skills (6)
-
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| `edit-article` | Restructure, clarify, tighten prose | Editing drafts |
-| `writing-beats` | Narrative journey composition | Article writing |
-| `writing-fragments` | Mine raw material for future articles | Ideation |
-| `writing-shape` | Shape raw material into publishable form | Drafting |
-| `teach` | Structured skill instruction | Tutorials, onboarding |
-| `ubiquitous-language` | Extract DDD domain glossary | Domain modeling |
-
-### Strategy & Planning Skills (5)
-
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| `grill-me` | Stress-test plans through relentless questioning | Planning, decision-making |
-| `grill-with-docs` | Challenge plans against domain model + ADRs | Strategic planning |
-| `to-issues` | Break plans into vertical-slice GitHub issues | Implementation breakdown |
-| `to-prd` | Convert conversation to PRD on issue tracker | Requirements documentation |
-| `triage` | Full issue triage state machine | Backlog management |
-
-### Product Management Skills (4)
-
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| `qa` | Interactive bug reporting → GitHub issues | Bug tracking |
-| `handoff` | Compact conversation for agent switch | Session handoff |
-| `setup-matt-pocock-skills` | Configure skill system for new repo | Project onboarding |
-| `write-a-skill` | Create new agent skills | Skill authorship |
-
-### Design System Skills (12 from taste-skill)
-
-| Skill | Purpose |
-|-------|---------|
-| `brandkit` | Brand identity creation |
-| `design-taste-frontend` | Taste-driven frontend design |
-| `design-taste-frontend-v1` | Alternative taste design |
-| `full-output-enforcement` | Prevent truncated output |
-| `gpt-taste` | Taste-aware content generation |
-| `image-to-code` | Design-to-code conversion |
-| `imagegen-frontend-mobile` | Mobile image generation |
-| `imagegen-frontend-web` | Web image generation |
-| `redesign-existing-projects` | Interface redesign |
-| `stitch-design-taste` | Combine design systems |
-| `taste-skill` | Complete taste plugin (10+ sub-skills) |
-
-### Utility Skills (5)
-
-| Skill | Purpose |
-|-------|---------|
-| `obsidian-vault` | Obsidian note management |
-| `setup-matt-pocock-skills` | Configure repo for engineering skills |
-| `setup-pre-commit` | Add pre-commit hooks to a project |
-| `full-output-enforcement` | Ensure complete, non-truncated output |
-| `caveman` | Ultra-compressed token-saving mode |
-
----
-
-## Agent Memory — ChromaDB Vector Database
-
-The vector database is the agent's persistent brain — it stores semantic embeddings of all 13 knowledge modules so the agent can find relevant information in milliseconds without re-reading files.
-
-**Location:** `memory/vector_db/`  
-**Backend:** ChromaDB (persistent, embedded)  
-**Dashboard:** FastAPI server on port 8083  
-**Seeding:** `make seed` or `python3 tools/seed_vector_db.py`
-
-**How it works:**
-1. Each module file is split into chunks (by section/paragraph)
-2. Each chunk is embedded and stored in ChromaDB with metadata (source file, section name)
-3. The agent queries: "find chunks related to 'token optimization'" → vector similarity search
-4. ChromaDB returns the most relevant chunks in milliseconds
-5. Agent reads only those chunks — saves reading entire files
-
-**Auto-update mechanism:**
-- `post-commit` hook: re-seeds DB when module files change
-- `post-merge` hook: re-seeds DB when pull brings module changes
-- Content-hash dedup: unchanged files are skipped (saves time and API calls)
-
-**Distributed memory bank:**
-| Component | Purpose | Access Pattern |
-|-----------|---------|----------------|
-| ChromaDB vector storage | Semantic search across all modules | Agent queries by topic |
-| `memory-bank/` | Session-level progress tracking | Agent reads at start of session |
-| `LESSONS_LEARNED.md` | Cross-project error memory | Agent reads before every task |
-| `memory-search` tool | CLI wrapper for vector search | `memory-search "query"` |
-
----
-
-## Shell Environment — Every Tool Explained
-
-Every terminal session is optimized for agent productivity with modern CLI replacements.
-
-### Command Replacements
-
-| Legacy | Modern | Benefit | Token Savings |
-|--------|--------|---------|---------------|
-| `ls` | `eza --icons` | Color-coded, icons, git status, tree view | ~40% less output |
-| `cat` | `bat --style=plain` | Syntax highlighting, line numbers, git integration | ~30% less output |
-| `grep` | `rg` (ripgrep) | 10x faster, recursive by default, .gitignore-aware | ~50% less output |
-| `find` | `fd` | 5x faster, intuitive syntax, .gitignore-aware | ~40% less output |
-| `du` | `dust` | Visual bar chart, top-N sorting, human-readable | ~60% less output |
-| `ps` | `procs` | Color-coded, tree view, Docker-aware, searchable | ~50% less output |
-| `top` | `btop` | GPU support, mouse support, themes, graphs | ~70% less output |
-| `sed` | `sd` | Regex find-replace, in-place with preview | ~30% less output |
-| `cd` | `z` (zoxide) | Fuzzy-match frequent dirs, learns your patterns | Saves full cd commands |
-| `git diff` | `git diff \| delta` | Syntax highlighting, word-level diffs, side-by-side | ~40% less output |
-
-### Interactive Tools
-
-| Tool | Purpose | How It Works |
-|------|---------|--------------|
-| `fzf` | Fuzzy finder | Ctrl+T for file search, Ctrl+R for history search, Alt+C for cd |
-| `zoxide` | Smart cd | `z proj` → jumps to `/home/.../project`, learns from usage |
-| `starship` | Prompt | Fast, minimal prompt with git status, runtime version, timing |
-| `tmux` | Terminal multiplexer | Persistent sessions, split panes, detach/reattach |
-| `lazygit` | Git TUI | Visual git interface — stage, commit, branch, merge, rebase |
-| `atuin` | Shell history | Encrypted sync across machines, fuzzy search, stats |
-| `direnv` | Per-directory env | Auto-loads `.envrc` when entering a directory |
-| `glow` | Markdown reader | Renders markdown in terminal with formatting and tables |
-
-### Productivity Aliases
-
-| Alias | Expands To | Purpose |
-|-------|-----------|---------|
-| `v` | `nvim` | Neovim editor |
-| `gl` | `lazygit` | Git TUI |
-| `bat` | `batcat` | Syntax-highlighted cat |
-| `readme` | `glow` | Markdown reading |
-| `cr` | `cargo run` | Rust compile+run |
-| `cb` | `cargo build` | Rust compile |
-| `ct` | `cargo test` | Rust test |
-| `cc` | `cargo check` | Rust check |
-| `dim` | `brightnessctl set 30%` | Dim screen (battery) |
-| `bright` | `brightnessctl set 80%` | Bright screen |
-| `battery-status` | `upower ...` | Battery health |
-| `gpu-off` | `prime-select intel` | Max battery mode |
-| `gpu-on` | `prime-select nvidia` | Performance mode |
-| `cyberchef` | Open CyberChef | Encoding/decoding tool |
-
-### Agent Read Cache
-
-Two bash functions that prevent re-reading the same file:
+## 📊 Makefile Operations
 
 ```bash
-mark-read /path/to/file   # Mark file as read
-is-read /path/to/file     # Check if already read → skip
+make validate    # Check all modules exist + UI validation
+make seed        # Re-vector ChromaDB from all modules
+make stats       # Module sizes + token savings calculation
+make hooks       # Install git hooks (auto-seed on merge, UI validate on commit)
+make all         # validate + seed
+make fix-paths   # Update relative paths to $MEMORY_ROOT
 ```
 
-Hooks into `.bashrc` — agents check `is-read` before reading any file. If the file is cached, it's skipped entirely.
-
----
-
-## Automated GitHub Project Creation
-
-The system is pre-configured to streamline new project creation on GitHub:
-
-**1. Pre-authenticated `gh` CLI:**
-```bash
-[credential "https://github.com"]
-    helper = !/usr/bin/gh auth git-credential
-```
-GitHub authentication is handled transparently through the `gh` CLI — no manual token entry needed.
-
-**2. GPG-signed commits:**
-Every commit is automatically signed with the RSA 4096 GPG key (`0027EFBE3F4CD520`). GitHub displays ✅ Verified badges on all commits.
-
-**3. Git defaults optimized for GitHub:**
-```ini
-[init]
-    defaultBranch = main          # No "master" → rename step needed
-[commit]
-    gpgsign = true                # Every commit signed automatically
-[color]
-    ui = auto                     # Colored git output
-```
-
-**4. Creating a new project:**
-With all infrastructure in place, creating a GitHub project is a one-liner:
-```bash
-mkdir my-project && cd my-project
-git init
-gh repo create my-project --private --source=. --remote=origin --push
-```
-
-The result:
-- Local repo initialized with `main` branch
-- GitHub repo created (private or public)
-- GPG-signed initial commit pushed
-- `gh` handles authentication transparently
-
-**5. Project creation via agent:**
-Agents can create GitHub projects autonomously:
-```bash
-opencode run "scaffold a Next.js project called my-app, create a GitHub repo for it, and push the initial commit"
-```
-All credentials, signing, and configuration are pre-wired — no manual steps.
-
----
-
-## Architecture — How Everything Connects
-
-```
-                          ┌─────────────────────────────────────────────┐
-                          │              THE USER                       │
-                          │    (CLI / Telegram / VS Code / Browser)      │
-                          └─────────────────────┬───────────────────────┘
-                                                │
-                          ┌─────────────────────▼───────────────────────┐
-                          │           AGENT PROCESS LAYER               │
-                          │                                            │
-                          │  ┌──────────┐ ┌──────────┐ ┌────────────┐ │
-                          │  │ Claude   │ │ Gemini   │ │ OpenCode   │ │
-                          │  │ Code     │ │ CLI      │ │ Agent      │ │
-                          │  └────┬─────┘ └────┬─────┘ └─────┬──────┘ │
-                          │       │             │             │        │
-                          │       └──────┬──────┘─────────────┘        │
-                          │              │                             │
-                          │              ▼                             │
-                          │  ┌─────────────────────────────────────┐   │
-                          │  │         AGENTS.md (GEMINI.md)        │   │
-                          │  │  ~100 token startup · 6 rules · all │   │
-                          │  │  behavioral directives               │   │
-                          │  └────────────────┬────────────────────┘   │
-                          └───────────────────┼────────────────────────┘
-                                              │
-            ┌─────────────────────────────────┼─────────────────────────────┐
-            │                                 │                             │
-            ▼                                 ▼                             ▼
-  ┌─────────────────────┐     ┌──────────────────────────┐     ┌──────────────────────┐
-  │  KNOWLEDGE LAYER    │     │   TOOL INFRASTRUCTURE    │     │   SKILL LAYER        │
-  │                     │     │                          │     │                      │
-  │  ┌───────────────┐  │     │  ┌────────────────────┐  │     │  ┌────────────────┐  │
-  │  │ 13 Modules    │  │     │  │ freellmapi :3001   │  │     │  │ 46 Skills      │  │
-  │  │ (2100 lines)  │  │     │  │ 2.7B tokens/mo     │  │     │  │ (lazy loaded)  │  │
-  │  └───────┬───────┘  │     │  │ 90+ models         │  │     │  └────────────────┘  │
-  │          │          │     │  └────────────────────┘  │     │                      │
-  │          ▼          │     │                          │     │                      │
-  │  ┌───────────────┐  │     │  ┌────────────────────┐  │     │                      │
-  │  │ ChromaDB      │  │     │  │ fcc-server :8082   │  │     │                      │
-  │  │ Vector Search │  │     │  │ 1130 models        │  │     │                      │
-  │  │ (port 8083)   │  │     │  └────────────────────┘  │     │                      │
-  │  └───────┬───────┘  │     │                          │     │                      │
-  │          │          │     │  ┌────────────────────┐  │     │                      │
-  │          ▼          │     │  │ Agent-Reach        │  │     │                      │
-  │  ┌───────────────┐  │     │  │ Internet Access    │  │     │                      │
-  │  │ LESSONS       │  │     │  └────────────────────┘  │     │                      │
-  │  │ _LEARNED.md   │  │     │                          │     │                      │
-  │  └───────────────┘  │     │  ┌────────────────────┐  │     │                      │
-  │                     │     │  │ Swarms · NeoAgent  │  │     │                      │
-  │                     │     │  │ MiMo · Hermes      │  │     │                      │
-  │                     │     │  │ fcc · Vibe         │  │     │                      │
-  │                     │     │  └────────────────────┘  │     │                      │
-  └─────────────────────┘     └──────────────────────────┘     └──────────────────────┘
-
-  ┌──────────────────────────────────────────────────────────────────────────┐
-  │                        PERSISTENCE LAYER                                 │
-  │                                                                          │
-  │  ┌───────────────┐  ┌───────────────┐  ┌──────────────┐  ┌────────────┐  │
-  │  │ dotfiles/     │  │ config/       │  │ .githooks/   │  │ .github/   │  │
-  │  │ bashrc, git,  │  │ Aider, Cont.  │  │ pre-commit,  │  │ CI/CD,     │  │
-  │  │ tmux, starship│  │ Editorconfig  │  │ post-merge,  │  │ Copilot    │  │
-  │  └───────────────┘  └───────────────┘  │ post-commit  │  └────────────┘  │
-  │                                        └──────────────┘                  │
-  │  ┌───────────────┐  ┌───────────────┐  ┌──────────────────────────────┐  │
-  │  │ Global Keys   │  │ SSH Keys      │  │ GPG Signing                  │  │
-  │  │ 12 providers  │  │ Ed25519       │  │ RSA 4096 · All commits       │  │
-  │  │ Auto-loaded   │  │ GitHub auth   │  │ ✅ Verified on GitHub        │  │
-  │  └───────────────┘  └───────────────┘  └──────────────────────────────┘  │
-  └──────────────────────────────────────────────────────────────────────────┘
-```
-
-**Data flow:**
-1. Agent starts → reads `GEMINI.md` (~100 tokens) → learns rules, tool locations, behavioral directives
-2. Agent encounters task → matches to tool description in manifest → loads relevant skill on demand
-3. Agent needs knowledge → queries ChromaDB vector database (milliseconds) → reads only relevant chunks
-4. Agent needs LLM → sends request to freellmapi proxy → proxy routes through 12 providers → 2.7B free tokens
-5. Agent needs model routing → uses fcc-server with 1130 model options
-6. Agent needs internet → uses Agent-Reach for YouTube, Twitter, Reddit, RSS, web
-7. Agent creates project → `gh` CLI creates GitHub repo, GPG signs the commit, `delta` renders diffs
-8. Agent commits code → pre-commit hook validates UI quality, post-commit re-seeds vector DB
-9. Agent pushes → CI pipeline scans for vulnerabilities and secrets
-10. Next agent starts → reads `.agent-progress.md` → resumes without re-analysis
-
----
-
-## Quick Start
-
-| Step | Action |
+### Git Hooks (Auto-Installed)
+| Hook | Action |
 |------|--------|
-| 1 | `git clone https://github.com/adityashirsatrao007/MEMORY ~/Desktop/Projects/MEMORY` |
-| 2 | Open **[SETUP.md](SETUP.md)** — copy the prompt block and paste into any AI agent |
-| 3 | `source ~/Desktop/Projects/MEMORY/bin/session-start.sh ~/Desktop/Projects/MEMORY` |
-
-The setup prompt auto-detects your OS (Linux, macOS, WSL2) and installs everything automatically: system packages, language runtimes, CLI tools, agent frameworks, vector database, shell configuration, and verification — with zero manual intervention.
+| `pre-commit` | Validates UI design system against Apple HIG |
+| `post-merge` | Re-seeds ChromaDB when module files change |
+| `post-commit` | Re-seeds ChromaDB when module files change |
 
 ---
 
-## Platform Compatibility
+## 🧪 The 5 Hardcoded Rules (Never Violated)
 
-| OS | Status | Notes |
-|----|--------|-------|
-| Linux (Ubuntu 24.04+) | ✅ Primary | Everything native. Fully tested. GPU support via NVIDIA/CUDA. |
-| macOS (Sequoia+) | ✅ Supported | Requires Homebrew. Auto-detected by setup script. |
-| Windows (WSL2) | ✅ Supported | Ubuntu 24.04 on WSL2. Docker Desktop for WSL. |
+### Rule #1 — Port Management
+```bash
+ss -tlnp | grep LISTEN    # Check before starting ANY server
+# Safe ports: 3000, 3002, 3003, 4000, 4001, 5000, 5001, 7000, 8000, 8080, 8081, 8888, 9000
+```
+
+### Rule #2 — API Keys (Never Ask)
+Auto-load from `/home/aditya/.config/global-apikeys/keys.env`. Never request keys from the user.
+
+### Rule #3 — No Polling, Token Conservation
+Never loop on background processes. Propose terminal commands. Start fresh after 15-20 messages.
+
+### Rule #4 — Never Use Pro Models
+Default: Gemini 3.5 Flash (Low). Never Claude Pro or Gemini Pro without explicit permission.
+
+### Rule #5 — Agent Handoff Protocol
+```markdown
+# Save .agent-progress.md before exiting:
+- What was built successfully
+- What failed/blocked
+- Next 2 tasks to complete
+```
 
 ---
 
-## License
+## 🧪 Self-Healing & Error Prevention
 
-Proprietary — © 2026 Aditya Shirsatrao. All rights reserved. See [LICENSE](LICENSE).
+```mermaid
+flowchart LR
+    ERROR["Error Occurs"] --> DIAGNOSE["Diagnose via CLI"]
+    DIAGNOSE --> FIX["Fix Cause"]
+    FIX --> RE_RUN["Re-run"]
+    RE_RUN --> VERIFY["Verify"]
+    VERIFY --> DONE["✅ Done"]
+    ERROR --> CHECK_LOG["Check Error Logs (Module 11)"]
+    CHECK_LOG --> KNOWN{"Known Issue?"}
+    KNOWN -->|Yes| KNOWN_FIX["Apply known fix"]
+    KNOWN -->|No| DIAGNOSE
+```
 
-This repository is made publicly viewable **for portfolio/reference purposes only**. No license is granted to copy, clone, distribute, or use any content as AI training data.
+### Pre-Done Audit Checklist
+```bash
+semgrep --config auto .                                         # SAST + logic bugs
+pre-commit run --all-files                                      # lint/format/secrets
+git diff | gitleaks detect --no-git                             # no secrets in diff
+for f in AGENTS.md CLAUDE.md .cursorrules .windsurfrules .clinerules; do
+  [ "$(readlink -f "$f")" = "$(readlink -f GEMINI.md)" ] || echo "BROKEN: $f"
+done
+```
+
+### Recorded Failure Modes (Module 11)
+| Event | Error | Prevention |
+|-------|-------|------------|
+| 1 | OOM from parallel installs | Serialize: apt → cargo → ollama |
+| 2 | PEP 668 externally-managed | `apt-get install pipx`, never `pip --user` |
+| 3 | Wayland GUI crash | Use `systemctl --user` for GUI apps |
+| 4 | IBus keybinding conflict | Clear IBus triggers before binding Super+Space |
+| 5 | NPM 404 halts setup | Append `\|\| true` on non-critical installs |
+| 6 | Token exhaustion (all APIs) | Route through freellmapi proxy |
+
+---
+
+## 🔮 What's Next — New Tools Queued for Integration
+
+This is a **living system**. These tools are cued for the next integration pass:
+
+- [ ] **AgentLint** — 33 AI-friendly repo checks (`0xmariowu/AgentLint`)
+- [ ] **Budi** — Local cost analytics (`siropkin/budi`)
+- [ ] **Promp Tower** — Context bundling (`backnotprop/prompt-tower`)
+- [ ] **memov** — Git-based memory layer (`memovai/memov`)
+- [ ] **RA.Aid** — Autonomous software development (`ai-christianson/RA.Aid`)
+- [ ] **vibe-kanban** — Multi-agent Kanban orchestration (`BloopAI/vibe-kanban`)
+- [ ] **Supamem** — Dual-memory MCP (`dzmitrys-dev/supamem`)
+- [ ] **tessl** — Agent skills management CLI
+- [ ] **supersecrets** — API key vault expansion
+- [ ] **VibeGrid** — Multi-agent terminal manager
+- [ ] **Bernstein** — Audit-grade orchestration (`sipyourdrink-ltd/bernstein`)
+
+---
+
+## 🏛️ Architecture Patterns (From Module 08)
+
+| Pattern | When to Use | Key File |
+|---------|-------------|----------|
+| **SAGA Orchestrator** | Distributed transactions across services | `saga_orchestrator.py` |
+| **CQRS** | Read/write asymmetry > 100:1 | `cqrs_fastapi.py` |
+| **Event-Driven** | Decoupled async microservices | `event_driven_broker.py` |
+| **Blue-Green Deploy** | Zero-downtime deployment | `blue_green_deploy.sh` |
+| **LLM Proxy Router** | Multi-provider with failover | Priority decay + cooldown quarantine |
+| **Playwright QA** | Autonomous test-and-fix loop | 8-iteration fix cycle |
+
+---
+
+## 📜 License
+
+MIT License — Copyright © 2026 **Aditya Shirsatrao**
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the conditions in the [LICENSE](LICENSE) file.
+
+---
+
+<p align="center">
+  <sub>Built because 3 AM context exhaustion sucks · Powered by 12 brains · Driven by zero assumptions</sub>
+  <br>
+  <sub>Made with 🧠 by <a href="https://github.com/adityashirsatrao007">Aditya Shirsatrao</a></sub>
+  <br><br>
+  <sub>
+    <a href="https://github.com/adityashirsatrao007/MEMORY">GitHub</a> ·
+    <a href="https://github.com/adityashirsatrao007/MEMORY/issues">Issues</a> ·
+    <a href="https://github.com/adityashirsatrao007/MEMORY/discussions">Discussions</a>
+  </sub>
+</p>
