@@ -29,11 +29,11 @@ MEMORY is **free for individuals and open-source projects** under the MIT Licens
 | Tier | USD (per year) | INR (per year) |
 |------|---------------|----------------|
 | 🆓 Free (MIT) | $0 | ₹0 |
-| 🚀 Startup | $49 | ₹4,199 |
-| 🏢 Business | $199 | ₹16,999 |
+| 🚀 Startup | $49 | ₹4,699 |
+| 🏢 Business | $199 | ₹18,999 |
 | 🏛️ Enterprise | Custom | Custom |
 
-> Prices in INR are approximate equivalents at ₹86/USD. Actual billing in either currency.
+> Prices in INR are approximate equivalents at ₹95/USD (mid-market rate, Jun 2026). Actual billing in either currency.
 
 ## What You Get at Each Tier
 
@@ -44,13 +44,13 @@ MEMORY is **free for individuals and open-source projects** under the MIT Licens
 - GitHub Pages landing page
 - MIT license — use in any open-source project
 
-### 🚀 Startup — $49/year (₹4,199/year)
+### 🚀 Startup — $49/year (₹4,699/year)
 Everything in Free, plus:
 - Commercial license for up to 20 users
 - Email support within 48 hours
 - Priority GitHub issues
 
-### 🏢 Business — $199/year (₹16,999/year)
+### 🏢 Business — $199/year (₹18,999/year)
 Everything in Startup, plus:
 - Up to 100 commercial users
 - 3 custom memory modules for your stack
