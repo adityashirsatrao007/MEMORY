@@ -1,135 +1,239 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Token Savings — MEMORY</title>
-  <style>
-    :root {
-      --ivory:    #FAF9F5; --slate: #141413; --clay: #D97757;
-      --oat:      #E3DACC; --olive: #788C5D;
-      --gray-150: #F0EEE6; --gray-300: #D1CFC5;
-      --gray-500: #87867F; --gray-700: #3D3D3A; --white: #FFFFFF;
-      --serif: ui-serif, Georgia, 'Times New Roman', serif;
-      --sans:  system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      --mono:  ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: var(--sans); background: var(--ivory);
-      color: var(--gray-700); line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-    }
-    .page { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
-    .hero { padding: 60px 0 40px; text-align: center; }
-    .hero h1 {
-      font-family: var(--serif); font-weight: 500;
-      font-size: clamp(32px, 4vw, 48px);
-      color: var(--slate); letter-spacing: -0.02em;
-    }
-    .hero p { color: var(--gray-500); margin-top: 8px; font-size: 16px; }
-    .back { display: inline-block; margin-bottom: 16px; color: var(--olive); text-decoration: none; font-size: 14px; }
-    .back:hover { text-decoration: underline; }
-    section { margin-bottom: 60px; }
-    h2 {
-      font-family: var(--serif); font-weight: 500;
-      font-size: 24px; color: var(--slate); margin-bottom: 20px;
-    }
-    .diagram {
-      background: var(--white); padding: 24px; border-radius: 16px;
-      border: 1px solid var(--gray-300); margin-bottom: 24px; text-align: center;
-    }
-    .diagram img { max-width: 100%; height: auto; border-radius: 8px; }
-    .diagram .caption { font-size: 13px; color: var(--gray-500); margin-top: 12px; }
-    table {
-      width: 100%; border-collapse: collapse; margin: 16px 0;
-      background: var(--white); border-radius: 12px; overflow: hidden;
-      border: 1px solid var(--gray-300);
-    }
-    th, td { padding: 12px 16px; text-align: left; font-size: 14px; }
-    th { background: var(--gray-150); color: var(--slate); font-weight: 600; }
-    td { border-top: 1px solid var(--gray-150); }
-    .savings-big { font-size: 48px; font-weight: 700; color: var(--olive); font-family: var(--serif); }
-    .highlight { background: var(--gray-150); padding: 24px; border-radius: 12px; margin: 16px 0; }
-    .tagline { text-align: center; color: var(--gray-500); font-size: 13px; padding: 40px 0; border-top: 1px solid var(--gray-300); margin-top: 40px; }
-    .tagline a { color: var(--olive); text-decoration: none; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MEMORY Token Savings — 95% fewer tokens with lazy mode vs monolithic GEMINI.md. Cost comparison across providers.">
+<title>Token Savings — MEMORY</title>
+<script>(function(){const e=localStorage.getItem('theme');if(e==='dark'||(e!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark')})()</script>
+<style>
+:root {
+  --ivory:  #FAF9F5; --paper:  #FFFFFF; --slate:  #141413;
+  --clay:   #D97757; --clay-d: #B85C3E; --oat:    #E3DACC;
+  --olive:  #788C5D; --olive-l:#9BB07A;
+  --g50:    #F8F7F3; --g100:   #F0EEE6; --g200:   #E6E3DA;
+  --g300:   #D1CFC5; --g400:   #B0ADA4; --g500:   #87867F;
+  --g600:   #5E5D58; --g700:   #3D3D3A; --g800:   #262624;
+  --serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+  --sans:  system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono:  ui-monospace, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --ease:  cubic-bezier(.22,.61,.36,1); --nav-h: 64px;
+}
+html.dark {
+  --ivory:  #141413; --paper:  #1C1C1A; --slate:  #F0EEE6;
+  --oat:    #2A2A27; --g50:    #1A1A18; --g100:   #222220;
+  --g200:   #2E2E2B; --g300:   #3D3D3A; --g400:   #5E5D58;
+  --g500:   #87867F; --g600:   #B0ADA4; --g700:   #D1CFC5; --g800:   #E6E3DA;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:80px; }
+body {
+  background:var(--ivory); color:var(--g700);
+  font-family:var(--sans); line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+nav {
+  position:sticky; top:0; z-index:100;
+  height:var(--nav-h);
+  background:color-mix(in srgb, var(--ivory) 88%, transparent);
+  backdrop-filter:blur(14px) saturate(1.4);
+  -webkit-backdrop-filter:blur(14px) saturate(1.4);
+  border-bottom:1px solid var(--g200);
+}
+.nav-inner {
+  max-width:1200px; margin:0 auto; padding:0 28px;
+  height:100%; display:flex; align-items:center; justify-content:space-between;
+}
+.nav-brand { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--slate); font-weight:600; font-size:15px; letter-spacing:-0.01em; }
+.nav-brand svg { width:28px; height:28px; }
+.nav-links { display:flex; align-items:center; gap:6px; }
+.nav-links a { padding:8px 14px; border-radius:8px; font-size:13px; font-weight:500; color:var(--g500); text-decoration:none; transition:all .15s; }
+.nav-links a:hover { color:var(--slate); background:var(--g100); }
+.theme-toggle {
+  background:none; border:1px solid var(--g300); border-radius:8px;
+  width:36px; height:36px; cursor:pointer; color:var(--g500);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; transition:all .15s;
+}
+.theme-toggle:hover { border-color:var(--slate); color:var(--slate); background:var(--g100); }
+.page { max-width:1200px; margin:0 auto; padding:0 28px 80px; }
+.page-header { padding:48px 0 32px; }
+.page-header h1 { font-family:var(--serif); font-weight:500; font-size:clamp(28px,3vw,38px); color:var(--slate); letter-spacing:-0.015em; }
+.page-header .sub { font-size:14px; color:var(--g500); margin-top:4px; }
+
+.card { background:var(--paper); border:1.5px solid var(--g300); border-radius:16px; padding:32px; margin-bottom:28px; }
+.card h2 { font-family:var(--serif); font-weight:500; font-size:20px; color:var(--slate); margin-bottom:16px; letter-spacing:-0.01em; }
+.card .caption { font-family:var(--mono); font-size:11px; color:var(--g500); text-align:center; margin-top:12px; letter-spacing:0.04em; }
+
+.chart-wrap { width:100%; overflow:visible; margin:8px 0; }
+.chart-wrap svg { width:100%; height:auto; display:block; }
+
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+@media (max-width:700px){ .grid-2 { grid-template-columns:1fr; } }
+
+.big-num { font-family:var(--serif); font-size:48px; font-weight:600; color:var(--olive); line-height:1; }
+.big-num .unit { font-size:20px; color:var(--g500); font-weight:400; }
+.highlight-box { background:var(--g100); border-radius:12px; padding:20px; margin:16px 0; }
+.highlight-box p { font-size:14px; }
+
+.footer-divider { height:1px; background:var(--g200); margin:40px 0 24px; }
+.footer-links { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+.footer-links a { color:var(--g500); text-decoration:none; font-size:13px; transition:color .15s; }
+.footer-links a:hover { color:var(--slate); }
+</style>
 </head>
 <body>
-  <div class="page">
-    <div class="hero">
-      <a class="back" href="../index.html">&larr; Back to MEMORY</a>
-      <h1>Token Savings Analysis</h1>
-      <p>How MEMORY saves 60–95% of your context budget</p>
-    </div>
 
-    <section>
-      <h2>Lines per Session</h2>
-      <div class="diagram">
-        <img src="images/token-savings.png" alt="Token Savings Chart">
-        <div class="caption">From 3,622 lines down to 200 — 95% reduction in context consumption</div>
-      </div>
-      <table>
-        <tr><th>Mode</th><th>Lines Loaded</th><th>Tokens (approx)</th><th>vs Monolith</th></tr>
-        <tr><td>Old Monolithic</td><td>3,622</td><td>~18,000</td><td>Baseline</td></tr>
-        <tr><td>Full Mode (core + CLI + task)</td><td>1,420</td><td>~7,100</td><td><span class="badge" style="background:#E8F0E4;color:var(--olive);padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;">−60%</span></td></tr>
-        <tr><td>Lazy Mode (vector search)</td><td>200</td><td>~1,000</td><td><span class="badge" style="background:#E8F0E4;color:var(--olive);padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;">−95%</span></td></tr>
-      </table>
-    </section>
-
-    <section>
-      <h2>Cost Impact</h2>
-      <div class="diagram">
-        <img src="images/cost-comparison.png" alt="Cost Comparison Chart">
-        <div class="caption">MEMORY + freellmapi proxy = $0 per session</div>
-      </div>
-      <table>
-        <tr><th>Service</th><th>Per Call</th><th>Per Session</th><th>Annual (1000 sessions)</th></tr>
-        <tr><td>Claude Sonnet (direct)</td><td>$0.003</td><td>~$6.00</td><td>$6,000</td></tr>
-        <tr><td>Gemini Flash (direct)</td><td>$0.00015</td><td>~$0.30</td><td>$300</td></tr>
-        <tr><td>Local Ollama</td><td>$0.00001</td><td>~$0.02</td><td>$20</td></tr>
-        <tr><td><strong>freellmapi + MEMORY Lazy</strong></td><td><strong>$0</strong></td><td><strong>$0</strong></td><td><strong>$0</strong></td></tr>
-      </table>
-    </section>
-
-    <section>
-      <h2>The Math</h2>
-      <div class="highlight">
-        <p><strong>Without MEMORY:</strong> 3,622 lines × 5 tokens/line = ~18,100 tokens.<br>
-        Claude Sonnet 200K context: <strong>9% consumed</strong> before any work.<br>
-        After 3-4 exchanges: context full, agent forgets, hallucinations begin.</p>
-      </div>
-      <div class="highlight">
-        <p><strong>With MEMORY Lazy:</strong> 200-line vector search = ~1,000 tokens.<br>
-        Claude Sonnet 200K context: <strong>0.5% consumed</strong>.<br>
-        ~190K tokens available for actual work.</p>
-      </div>
-    </section>
-
-    <section>
-      <h2>Token Breakdown by Module</h2>
-      <table>
-        <tr><th>Module</th><th>Lines</th><th>Tokens</th><th>% of Total</th></tr>
-        <tr><td>01 Core Rules</td><td>115</td><td>575</td><td>3.2%</td></tr>
-        <tr><td>02 CLI Tools</td><td>160</td><td>800</td><td>4.4%</td></tr>
-        <tr><td>03 ML Engineering</td><td>292</td><td>1,460</td><td>8.1%</td></tr>
-        <tr><td>04 Security</td><td>147</td><td>735</td><td>4.1%</td></tr>
-        <tr><td>05 UI/UX</td><td>274</td><td>1,370</td><td>7.6%</td></tr>
-        <tr><td>06 Web Dev</td><td>305</td><td>1,525</td><td>8.4%</td></tr>
-        <tr><td>07 Job Hunt</td><td>145</td><td>725</td><td>4.0%</td></tr>
-        <tr><td>08 Architecture</td><td>198</td><td>990</td><td>5.5%</td></tr>
-        <tr><td>09 Misc</td><td>255</td><td>1,275</td><td>7.0%</td></tr>
-        <tr><td>10 Lessons</td><td>17</td><td>85</td><td>0.5%</td></tr>
-        <tr><td>11 Errors</td><td>30</td><td>150</td><td>0.8%</td></tr>
-        <tr><td>12 Repo Teachings</td><td>107</td><td>535</td><td>3.0%</td></tr>
-      </table>
-    </section>
-
-    <div class="tagline">
-      <a href="https://github.com/adityashirsatrao007/MEMORY">GitHub</a> ·
-      <a href="https://github.com/adityashirsatrao007/MEMORY/issues">Issues</a> ·
-      <a href="pricing.html">Pricing</a>
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">
+      <svg viewBox="0 0 28 28" fill="none"><rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 14h12M14 8v12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="14" cy="14" r="3" fill="currentColor" opacity=".3"/></svg>
+      MEMORY
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#9681;</button>
     </div>
   </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <h1>Token Savings Analysis</h1>
+    <div class="sub">How MEMORY saves 60–95% of your context budget</div>
+  </div>
+
+  <!-- Lines per mode -->
+  <div class="card">
+    <h2>Lines Loaded Per Session</h2>
+    <div class="chart-wrap">
+      <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+        <line x1="60" y1="50" x2="740" y2="50" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="60" y1="100" x2="740" y2="100" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="60" y1="150" x2="740" y2="150" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="60" y1="200" x2="740" y2="200" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="60" y1="250" x2="740" y2="250" stroke="var(--g300)" stroke-width="1"/>
+        <text x="52" y="54" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="11">4K</text>
+        <text x="52" y="104" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="11">3K</text>
+        <text x="52" y="154" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="11">2K</text>
+        <text x="52" y="204" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="11">1K</text>
+        <text x="52" y="254" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="11">0</text>
+        <rect x="95" y="26" width="100" height="224" rx="4" fill="color-mix(in srgb, var(--clay) 18%, transparent)" stroke="var(--clay)" stroke-width="2"><title>Old: 3,622 lines</title></rect>
+        <rect x="305" y="106" width="100" height="144" rx="4" fill="color-mix(in srgb, #6C8EBF 18%, transparent)" stroke="#6C8EBF" stroke-width="2"><title>Full: 1,420 lines (−60%)</title></rect>
+        <rect x="515" y="206" width="100" height="44" rx="4" fill="color-mix(in srgb, var(--olive) 18%, transparent)" stroke="var(--olive)" stroke-width="2"><title>Lazy: 200 lines (−95%)</title></rect>
+        <text x="145" y="18" text-anchor="middle" fill="var(--clay)" font-family="var(--mono)" font-size="14" font-weight="700">3,622</text>
+        <text x="145" y="260" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="12">Old Monolithic</text>
+        <text x="355" y="98" text-anchor="middle" fill="#6C8EBF" font-family="var(--mono)" font-size="14" font-weight="700">1,420</text>
+        <text x="355" y="260" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="12">Full Mode</text>
+        <text x="565" y="198" text-anchor="middle" fill="var(--olive)" font-family="var(--mono)" font-size="14" font-weight="700">200</text>
+        <text x="565" y="260" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="12">Lazy Mode</text>
+        <rect x="205" y="140" width="90" height="24" rx="12" fill="var(--clay)" opacity="0.9"/>
+        <text x="250" y="156" text-anchor="middle" fill="#fff" font-family="var(--mono)" font-size="10" font-weight="700">−60%</text>
+        <rect x="420" y="90" width="90" height="24" rx="12" fill="var(--olive)" opacity="0.9"/>
+        <text x="465" y="106" text-anchor="middle" fill="#fff" font-family="var(--mono)" font-size="10" font-weight="700">−95%</text>
+      </svg>
+    </div>
+    <p class="caption">From 18,000 tokens to 1,000 — 95% less context consumed at session start</p>
+  </div>
+
+  <!-- Cost comparison -->
+  <div class="card">
+    <h2>Cost Per Session</h2>
+    <div class="chart-wrap">
+      <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+        <line x1="60" y1="50" x2="760" y2="50" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="60" y1="100" x2="760" y2="100" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="60" y1="150" x2="760" y2="150" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="60" y1="200" x2="760" y2="200" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="60" y1="250" x2="760" y2="250" stroke="var(--g300)" stroke-width="1"/>
+        <text x="52" y="54" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="10">$6.00</text>
+        <text x="52" y="104" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="10">$4.50</text>
+        <text x="52" y="154" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="10">$3.00</text>
+        <text x="52" y="204" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="10">$1.50</text>
+        <text x="52" y="254" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="10">$0</text>
+        <rect x="75" y="48" width="70" height="202" rx="3" fill="color-mix(in srgb, var(--clay) 18%, transparent)" stroke="var(--clay)" stroke-width="1.5"><title>Claude Sonnet: ~$6.00/session</title></rect>
+        <rect x="175" y="235" width="70" height="15" rx="3" fill="color-mix(in srgb, #6C8EBF 18%, transparent)" stroke="#6C8EBF" stroke-width="1.5"><title>Gemini Flash: ~$0.30/session</title></rect>
+        <rect x="275" y="243" width="70" height="7" rx="3" fill="color-mix(in srgb, #C9A45C 18%, transparent)" stroke="#C9A45C" stroke-width="1.5"><title>Ollama: ~$0.02/session</title></rect>
+        <rect x="375" y="245" width="70" height="5" rx="3" fill="color-mix(in srgb, var(--olive) 18%, transparent)" stroke="var(--olive)" stroke-width="2"><title>freellmapi: FREE</title></rect>
+        <rect x="475" y="245" width="70" height="5" rx="3" fill="var(--olive)" opacity="0.85"><title>MEMORY Lazy: FREE</title></rect>
+        <rect x="575" y="245" width="70" height="5" rx="3" fill="var(--olive)" opacity="0.7"><title>MEMORY Full: FREE</title></rect>
+        <text x="110" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">Sonnet</text>
+        <text x="210" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">Flash</text>
+        <text x="310" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">Ollama</text>
+        <text x="410" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">freellmapi</text>
+        <text x="510" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">+ Lazy</text>
+        <text x="610" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">+ Full</text>
+        <text x="410" y="238" text-anchor="middle" fill="var(--olive)" font-family="var(--mono)" font-size="11" font-weight="700">FREE</text>
+        <text x="510" y="238" text-anchor="middle" fill="var(--olive)" font-family="var(--mono)" font-size="11" font-weight="700">FREE</text>
+        <text x="610" y="238" text-anchor="middle" fill="var(--olive)" font-family="var(--mono)" font-size="11" font-weight="700">FREE</text>
+      </svg>
+    </div>
+    <p class="caption">MEMORY + freellmapi proxy = $0 per session. Annual savings: up to $6,000</p>
+  </div>
+
+  <!-- Key metrics -->
+  <div class="grid-2">
+    <div class="card">
+      <h2>Without MEMORY</h2>
+      <div class="highlight-box">
+        <div class="big-num">18K<span class="unit"> tokens</span></div>
+        <p style="margin-top:8px;">consumed before any work. <strong>9%</strong> of Claude Sonnet's 200K context gone on init alone.</p>
+        <p style="margin-top:8px;">After 3–4 exchanges: context full → agent forgets → hallucinations.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h2>With MEMORY Lazy</h2>
+      <div class="highlight-box">
+        <div class="big-num">1K<span class="unit"> tokens</span></div>
+        <p style="margin-top:8px;">just <strong>0.5%</strong> of context. ~190K tokens free for actual work.</p>
+        <p style="margin-top:8px;">Vector search finds the exact module you need in 0.8s. No full scan.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module breakdown -->
+  <div class="card">
+    <h2>Module Token Breakdown</h2>
+    <div class="chart-wrap">
+      <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+        <rect x="180" y="20" width="40" height="18" rx="3" fill="var(--clay)"/><text x="230" y="34" fill="var(--g600)" font-family="var(--sans)" font-size="12">01 Core Rules (575 tok)</text>
+        <rect x="180" y="44" width="56" height="18" rx="3" fill="var(--olive)"/><text x="246" y="58" fill="var(--g600)" font-family="var(--sans)" font-size="12">02 CLI Tools (800 tok)</text>
+        <rect x="180" y="68" width="102" height="18" rx="3" fill="#6C8EBF"/><text x="292" y="82" fill="var(--g600)" font-family="var(--sans)" font-size="12">03 ML Engineering (1,460 tok)</text>
+        <rect x="180" y="92" width="52" height="18" rx="3" fill="#C9A45C"/><text x="242" y="106" fill="var(--g600)" font-family="var(--sans)" font-size="12">04 Security (735 tok)</text>
+        <rect x="180" y="116" width="96" height="18" rx="3" fill="#9673A6"/><text x="286" y="130" fill="var(--g600)" font-family="var(--sans)" font-size="12">05 UI/UX (1,370 tok)</text>
+        <rect x="180" y="140" width="107" height="18" rx="3" fill="var(--clay)" opacity="0.7"/><text x="297" y="154" fill="var(--g600)" font-family="var(--sans)" font-size="12">06 Web Dev (1,525 tok)</text>
+        <rect x="180" y="164" width="51" height="18" rx="3" fill="var(--olive)" opacity="0.7"/><text x="241" y="178" fill="var(--g600)" font-family="var(--sans)" font-size="12">07 Job Hunt (725 tok)</text>
+        <rect x="180" y="188" width="70" height="18" rx="3" fill="#6C8EBF" opacity="0.7"/><text x="260" y="202" fill="var(--g600)" font-family="var(--sans)" font-size="12">08 Architecture (990 tok)</text>
+        <rect x="180" y="212" width="90" height="18" rx="3" fill="#C9A45C" opacity="0.7"/><text x="280" y="226" fill="var(--g600)" font-family="var(--sans)" font-size="12">09 Misc (1,275 tok)</text>
+        <rect x="180" y="236" width="6" height="18" rx="3" fill="#9673A6" opacity="0.7"/><text x="196" y="250" fill="var(--g600)" font-family="var(--sans)" font-size="12">10 Lessons (85 tok)</text>
+        <rect x="180" y="260" width="11" height="18" rx="3" fill="var(--clay)" opacity="0.5"/><text x="201" y="274" fill="var(--g600)" font-family="var(--sans)" font-size="12">11 Errors (150 tok)</text>
+        <rect x="180" y="284" width="38" height="18" rx="3" fill="var(--olive)" opacity="0.5"/><text x="228" y="298" fill="var(--g600)" font-family="var(--sans)" font-size="12">12 Research (535 tok)</text>
+        <line x1="20" y1="316" x2="580" y2="316" stroke="var(--g300)" stroke-width="1"/>
+        <text x="20" y="330" fill="var(--g500)" font-family="var(--mono)" font-size="9">0</text>
+        <text x="160" y="330" fill="var(--g500)" font-family="var(--mono)" font-size="9">500</text>
+        <text x="310" y="330" fill="var(--g500)" font-family="var(--mono)" font-size="9">1000</text>
+        <text x="460" y="330" fill="var(--g500)" font-family="var(--mono)" font-size="9">1500</text>
+        <text x="575" y="330" fill="var(--g500)" font-family="var(--mono)" font-size="9">~10K total</text>
+      </svg>
+    </div>
+    <p class="caption">Full load: ~10,225 tokens across all 12 modules. Lazy mode fetches only the relevant ~200 lines via vector search</p>
+  </div>
+
+  <div class="footer-divider"></div>
+  <div class="footer-links">
+    <a href="https://github.com/adityashirsatrao007/MEMORY">GitHub</a>
+    <a href="https://github.com/adityashirsatrao007/MEMORY/issues">Issues</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="benchmarks.html">Benchmarks</a>
+    <a href="../index.html">Home</a>
+  </div>
+  <p style="text-align:center;font-size:12px;color:var(--g500);margin-top:24px;">MIT License &middot; Copyright &copy; 2026 Aditya Shirsatrao</p>
+
+</div>
+
+<script>
+function toggleTheme(){const d=document.documentElement;const isDark=d.classList.toggle('dark');localStorage.setItem('theme',isDark?'dark':'light')}
+</script>
 </body>
 </html>
