@@ -413,7 +413,7 @@ memory verify
 ```
 
 **Architecture:** FastAPI backend → PostgreSQL → RS256 signed JWTs → machine-bound tokens.  
-7-day offline grace period. See [SECURITY.md](SECURITY.md) for threat model.
+7-day offline grace period. See [LICENSE_SECURITY.md](docs/LICENSE_SECURITY.md) for threat model.
 
 Admin panel: `http://localhost:8443/admin`
 
