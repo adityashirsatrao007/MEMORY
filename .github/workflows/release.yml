@@ -1,0 +1,23 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v*'
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build release archive
+        run: |
+          tar czf memory-${{ github.ref_name }}.tar.gz \
+            memory/ tools/ Makefile GEMINI.md \
+            LICENSE README.md docs/ \
+            --exclude='.git' --exclude='node_modules'
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: memory-${{ github.ref_name }}.tar.gz
+          generate_release_notes: true
