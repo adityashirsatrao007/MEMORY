@@ -194,6 +194,8 @@ Place under `docs/`:
 - **PRD:** Copy `/home/aditya/bin/templates/specs/PRD.md` to `docs/PRD.md`
 - **DESIGNDOC:** Copy `/home/aditya/bin/templates/specs/DESIGNDOC.md` to `docs/DESIGNDOC.md`
 - **TECHSTACK:** Copy `/home/aditya/bin/templates/specs/TECHSTACK.md` to `docs/TECHSTACK.md`
+- **Claude Codes:** Use the prompt stacking cheat sheet at [$MEMORY_ROOT/templates/CLAUDE_CODES.md](file:///home/aditya/Desktop/Projects/MEMORY/templates/CLAUDE_CODES.md) for custom formatting, tones, and expert modules.
+
 
 ## Google Stitch API Frontend Protocol
 
@@ -208,3 +210,44 @@ If sandbox blocks a command, use `ask_permission` tool to request permanent exce
 
 ## Autonomous Design Decisions (Vibe Coder)
 Analyze project type, select perfect Aesthetic + Layout + Animation stack. Pass directives to Stitch API.
+
+---
+
+## 🏗️ Antigravity Infrastructure (local system)
+
+### Port Reservation
+| Port | Service | Status |
+|------|---------|--------|
+| 3001 | freellmapi API | PM2 - permanent |
+| 5173 | freellmapi dashboard | dev |
+| 8082 | MEMORY dashboard | optional |
+| 8083 | MEMORY dashboard (alt) | optional |
+
+### freellmapi Proxy (0-cost LLM)
+**Always use freellmapi instead of direct provider APIs to save tokens.**
+- Base URL: `http://localhost:3001/v1`
+- Key: `freellmapi-c72bebe9578ae453d5d77b79af6e988e19405950c2087632`
+- Model: `auto` (auto-routes across 12 free providers)
+- Auto-failover, 1.7B free tokens/month
+
+### API Key Loading
+```bash
+source ~/.config/global-apikeys/load_keys.sh
+```
+Available keys: GROQ, MISTRAL, GEMINI, OPENROUTER, CEREBRAS, NVIDIA_NIM, HUGGINGFACE, OPENCODE, ZAI, DEEPSEEK, KIMI, FIREWORKS, WAFER, GITHUB, COHERE, CLOUDFLARE, FREELLMAPI
+
+### Free Claude Code (fcc)
+Free Claude Code routes Anthropic Messages API traffic from Claude Code to free/paid/local providers.
+- Install: `curl -fsSL "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1" | sh`
+- Run proxy: `fcc-server`
+- Use Claude: `fcc-claude`
+- Admin UI: `http://localhost:8082/admin`
+- Config through Admin UI (set provider key, model, etc.)
+- Supports 17 providers: NVIDIA NIM, OpenRouter, Gemini, DeepSeek, Mistral, etc.
+
+### Token Optimization Rules
+1. Use freellmapi proxy for all LLM calls (0-cost)
+2. Use local embedding (ChromaDB default = ONNX, free)
+3. Never call direct Gemini/OpenAI APIs unless freellmapi is down
+4. Use `vector DB first` — search before loading modules
+5. Dashboard `/api/ask` routes through freellmapi (not Gemini)

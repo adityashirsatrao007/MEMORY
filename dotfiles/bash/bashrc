@@ -165,7 +165,7 @@ alias gpu-on='sudo prime-select nvidia && echo "Reboot to use NVIDIA GPU"'
 alias gpu-status='prime-select query 2>/dev/null || echo "prime-select not available"'
 alias dim='brightnessctl set 30%'
 alias bright='brightnessctl set 80%'
-eval "$(direnv hook bash)"
+command -v direnv >/dev/null && eval "$(direnv hook bash)"
 eval "$(zoxide init bash)"
 alias cd='z'
 alias ls='eza --icons'
@@ -174,8 +174,8 @@ alias la='eza -la --icons'
 alias find='fd'
 alias cat='bat --style=plain'
 
-export KAGGLE_API_TOKEN=$(cat ~/.kaggle/access_token)
-export HF_TOKEN=$(cat ~/.cache/huggingface/token)
+[ -f ~/.kaggle/access_token ] && export KAGGLE_API_TOKEN=$(cat ~/.kaggle/access_token 2>/dev/null)
+[ -f ~/.cache/huggingface/token ] && export HF_TOKEN=$(cat ~/.cache/huggingface/token 2>/dev/null)
 export WANDB_API_KEY=$(cat ~/.config/wandb/api_key 2>/dev/null || echo "SET_ME")
 export ROBOFLOW_API_KEY=$(cat ~/.config/roboflow/api_key 2>/dev/null || echo "SET_ME")
 export PUPPETEER_EXECUTABLE_PATH=/snap/bin/chromium
@@ -213,3 +213,35 @@ alias readme='glow'
 __ARC="/tmp/.agent-read-cache"
 mark-read() { echo "$(realpath "$1")" >> "$__ARC" 2>/dev/null; }
 is-read()   { grep -qxF "$(realpath "$1")" "$__ARC" 2>/dev/null; }
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/aditya/.local/google-cloud-sdk/path.bash.inc' ]; then . '/home/aditya/.local/google-cloud-sdk/path.bash.inc'; fi
+alias finder='nautilus'
+
+[[ -f ~/.mac_aliases ]] && source ~/.mac_aliases
+# MEMORY agent aliases
+alias grep=rg
+alias cat=bat
+alias ls='eza --icons'
+alias ll='eza -la --icons --git'
+alias du='dust'
+alias top=btop
+alias ps='procs'
+alias sed='sd'
+alias find='fd'
+alias v='nvim'
+alias gl='lazygit'
+source ~/.cargo/env 2>/dev/null
+source ~/.local/bin/pipx ensurepath 2>/dev/null
+export MEMORY_ROOT="$HOME/Desktop/Projects/MEMORY"
+export MEMORY_MODE=lazy  # ~70 tokens/session (full=~1420)
+export PATH="$MEMORY_ROOT/tools:$PATH"
+export EDITOR=nvim
+export PATH="$HOME/bin/guardrails:$PATH"
+export OPENHUMAN_VAULT="$HOME/.local/share/com.openhuman.app"
+
+# ── Global API Keys (auto-loaded) ──
+[[ -f "$HOME/.config/global-apikeys/load_keys.sh" ]] && source "$HOME/.config/global-apikeys/load_keys.sh"
+export PATH="$HOME/.npm-global/bin:$PATH"
+
+. "$HOME/.local/bin/env"

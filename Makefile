@@ -2,7 +2,7 @@
 
 MODULES = $(wildcard memory/modules/*.md)
 
-validate:  ## Check all module files exist and have content
+validate:  ## Check all module files exist and have content, and run UI validation
 	@echo "=== Module Validation ==="
 	@errors=0; \
 	for m in $(MODULES); do \
@@ -16,10 +16,16 @@ validate:  ## Check all module files exist and have content
 	echo "  GEMINI.md: $$(wc -l < GEMINI.md) lines (index)"; \
 	echo "  Grand total: $$((total + $$(wc -l < GEMINI.md))) lines"; \
 	[ "$$errors" -eq 0 ] && echo "  ✅ All modules valid" || echo "  ❌ $$errors error(s)"
+	@make validate-ui
+
+validate-ui:  ## Run the UI design system and placeholder validation script
+	@echo "=== UI & Apple HIG Validation ==="
+	@python3 tools/validate_ui.py .
+
 
 seed:  ## Re-vector ChromaDB from all module files (--force)
 	@echo "=== Seeding Vector DB ==="
-	@. /home/aditya/.venvs/ml/bin/activate && python3 tools/seed_vector_db.py --force
+	@. .venv/bin/activate && python3 tools/seed_vector_db.py --force
 	@echo "  ✅ Done"
 
 stats:  ## Module sizes and token savings
@@ -51,9 +57,12 @@ stats:  ## Module sizes and token savings
 	vpct=$$((vsavings * 100 / 3622)); \
 	echo "    Lines saved per session: ~$$vsavings (~$$vpct%)"
 
-hooks:  ## Install git hooks for auto-seed (run after clone)
+hooks:  ## Install git hooks for auto-seed and UI validation (run after clone)
 	@echo "=== Installing git hooks ==="
 	@mkdir -p .githooks
+	@printf '%s\n' '#!/bin/bash' '# Auto-validate UI design before committing' \
+	  'make validate-ui' > .githooks/pre-commit
+	@chmod +x .githooks/pre-commit
 	@printf '%s\n' '#!/bin/bash' '# Auto-re-vector ChromaDB when module files change' \
 	  'CHANGED=$$(git diff HEAD@{1} --name-only 2>/dev/null | grep -c "memory/modules/")' \
 	  'if [ "$$CHANGED" -gt 0 ]; then' \
@@ -67,7 +76,7 @@ hooks:  ## Install git hooks for auto-seed (run after clone)
 	  'fi' > .githooks/post-commit
 	@chmod +x .githooks/post-commit
 	@git config core.hooksPath .githooks 2>/dev/null || true
-	@echo "  ✅ post-merge + post-commit hooks installed in .githooks/"
+	@echo "  ✅ pre-commit, post-merge, and post-commit hooks installed in .githooks/"
 
 all: validate seed  ## Validate modules and re-seed vector DB
 

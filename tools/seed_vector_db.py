@@ -1,7 +1,8 @@
-"""Seed ChromaDB with all module files (GEMINI.md + 9 modules).
-Run with --force to re-seed even if entries exist."""
+"""Seed ChromaDB with all module files (GEMINI.md + modules).
+Run with --force to re-seed even if entries exist or content unchanged."""
 
 import chromadb
+import hashlib
 import os
 import sys
 from pathlib import Path
@@ -12,9 +13,16 @@ FILES = [
     BASE / "GEMINI.md",
     *(BASE / "memory/modules").glob("*.md"),
 ]
+HASH_FILE = VECTOR_DB_PATH / "content_hash"
+
+def compute_hash():
+    h = hashlib.sha256()
+    for fpath in sorted(FILES):
+        if fpath.exists():
+            h.update(fpath.read_bytes())
+    return h.hexdigest()
 
 def chunk_file(path):
-    """Split file by ## headings into (section, text, start_line, end_line)."""
     with open(path) as f:
         lines = f.readlines()
     chunks = []
@@ -36,20 +44,26 @@ def chunk_file(path):
 
 client = chromadb.PersistentClient(path=str(VECTOR_DB_PATH))
 
-# Delete existing collection if --force
 if "--force" in sys.argv:
     try:
         client.delete_collection("antigravity_memory")
-        print("  Deleted existing collection (--force)")
     except Exception:
         pass
 
 collection = client.get_or_create_collection(name="antigravity_memory")
 
 existing = collection.get()
-if existing and existing.get("ids"):
-    print(f"  Vector DB already has {len(existing['ids'])} entries. Use --force to re-seed.")
-    sys.exit(0)
+if existing and existing.get("ids") and "--force" not in sys.argv:
+    current_hash = compute_hash()
+    if HASH_FILE.exists() and HASH_FILE.read_text().strip() == current_hash:
+        print(f"  Content unchanged ({len(existing['ids'])} entries). Skipping re-seed.")
+        sys.exit(0)
+    print(f"  Content changed. Re-seeding ({len(existing['ids'])} old entries).")
+    try:
+        client.delete_collection("antigravity_memory")
+        collection = client.get_or_create_collection(name="antigravity_memory")
+    except Exception:
+        pass
 
 all_chunks = []
 for fpath in sorted(FILES):
@@ -69,5 +83,5 @@ for i, (section, text, start, end, src) in enumerate(all_chunks):
     })
 
 collection.add(documents=documents, metadatas=metadatas, ids=ids)
+HASH_FILE.write_text(compute_hash())
 print(f"  Seeded {len(ids)} chunks from {len(FILES)} files into vector DB")
-print(f"  Dashboard at http://localhost:8082")

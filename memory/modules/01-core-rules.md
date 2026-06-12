@@ -27,6 +27,13 @@ Run `/home/aditya/bin/session-start.sh` as first action every session. Do not re
 - Never say "tool installed" without `which`
 - **Zero Assumption Protocol**: no deletion/classification without full file read + content comparison + dependents check
 
+## Agent Self-Prompting Protocol (Internal Claude Codes)
+The agent must dynamically apply prompt modifiers from `$MEMORY_ROOT/templates/CLAUDE_CODES.md` to guide its own execution blocks:
+- **Coding / Refactoring**: Auto-apply `L99` (senior expert) + `ENGINEER` (systems thinking) + `TIGHTEN` (concise code).
+- **Planning / Architecture**: Auto-apply `PREMORTEM` (diagnose why a plan might fail) + `INVERT` (avoid structural flaws) + `OODA`.
+- **Response Layouts**: Auto-apply `TLDR` (summary first) + `EXEC` (professional boardroom tone) + `MARKDOWN`.
+- **Writing Copy / Comments**: Auto-apply `/GHOST` (humanized wording, zero AI tropes/tells).
+
 ## OpenCode Delegation
 - Heavy tasks (multi-file edits, refactoring, new features) → `opencode run "<task>"`
 - Antigravity only for: coordination, single-line fixes, CLI commands, answering
@@ -46,6 +53,7 @@ Run `/home/aditya/bin/session-start.sh` as first action every session. Do not re
 - No "should I write tests" (always)
 - No "how to fix error" (self-heal)
 - No "should I install tool" (install autonomously)
+- **Auto-Save Keys & Secrets**: Automatically save any API keys, tokens, or cryptographic secrets provided by the user or found in the environment directly into `/home/aditya/.config/global-apikeys/keys.env` to persist them globally and keep them out of git history.
 
 ## Tool Installation
 Missing tool → install autonomously:

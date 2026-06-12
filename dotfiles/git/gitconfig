@@ -1,6 +1,7 @@
 [user]
 	name = Aditya
 	email = adityashirsatrao007@gmail.com
+	signingkey = 0027EFBE3F4CD520
 [http]
 	postBuffer = 524288000
 [credential "https://github.com"]
@@ -16,5 +17,19 @@
 	required = true
 [core]
 	excludesfile = /home/aditya/.gitignore_global
+	pager = delta
 [init]
 	defaultBranch = main
+[gpg]
+	format = openpgp
+[commit]
+	gpgsign = true
+[color]
+	ui = auto
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	light = false
+[merge]
+	conflictstyle = zdiff3

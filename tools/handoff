@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# Check if we are in a Git repository and not in the home directory
+if git rev-parse --is-inside-work-tree &>/dev/null && [ "$PWD" != "$HOME" ]; then
+    PROGRESS_FILE=".agent-progress.md"
+    GLOBAL=false
+    echo "=== Creating Local Workspace Handoff State ==="
+else
+    PROGRESS_FILE="$HOME/Desktop/Projects/MEMORY/memory/memory-bank/progress.md"
+    GLOBAL=true
+    echo "=== Updating Global Conversation Progress State ==="
+fi
+
+TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+USER_NOTES="$*"
+
+if [ "$GLOBAL" = false ]; then
+    # Write local progress file
+    cat > "$PROGRESS_FILE" << EOF
+# Agent Handoff Progress State
+- **Timestamp**: ${TIMESTAMP}
+
+EOF
+
+    if [[ -n "$USER_NOTES" ]]; then
+        cat >> "$PROGRESS_FILE" << EOF
+## User/Session Notes
+${USER_NOTES}
+
+EOF
+    fi
+
+    STATUS_OUTPUT=$(git status -s)
+    DIFF_SUMMARY=$(git diff --stat)
+
+    cat >> "$PROGRESS_FILE" << EOF
+## Workspace Git Status
+\`\`\`text
+${STATUS_OUTPUT:-"No uncommitted changes."}
+\`\`\`
+
+## Code Diff Summary
+\`\`\`text
+${DIFF_SUMMARY:-"No active diffs."}
+\`\`\`
+
+## Directives for the incoming Agent:
+1. Review the modified files listed above.
+2. Inspect the git diffs using \`git diff\` or view the modified files.
+3. Continue the task starting with the pending steps or files listed in the notes.
+EOF
+    echo "Saved handoff state to .agent-progress.md in current directory"
+else
+    # Append to the global progress file
+    cat >> "$PROGRESS_FILE" << EOF
+
+## Conversation Handoff (${TIMESTAMP})
+- **Notes**: ${USER_NOTES:-"No explicit session notes provided."}
+- **Incoming Agent Directive**: Read this note and resolve any pending tasks described.
+EOF
+    echo "Appended handoff state to global memory-bank progress.md"
+fi

@@ -24,3 +24,7 @@ This module serves as a persistent error ledger for Antigravity. Before executin
 ## 5. NPM 404 Missing Packages
 **Error:** `npm install -g @opencode/opencode` threw a 404 Not Found error and halted the setup sequence.
 **Prevention:** Never let a single missing NPM package crash a massive sequence. Always append `|| true` to non-critical tool installations and verify package existence before halting.
+
+## 6. Antigravity Token Exhaustion (2026-06-13)
+**Error:** All Antigravity API quotas reached N/A — Gemini, Claude, GPT-OSS all showed 0 remaining with reset times of 8m–4h. The `antigravity` IDE language server and dashboard `/api/ask` (which was calling `gemini-2.5-flash` directly) consumed the full token budget.
+**Prevention:** Never call premium model APIs directly through paid keys. Always route through freellmapi proxy (`http://localhost:3001/v1`) which uses auto-failover across 12 free providers. The dashboard `/api/ask` now uses freellmapi. Also watch for git hooks triggering vector DB re-seeds (heavy but local/ free).

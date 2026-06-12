@@ -1,4 +1,5 @@
 import os
+import httpx
 from fastapi import FastAPI
 import chromadb
 
@@ -6,6 +7,9 @@ app = FastAPI(title="Antigravity Supermemory Dashboard")
 
 VECTOR_DB_PATH = os.path.expanduser("~/Desktop/Projects/MEMORY/memory/vector_db")
 PROGRESS_FILE = os.path.expanduser("~/Desktop/Projects/MEMORY/memory/memory-bank/progress.md")
+
+FREELLMAPI_URL = os.environ.get("FREELLMAPI_BASE_URL", "http://localhost:3001/v1")
+FREELLMAPI_KEY = os.environ.get("FREELLMAPI_KEY", "freellmapi-c72bebe9578ae453d5d77b79af6e988e19405950c2087632")
 
 try:
     chroma_client = chromadb.PersistentClient(path=VECTOR_DB_PATH)
@@ -17,6 +21,15 @@ except Exception as e:
 @app.get("/")
 def read_root():
     return {"status": "ok", "app": "Antigravity Supermemory Dashboard", "endpoints": ["/api/recent", "/api/stats", "/api/search?q=", "/api/save", "/api/ask"]}
+
+@app.get("/health")
+def health():
+    return {"status": "healthy"}
+
+@app.get("/ready")
+def ready():
+    ok = collection is not None
+    return {"status": "ready" if ok else "not ready", "db": ok}
 
 @app.get("/api/recent")
 def get_recent_memories():
@@ -68,7 +81,7 @@ def search_memories(q: str):
     try:
         results = collection.query(
             query_texts=[q],
-            n_results=10
+            n_results=5
         )
         
         memories = []
@@ -91,7 +104,6 @@ import urllib.request
 from bs4 import BeautifulSoup
 import markdownify
 import time
-import google.generativeai as genai
 
 class SaveRequest(BaseModel):
     text: Optional[str] = None
@@ -145,26 +157,32 @@ def ask_ai(req: AskRequest):
     try:
         results = collection.query(
             query_texts=[req.query],
-            n_results=5
+            n_results=3
         )
         
         context = ""
         if results and results['documents'] and results['documents'][0]:
-            for doc, meta in zip(results['documents'][0], results['metadatas'][0]):
-                context += f"- [{meta.get('date')} {meta.get('time')}] {doc}\n\n"
+            for doc in results['documents'][0]:
+                context += f"- {doc[:2000]}\n\n"
                 
-        # Use Gemini to synthesize
-        api_key = os.environ.get("GEMINI_API_KEY")
-        if not api_key:
-            return {"answer": "Error: GEMINI_API_KEY not found in environment.", "context": context}
-            
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-2.5-flash")
+        prompt = f"You are Antigravity Supermemory AI. Answer based ONLY on this context.\n\nContext:\n{context}\n\nQuery: {req.query}\nAnswer:"
         
-        prompt = f"You are Antigravity Supermemory AI. Answer the user's query based ONLY on the following memory context.\n\nContext:\n{context}\n\nQuery: {req.query}\nAnswer:"
-        
-        response = model.generate_content(prompt)
-        return {"answer": response.text, "context_used": len(results['documents'][0])}
+        resp = httpx.post(
+            f"{FREELLMAPI_URL}/chat/completions",
+            headers={"Authorization": f"Bearer {FREELLMAPI_KEY}"},
+            json={
+                "model": "auto",
+                "messages": [
+                    {"role": "system", "content": "You are a concise AI assistant. Answer briefly."},
+                    {"role": "user", "content": prompt}
+                ],
+                "max_tokens": 512
+            },
+            timeout=30
+        )
+        data = resp.json()
+        answer = data["choices"][0]["message"]["content"]
+        return {"answer": answer, "context_used": len(results['documents'][0])}
         
     except Exception as e:
         return {"error": str(e)}
