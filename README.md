@@ -572,12 +572,12 @@ MIT License — Copyright © 2026 **Aditya Shirsatrao**
 
 | Use Case | License |
 |----------|---------|
-| Personal / open-source | ✅ MIT — free |
-| Startup (5-20 users) | 💰 [$49/yr (₹4,699/yr)](docs/PRICING.md) |
-| Business (21-100) | 💰 [$199/yr (₹18,999/yr)](docs/PRICING.md) |
+| Hackathon teams | 🏕️ [₹2,000/2mo](docs/PRICING.md) |
+| Startup (5-20 users) | 💰 [$49/yr (₹4,699/yr)](docs/pricing.html) |
+| Business (21-100) | 💰 [$199/yr (₹18,999/yr)](docs/pricing.html) |
 | Enterprise (100+) | 💰 [Custom](docs/COMMERCIAL_LICENSE.md) |
 
-📄 [MIT License](LICENSE) · 💼 [Commercial License](docs/COMMERCIAL_LICENSE.md) · 🏷️ [Pricing](docs/PRICING.md)
+📄 [MIT License](LICENSE) · 💼 [Commercial License](docs/COMMERCIAL_LICENSE.md) · 🏷️ [Pricing](docs/pricing.html)
 
 ---
 
@@ -589,11 +589,11 @@ MIT License — Copyright © 2026 **Aditya Shirsatrao**
   <sub>
     <a href="https://github.com/adityashirsatrao007/MEMORY">GitHub</a> ·
     <a href="https://github.com/adityashirsatrao007/MEMORY/issues">Issues</a> ·
-    <a href="docs/TOKEN_SAVINGS.md">💰 Token Savings</a> ·
-    <a href="docs/BENCHMARKS.md">📊 Benchmarks</a> ·
+    <a href="docs/token-savings.html">💰 Token Savings</a> ·
+    <a href="docs/benchmarks.html">📊 Benchmarks</a> ·
     <a href="docs/ARCHITECTURE.md">🏗️ Architecture</a> ·
     <a href="docs/API_REFERENCE.md">🔌 API Reference</a> ·
     <a href="docs/SECURITY.md">🔐 Security</a> ·
-    <a href="docs/PRICING.md">🏷️ Pricing</a>
+    <a href="docs/pricing.html">🏷️ Pricing</a>
   </sub>
 </p>

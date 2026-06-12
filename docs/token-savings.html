@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Token Savings — MEMORY</title>
+  <style>
+    :root {
+      --ivory:    #FAF9F5; --slate: #141413; --clay: #D97757;
+      --oat:      #E3DACC; --olive: #788C5D;
+      --gray-150: #F0EEE6; --gray-300: #D1CFC5;
+      --gray-500: #87867F; --gray-700: #3D3D3A; --white: #FFFFFF;
+      --serif: ui-serif, Georgia, 'Times New Roman', serif;
+      --sans:  system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --mono:  ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--sans); background: var(--ivory);
+      color: var(--gray-700); line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+    .hero { padding: 60px 0 40px; text-align: center; }
+    .hero h1 {
+      font-family: var(--serif); font-weight: 500;
+      font-size: clamp(32px, 4vw, 48px);
+      color: var(--slate); letter-spacing: -0.02em;
+    }
+    .hero p { color: var(--gray-500); margin-top: 8px; font-size: 16px; }
+    .back { display: inline-block; margin-bottom: 16px; color: var(--olive); text-decoration: none; font-size: 14px; }
+    .back:hover { text-decoration: underline; }
+    section { margin-bottom: 60px; }
+    h2 {
+      font-family: var(--serif); font-weight: 500;
+      font-size: 24px; color: var(--slate); margin-bottom: 20px;
+    }
+    .diagram {
+      background: var(--white); padding: 24px; border-radius: 16px;
+      border: 1px solid var(--gray-300); margin-bottom: 24px; text-align: center;
+    }
+    .diagram img { max-width: 100%; height: auto; border-radius: 8px; }
+    .diagram .caption { font-size: 13px; color: var(--gray-500); margin-top: 12px; }
+    table {
+      width: 100%; border-collapse: collapse; margin: 16px 0;
+      background: var(--white); border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--gray-300);
+    }
+    th, td { padding: 12px 16px; text-align: left; font-size: 14px; }
+    th { background: var(--gray-150); color: var(--slate); font-weight: 600; }
+    td { border-top: 1px solid var(--gray-150); }
+    .savings-big { font-size: 48px; font-weight: 700; color: var(--olive); font-family: var(--serif); }
+    .highlight { background: var(--gray-150); padding: 24px; border-radius: 12px; margin: 16px 0; }
+    .tagline { text-align: center; color: var(--gray-500); font-size: 13px; padding: 40px 0; border-top: 1px solid var(--gray-300); margin-top: 40px; }
+    .tagline a { color: var(--olive); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <a class="back" href="../index.html">&larr; Back to MEMORY</a>
+      <h1>Token Savings Analysis</h1>
+      <p>How MEMORY saves 60–95% of your context budget</p>
+    </div>
+
+    <section>
+      <h2>Lines per Session</h2>
+      <div class="diagram">
+        <img src="images/token-savings.png" alt="Token Savings Chart">
+        <div class="caption">From 3,622 lines down to 200 — 95% reduction in context consumption</div>
+      </div>
+      <table>
+        <tr><th>Mode</th><th>Lines Loaded</th><th>Tokens (approx)</th><th>vs Monolith</th></tr>
+        <tr><td>Old Monolithic</td><td>3,622</td><td>~18,000</td><td>Baseline</td></tr>
+        <tr><td>Full Mode (core + CLI + task)</td><td>1,420</td><td>~7,100</td><td><span class="badge" style="background:#E8F0E4;color:var(--olive);padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;">−60%</span></td></tr>
+        <tr><td>Lazy Mode (vector search)</td><td>200</td><td>~1,000</td><td><span class="badge" style="background:#E8F0E4;color:var(--olive);padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;">−95%</span></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Cost Impact</h2>
+      <div class="diagram">
+        <img src="images/cost-comparison.png" alt="Cost Comparison Chart">
+        <div class="caption">MEMORY + freellmapi proxy = $0 per session</div>
+      </div>
+      <table>
+        <tr><th>Service</th><th>Per Call</th><th>Per Session</th><th>Annual (1000 sessions)</th></tr>
+        <tr><td>Claude Sonnet (direct)</td><td>$0.003</td><td>~$6.00</td><td>$6,000</td></tr>
+        <tr><td>Gemini Flash (direct)</td><td>$0.00015</td><td>~$0.30</td><td>$300</td></tr>
+        <tr><td>Local Ollama</td><td>$0.00001</td><td>~$0.02</td><td>$20</td></tr>
+        <tr><td><strong>freellmapi + MEMORY Lazy</strong></td><td><strong>$0</strong></td><td><strong>$0</strong></td><td><strong>$0</strong></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>The Math</h2>
+      <div class="highlight">
+        <p><strong>Without MEMORY:</strong> 3,622 lines × 5 tokens/line = ~18,100 tokens.<br>
+        Claude Sonnet 200K context: <strong>9% consumed</strong> before any work.<br>
+        After 3-4 exchanges: context full, agent forgets, hallucinations begin.</p>
+      </div>
+      <div class="highlight">
+        <p><strong>With MEMORY Lazy:</strong> 200-line vector search = ~1,000 tokens.<br>
+        Claude Sonnet 200K context: <strong>0.5% consumed</strong>.<br>
+        ~190K tokens available for actual work.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Token Breakdown by Module</h2>
+      <table>
+        <tr><th>Module</th><th>Lines</th><th>Tokens</th><th>% of Total</th></tr>
+        <tr><td>01 Core Rules</td><td>115</td><td>575</td><td>3.2%</td></tr>
+        <tr><td>02 CLI Tools</td><td>160</td><td>800</td><td>4.4%</td></tr>
+        <tr><td>03 ML Engineering</td><td>292</td><td>1,460</td><td>8.1%</td></tr>
+        <tr><td>04 Security</td><td>147</td><td>735</td><td>4.1%</td></tr>
+        <tr><td>05 UI/UX</td><td>274</td><td>1,370</td><td>7.6%</td></tr>
+        <tr><td>06 Web Dev</td><td>305</td><td>1,525</td><td>8.4%</td></tr>
+        <tr><td>07 Job Hunt</td><td>145</td><td>725</td><td>4.0%</td></tr>
+        <tr><td>08 Architecture</td><td>198</td><td>990</td><td>5.5%</td></tr>
+        <tr><td>09 Misc</td><td>255</td><td>1,275</td><td>7.0%</td></tr>
+        <tr><td>10 Lessons</td><td>17</td><td>85</td><td>0.5%</td></tr>
+        <tr><td>11 Errors</td><td>30</td><td>150</td><td>0.8%</td></tr>
+        <tr><td>12 Repo Teachings</td><td>107</td><td>535</td><td>3.0%</td></tr>
+      </table>
+    </section>
+
+    <div class="tagline">
+      <a href="https://github.com/adityashirsatrao007/MEMORY">GitHub</a> ·
+      <a href="https://github.com/adityashirsatrao007/MEMORY/issues">Issues</a> ·
+      <a href="pricing.html">Pricing</a>
+    </div>
+  </div>
+</body>
+</html>
