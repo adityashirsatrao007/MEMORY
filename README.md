@@ -573,8 +573,8 @@ MIT License — Copyright © 2026 **Aditya Shirsatrao**
 | Use Case | License |
 |----------|---------|
 | Personal / open-source | ✅ MIT — free |
-| Startup (5-20 users) | 💰 [$99/yr](docs/PRICING.md) |
-| Business (21-100) | 💰 [$499/yr](docs/PRICING.md) |
+| Startup (5-20 users) | 💰 [$49/yr ($4,199/yr INR)](docs/PRICING.md) |
+| Business (21-100) | 💰 [$199/yr ($16,999/yr INR)](docs/PRICING.md) |
 | Enterprise (100+) | 💰 [Custom](docs/COMMERCIAL_LICENSE.md) |
 
 📄 [MIT License](LICENSE) · 💼 [Commercial License](docs/COMMERCIAL_LICENSE.md) · 🏷️ [Pricing](docs/PRICING.md)
