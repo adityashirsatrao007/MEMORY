@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
+# Proprietary — see LICENSE file. No copying, cloning, or distribution.
+
 """Seed ChromaDB with all module files (GEMINI.md + modules).
 Run with --force to re-seed even if entries exist or content unchanged."""
 

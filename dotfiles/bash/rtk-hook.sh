@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
+# Proprietary — see LICENSE file. No copying, cloning, or distribution.
 # rtk auto-pipe — compress long CLI output automatically
 # Source this in bashrc to auto-pipe known verbose commands through rtk
 

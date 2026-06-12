@@ -1,13 +1,100 @@
+> **Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.**  
+> Proprietary — see [LICENSE](LICENSE). No copying, cloning, or distribution without written permission.
+
 # MEMORY — Agent Configuration & Cross-Device Setup
 
-> Copy the prompt below, paste it to **Antigravity** (or any agent) on your new machine.
-> It works on **Linux**, **macOS**, and **Windows (WSL2)**.
+<p align="center">
+  <strong>One-shot agent environment for AI-assisted development.</strong><br>
+  Clone → paste one prompt → full agent toolchain on any machine.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/License-Proprietary-red.svg?style=for-the-badge" alt="License: Proprietary">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-blue.svg?style=for-the-badge&logo=python" alt="Python 3.10+">
+  <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20WSL2-ff69b4?style=for-the-badge" alt="Platform">
+  <img src="https://img.shields.io/badge/LLM-Free%20Proxy%20(1.7B%20tokens%2Fmonth)-brightgreen?style=for-the-badge" alt="Free LLM proxy">
+</p>
 
 ---
 
-## Setup Prompt — Copy & Paste This Into Antigravity
+## Overview
+
+MEMORY is a portable agent-environment configuration system. It packages everything an AI coding agent needs — shell config, CLI tools, vector database, LLM proxy, and 15+ agent-skills — into a single reproducible setup.
+
+One `git clone` and one pasted prompt, and any machine becomes a full agent development environment.
+
+---
+
+## Features
+
+- **Zero-cost LLM proxy** — 90+ models across 12 free providers, 1.7B tokens/month
+- **Vector knowledge base** — ChromaDB-backed agent memory with semantic search
+- **15+ integrated tools** — Swarms, NeoAgent, MiMo, Hermes, Agent-Reach, Free Claude Code, Mistral Vibe, and more
+- **Cross-platform** — Linux, macOS, Windows (WSL2) from a single setup script
+- **Agent skills** — 50+ reusable skills (diagnose, review, TDD, design, writing, PM, etc.)
+- **Token-optimized** — Lazy mode (~70 tokens/session) for routine tasks, full mode (~1420 tokens) for complex work
+- **Private & secure** — All cookies/keys stored locally, never uploaded
+
+---
+
+## Project Structure
 
 ```
+MEMORY/
+├── AGENTS.md                  Agent configuration & rules (loaded by all agents)
+├── GEMINI.md                  Gemini-specific config (symlink target)
+├── CLAUDE.md → GEMINI.md      Claude-specific config (symlink)
+├── LICENSE                    Proprietary license
+├── README.md                  This file
+├── Makefile                   Build: validate, seed, stats, hooks
+│
+├── memory/
+│   ├── modules/               Knowledge base (13 module files)
+│   ├── vector_db/             ChromaDB persistent storage
+│   └── memory-bank/           Session progress tracking
+│
+├── tools/
+│   ├── dashboard.py           ChromaDB dashboard (FastAPI, port 8083)
+│   ├── seed_vector_db.py      Vector DB seeder with hash-based skip
+│   └── validate_ui.py         UI design validation
+│
+├── config/
+│   └── .aider.conf.yml        Aider configuration
+│
+├── .agents/skills/            50+ agent skills (installed)
+├── dotfiles/                  Shell, git, starship, tmux configs
+├── .githooks/                 Git hooks (auto-re-vector DB on commit)
+└── .github/workflows/         CI workflow
+```
+
+---
+
+## Tool Manifest
+
+| Category | Tools |
+|----------|-------|
+| **LLM Proxy** | [freellmapi](http://localhost:3001/v1) — 90+ models, 0-cost |
+| **Model Router** | [fcc-server](http://localhost:8082/admin) — 1130 models, 12+ providers |
+| **Agent Frameworks** | Swarms v13, NeoAgent v2.4, MiMo-Code, Hermes Agent v0.15 |
+| **Internet Access** | Agent-Reach v1.5 (YouTube, Twitter, Reddit, RSS, web) |
+| **Coding Agents** | Free Claude Code (fcc-claude), Mistral Vibe CLI |
+| **AI Skills (50+)** | diagnose, review, TDD, prototype, handoff, html-plan, drawio, grill-me, edit-article, caveman, and more |
+
+---
+
+## Quick Start
+
+### Step 1 — Clone
+
+```bash
+git clone https://github.com/adityashirsatrao007/MEMORY ~/Desktop/Projects/MEMORY
+```
+
+### Step 2 — Paste the Setup Prompt
+
+Copy the entire block below and paste it into **Antigravity** (or any agent) on your new machine:
+
+````
 You are setting up my MEMORY agent system from scratch on this new machine.
 
 ## Step 1: Clone repos
@@ -148,50 +235,71 @@ echo ""
 echo "=== DONE ==="
 echo "Next: paste 'session-start.sh' output below to verify agent sees the system."
 echo "Run: source ~/bin/session-start.sh ~/Desktop/Projects/MEMORY"
-```
+````
 
----
-
-## After Setup — First Session
-
-After running the prompt above, run this to verify the agent can see your full toolchain:
+### Step 3 — Verify
 
 ```bash
 source ~/Desktop/Projects/MEMORY/bin/session-start.sh ~/Desktop/Projects/MEMORY
 ```
 
-Expected output (minimal — just error reports and repo summary):
+---
+
+## How It Works
+
 ```
-Aditya ~ git version 2.53.0
----------------------------
+┌─────────────────────────────────────────────────────────┐
+│                      Agent Process                       │
+│  (Claude / Gemini / OpenCode / Antigravity)              │
+├─────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌──────────────┐  ┌────────────────┐  │
+│  │ AGENTS.md   │  │ Tool Manifest│  │ Agent Skills    │  │
+│  │ (rules)     │  │ (manifest)   │  │ (50+)          │  │
+│  └──────┬──────┘  └──────┬───────┘  └───────┬────────┘  │
+│         │                │                   │           │
+│         ▼                ▼                   ▼           │
+│  ┌──────────────────────────────────────────────────┐   │
+│  │              MEMORY Knowledge Base               │   │
+│  │        (ChromaDB vector search, 13 modules)      │   │
+│  └──────────────────────┬───────────────────────────┘   │
+│                         │                               │
+│                         ▼                               │
+│  ┌──────────────────────────────────────────────────┐   │
+│  │           freellmapi Proxy (port 3001)            │   │
+│  │    90+ models · 12 providers · 1.7B tokens/mo     │   │
+│  └──────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
 ```
 
-If you see missing tool warnings, the agent will auto-install them.
+The agent reads `AGENTS.md` on startup (~100 tokens), loads the tool manifest only when needed (~400 tokens), and queries the vector DB for relevant knowledge. All LLM calls route through the local proxy to preserve API budget.
 
 ---
 
-## What Gets Installed
+## Infrastructure
 
-| Layer | Tools |
-|---|---|
-| **Shell** | bash, zoxide, fzf, starship, tmux |
-| **Lang runtimes** | Node 24, Python 3, Go, Rust |
-| **Package mgrs** | npm, bun, pipx, cargo |
-| **CLI replacements** | rg, bat, eza, fd, dust, btop, procs, sd |
-| **Agent tools** | opencode, aider, ollama, codeburn |
-| **Git** | gh, lazygit, delta, gitleaks, trufflehog |
-| **Dev tools** | docker, pm2, hyperfine, entr, ngrok |
-| **Security** | trivy, semgrep, gitleaks |
-| **Data** | jq, yq, fx, jless, chromadb |
-| **Monitor** | btm, btop, procs, duf, fastfetch |
-| **Vector DB** | ChromaDB dashboard at localhost:8082 |
+| Service | Port | Purpose |
+|---------|------|---------|
+| freellmapi proxy | 3001 | Zero-cost LLM routing (OpenAI-compatible) |
+| fcc-server | 8082 | Model router for Free Claude Code |
+| MEMORY Dashboard | 8083 | ChromaDB vector search UI |
+| NeoAgent | 3333 | Autonomous agent process |
+
+API keys auto-load from `~/.config/global-apikeys/keys.env`.
 
 ---
 
-## Platform Notes
+## Platform Compatibility
 
-| OS | Notes |
-|---|---|
-| **Linux** | Everything native. Run the prompt directly. |
-| **macOS** | Needs Homebrew pre-installed. Some system packages differ (no apt). The prompt auto-detects. |
-| **Windows** | **Must use WSL2** (Ubuntu 24.04). Run inside WSL terminal. Docker Desktop for WSL. |
+| OS | Status | Notes |
+|----|--------|-------|
+| Linux (Ubuntu 24.04+) | ✅ Primary | Everything native |
+| macOS (Sequoia+) | ✅ Supported | Requires Homebrew |
+| Windows (WSL2) | ✅ Supported | Ubuntu 24.04 on WSL2 |
+
+---
+
+## License
+
+Proprietary — © 2026 Aditya Shirsatrao. All rights reserved. See [LICENSE](LICENSE).
+
+This repository is made publicly viewable **for portfolio/reference purposes only**. No license is granted to copy, clone, distribute, or use any content as AI training data.

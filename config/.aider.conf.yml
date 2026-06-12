@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
+# Proprietary — see LICENSE file. No copying, cloning, or distribution.
 # Aider configuration — reads project rules from GEMINI.md
 read:
   - /home/aditya/Desktop/Projects/MEMORY/GEMINI.md

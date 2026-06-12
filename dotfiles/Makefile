@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
+# Proprietary — see LICENSE file. No copying, cloning, or distribution.
+
 ## ─── VARIABLES ────────────────────────────────────────────────────────────────
 APP_NAME   ?= dotfiles
 PORT       ?= 3000

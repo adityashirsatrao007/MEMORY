@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
+# Proprietary — see LICENSE file. No copying, cloning, or distribution.
 # Dotfiles install script — symlinks configs to their proper locations
 # Usage: ./install.sh
 

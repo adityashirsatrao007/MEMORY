@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
+# Proprietary — see LICENSE file. No copying, cloning, or distribution.
+
 .PHONY: validate seed stats hooks fix-paths
 
 MODULES = $(wildcard memory/modules/*.md)
