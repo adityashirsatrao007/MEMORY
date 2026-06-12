@@ -3,9 +3,13 @@ MEMORY License Activation Server
 FastAPI + PostgreSQL + JWT (RS256)
 """
 import os
+import io
 import uuid
 import json
+import base64
 import hashlib
+import tarfile
+from pathlib import Path
 from datetime import datetime, timedelta, timezone
 from contextlib import asynccontextmanager
 
@@ -258,6 +262,83 @@ def revoke(req: RevokeRequest, db: Session = Depends(get_db)):
     db.query(Activation).filter(Activation.license_id == license.id).update({"active": False})
     db.commit()
     return {"status": "revoked", "license_key": req.license_key}
+
+# ─── Premium Modules ───
+
+PREMIUM_MODULES_DIR = Path(__file__).parent.parent / "premium-modules"
+
+
+def load_premium_manifest() -> dict:
+    manifest_path = PREMIUM_MODULES_DIR / "modules.json"
+    if manifest_path.exists():
+        with open(manifest_path) as f:
+            return json.load(f)
+    return {"modules": []}
+
+
+class PremiumRequest(BaseModel):
+    token: str
+    machine_fingerprint: str
+
+
+@app.post("/premium/modules")
+def premium_modules(req: PremiumRequest, db: Session = Depends(get_db)):
+    try:
+        payload = verify_jwt(req.token)
+    except Exception:
+        raise HTTPException(401, "Invalid token")
+
+    if payload.get("machine_fp") != req.machine_fingerprint:
+        raise HTTPException(403, "Machine fingerprint mismatch")
+
+    license = db.query(License).filter(License.license_key == payload["license_key"]).first()
+    if not license or license.revoked:
+        raise HTTPException(403, "License invalid or revoked")
+
+    manifest = load_premium_manifest()
+    tier = license.tier.lower()
+    available = [m for m in manifest.get("modules", []) if tier in m.get("tiers", [])]
+
+    return {"tier": tier, "modules": available}
+
+
+@app.post("/premium/download/{slug}")
+def premium_download(slug: str, req: PremiumRequest, db: Session = Depends(get_db)):
+    try:
+        payload = verify_jwt(req.token)
+    except Exception:
+        raise HTTPException(401, "Invalid token")
+
+    if payload.get("machine_fp") != req.machine_fingerprint:
+        raise HTTPException(403, "Machine fingerprint mismatch")
+
+    license = db.query(License).filter(License.license_key == payload["license_key"]).first()
+    if not license or license.revoked:
+        raise HTTPException(403, "License invalid or revoked")
+
+    manifest = load_premium_manifest()
+    tier = license.tier.lower()
+    module = next((m for m in manifest.get("modules", []) if m["slug"] == slug and tier in m.get("tiers", [])), None)
+    if not module:
+        raise HTTPException(404, f"Module '{slug}' not available for your tier")
+
+    module_dir = PREMIUM_MODULES_DIR / slug
+    if not module_dir.exists():
+        raise HTTPException(404, f"Module '{slug}' content not found on server")
+
+    # Create tarball in memory
+    buf = io.BytesIO()
+    with tarfile.open(fileobj=buf, mode="w:gz") as tar:
+        for fpath in module_dir.rglob("*"):
+            if fpath.name in (".meta.json",):
+                continue
+            arcname = str(fpath.relative_to(module_dir))
+            tar.add(str(fpath), arcname=arcname)
+    buf.seek(0)
+    encoded = base64.b64encode(buf.read()).decode()
+
+    return {"slug": slug, "archive": encoded, "version": module.get("version", "0.0.0")}
+
 
 # ─── Admin Endpoints ───
 

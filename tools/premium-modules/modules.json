@@ -1,0 +1,31 @@
+{
+  "modules": [
+    {
+      "slug": "advanced-search",
+      "name": "Advanced Semantic Search",
+      "version": "1.0.0",
+      "description": "Multi-query fusion, hybrid vector+keyword search, and cross-lingual retrieval for your memory store.",
+      "docs": "docs/premium/advanced-search.md",
+      "size_kb": 24,
+      "tiers": ["pro", "enterprise"]
+    },
+    {
+      "slug": "team-sync",
+      "name": "Team Sync Hub",
+      "version": "1.0.0",
+      "description": "Share and synchronize memory across your team — real-time collaboration with conflict resolution.",
+      "docs": "docs/premium/team-sync.md",
+      "size_kb": 48,
+      "tiers": ["enterprise"]
+    },
+    {
+      "slug": "audit-trail",
+      "name": "Audit Trail & Compliance",
+      "version": "1.0.0",
+      "description": "Full change history, immutable logs, and SOC2-ready export for regulated environments.",
+      "docs": "docs/premium/audit-trail.md",
+      "size_kb": 32,
+      "tiers": ["enterprise"]
+    }
+  ]
+}

@@ -425,46 +425,52 @@ This is a **living system**. These tools are cued for the next integration pass:
 
 ---
 
-## 🔑 License Activation System
+## 🔑 Premium Modules (Commercial)
 
-MEMORY includes a built-in license activation system for commercial deployments.
+MEMORY follows an **open-core model**:
+
+- **MIT core** — all 12 modules, 54 CLI tools, vector DB integration, and agent configs are free. Clone, fork, deploy.
+- **Premium modules** — unlocked by a commercial license. They add enterprise features on top of the free core.
+
+### Available Premium Modules
+
+| Module | Tier | Description |
+|--------|------|-------------|
+| Advanced Semantic Search | Pro+ | Multi-query fusion, hybrid vector+keyword, cross-lingual retrieval |
+| Team Sync Hub | Enterprise | Real-time memory sync across teams, ACLs, CRDT conflict resolution |
+| Audit Trail & Compliance | Enterprise | Immutable changelog, SOC2-ready export, tamper detection |
+
+### Activation
 
 ```bash
-# Start the license server
+# Install premium modules (license required)
+memory premium list
+memory premium install advanced-search
+
+# Activation commands (for license holders)
 make license-server
-
-# Activate on client
-python3 tools/license-cli/cli.py activate MEM-PRO-XXXX-XXXX-XXXX
-
-# Verify status
-python3 tools/license-cli/cli.py verify
+memory activate MEM-PRO-XXXX-XXXX-XXXX
+memory verify
 ```
 
-**Architecture:** FastAPI backend → PostgreSQL → RS256 signed JWTs → machine-bound tokens.
+**Architecture:** FastAPI backend → PostgreSQL → RS256 signed JWTs → machine-bound tokens.  
+7-day offline grace period. See [SECURITY.md](SECURITY.md) for threat model.
 
-| Endpoint | Purpose |
-|----------|---------|
-| `POST /activate` | Validate key, return JWT |
-| `POST /verify` | Check token validity |
-| `POST /refresh` | Renew expiring tokens |
-| `POST /revoke` | Invalidate a license |
-
-See [SECURITY.md](SECURITY.md) for threat model and deployment checklist.  
 Admin panel: `http://localhost:8443/admin`
 
 ---
 
-## 📜 License
 ## 📜 License & Commercial Use
 
-MIT License — Copyright © 2026 **Aditya Shirsatrao**
+MEMORY is **MIT** at its core. Premium modules require a paid license.
 
-| Use Case | License |
-|----------|---------|
-| Hackathon teams | 🏕️ [₹2,000/2mo](docs/PRICING.md) |
-| Startup (5-20 users) | 💰 [$49/yr (₹4,699/yr)](docs/pricing.html) |
-| Business (21-100) | 💰 [$199/yr (₹18,999/yr)](docs/pricing.html) |
-| Enterprise (100+) | 💰 [Custom](docs/COMMERCIAL_LICENSE.md) |
+| Use Case | License | Core Access | Premium Access |
+|----------|---------|-------------|----------------|
+| Individual / Open source | 🆓 MIT | Full | — |
+| Hackathon teams | 🏕️ [₹2,000/2mo](docs/PRICING.md) | Full | 2 premium modules |
+| Startup (5-20 users) | 💰 [$49/yr (₹4,699/yr)](docs/pricing.html) | Full | All premium modules |
+| Business (21-100) | 💰 [$199/yr (₹18,999/yr)](docs/pricing.html) | Full | All + priority support |
+| Enterprise (100+) | 💰 [Custom](docs/COMMERCIAL_LICENSE.md) | Full | All + SLA + custom |
 
 📄 [MIT License](LICENSE) · 💼 [Commercial License](docs/COMMERCIAL_LICENSE.md) · 🏷️ [Pricing](docs/pricing.html)
 

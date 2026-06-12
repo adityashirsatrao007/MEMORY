@@ -139,37 +139,57 @@ nav {
 
   <!-- Cost comparison -->
   <div class="card">
-    <h2>Cost Per Session</h2>
+    <h2>Cost Per Session (18K tokens)</h2>
     <div class="chart-wrap">
-      <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-        <line x1="60" y1="50" x2="760" y2="50" stroke="var(--g200)" stroke-width="1"/>
-        <line x1="60" y1="100" x2="760" y2="100" stroke="var(--g200)" stroke-width="1"/>
-        <line x1="60" y1="150" x2="760" y2="150" stroke="var(--g200)" stroke-width="1"/>
-        <line x1="60" y1="200" x2="760" y2="200" stroke="var(--g200)" stroke-width="1"/>
-        <line x1="60" y1="250" x2="760" y2="250" stroke="var(--g300)" stroke-width="1"/>
-        <text x="52" y="54" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="10">$6.00</text>
-        <text x="52" y="104" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="10">$4.50</text>
-        <text x="52" y="154" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="10">$3.00</text>
-        <text x="52" y="204" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="10">$1.50</text>
-        <text x="52" y="254" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="10">$0</text>
-        <rect x="75" y="48" width="70" height="202" rx="3" fill="color-mix(in srgb, var(--clay) 18%, transparent)" stroke="var(--clay)" stroke-width="1.5"><title>Claude Sonnet: ~$6.00/session</title></rect>
-        <rect x="175" y="235" width="70" height="15" rx="3" fill="color-mix(in srgb, #6C8EBF 18%, transparent)" stroke="#6C8EBF" stroke-width="1.5"><title>Gemini Flash: ~$0.30/session</title></rect>
-        <rect x="275" y="243" width="70" height="7" rx="3" fill="color-mix(in srgb, #C9A45C 18%, transparent)" stroke="#C9A45C" stroke-width="1.5"><title>Ollama: ~$0.02/session</title></rect>
-        <rect x="375" y="245" width="70" height="5" rx="3" fill="color-mix(in srgb, var(--olive) 18%, transparent)" stroke="var(--olive)" stroke-width="2"><title>freellmapi: FREE</title></rect>
-        <rect x="475" y="245" width="70" height="5" rx="3" fill="var(--olive)" opacity="0.85"><title>MEMORY Lazy: FREE</title></rect>
-        <rect x="575" y="245" width="70" height="5" rx="3" fill="var(--olive)" opacity="0.7"><title>MEMORY Full: FREE</title></rect>
-        <text x="110" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">Sonnet</text>
-        <text x="210" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">Flash</text>
-        <text x="310" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">Ollama</text>
-        <text x="410" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">freellmapi</text>
-        <text x="510" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">+ Lazy</text>
-        <text x="610" y="262" text-anchor="middle" fill="var(--g600)" font-family="var(--sans)" font-size="10">+ Full</text>
-        <text x="410" y="238" text-anchor="middle" fill="var(--olive)" font-family="var(--mono)" font-size="11" font-weight="700">FREE</text>
-        <text x="510" y="238" text-anchor="middle" fill="var(--olive)" font-family="var(--mono)" font-size="11" font-weight="700">FREE</text>
-        <text x="610" y="238" text-anchor="middle" fill="var(--olive)" font-family="var(--mono)" font-size="11" font-weight="700">FREE</text>
+      <svg viewBox="0 0 800 270" xmlns="http://www.w3.org/2000/svg">
+        <!-- left axis labels -->
+        <text x="190" y="44" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="11">$6.00</text>
+        <text x="190" y="78" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="11">$4.00</text>
+        <text x="190" y="112" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="11">$2.00</text>
+        <text x="190" y="146" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="11">$1.00</text>
+        <text x="190" y="180" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="11">~$0.30</text>
+        <text x="190" y="214" text-anchor="end" fill="var(--g500)" font-family="var(--mono)" font-size="11">$0</text>
+        <!-- row labels -->
+        <text x="10" y="44" fill="var(--g700)" font-size="13">Claude Sonnet</text>
+        <text x="10" y="78" fill="var(--g700)" font-size="13">GPT-4o</text>
+        <text x="10" y="112" fill="var(--g700)" font-size="13">Claude Haiku</text>
+        <text x="10" y="146" fill="var(--g700)" font-size="13">Gemini 1.5 Pro</text>
+        <text x="10" y="180" fill="var(--g700)" font-size="13">Gemini 2.0 Flash</text>
+        <text x="10" y="214" fill="var(--g700)" font-size="13">Ollama (local)</text>
+        <text x="10" y="256" fill="var(--g700)" font-size="13">Freellmapi proxy</text>
+        <!-- grid -->
+        <line x1="200" y1="34" x2="780" y2="34" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="200" y1="68" x2="780" y2="68" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="200" y1="102" x2="780" y2="102" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="200" y1="136" x2="780" y2="136" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="200" y1="170" x2="780" y2="170" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="200" y1="204" x2="780" y2="204" stroke="var(--g200)" stroke-width="1"/>
+        <line x1="200" y1="245" x2="780" y2="245" stroke="var(--g300)" stroke-width="1"/>
+        <!-- Sonnet: $6.00 -->
+        <rect x="200" y="24" width="492" height="20" rx="4" fill="var(--clay)" opacity="0.85"/>
+        <text x="698" y="39" fill="var(--clay)" font-family="var(--mono)" font-size="13" font-weight="700">$6.00</text>
+        <!-- GPT-4o: $4.25 -->
+        <rect x="200" y="58" width="350" height="20" rx="4" fill="var(--clay)" opacity="0.45"/>
+        <text x="556" y="73" fill="var(--clay)" font-family="var(--mono)" font-size="13" font-weight="700">$4.25</text>
+        <!-- Haiku: $1.70 -->
+        <rect x="200" y="92" width="140" height="20" rx="4" fill="#6C8EBF" opacity="0.7"/>
+        <text x="346" y="107" fill="#6C8EBF" font-family="var(--mono)" font-size="13" font-weight="700">$1.70</text>
+        <!-- Gemini Pro: $1.20 -->
+        <rect x="200" y="126" width="100" height="20" rx="4" fill="#6C8EBF" opacity="0.35"/>
+        <text x="306" y="141" fill="#6C8EBF" font-family="var(--mono)" font-size="13" font-weight="700">$1.20</text>
+        <!-- Gemini Flash: $0.30 -->
+        <rect x="200" y="160" width="25" height="20" rx="4" fill="#C9A45C" opacity="0.7"/>
+        <text x="230" y="175" fill="#C9A45C" font-family="var(--mono)" font-size="13" font-weight="700">$0.30</text>
+        <!-- Ollama: $0.02 -->
+        <rect x="200" y="194" width="8" height="20" rx="4" fill="var(--olive)" opacity="0.6"/>
+        <text x="214" y="209" fill="var(--olive)" font-family="var(--mono)" font-size="13" font-weight="700">$0.02</text>
+        <!-- Freellmapi: FREE -->
+        <rect x="200" y="233" width="60" height="22" rx="4" fill="none" stroke="var(--olive)" stroke-dasharray="5 3" stroke-width="1.5"/>
+        <text x="266" y="249" fill="var(--olive)" font-family="var(--mono)" font-size="14" font-weight="800" letter-spacing="1">FREE</text>
+        <text x="10" y="249" fill="var(--olive)" font-family="var(--mono)" font-size="11" font-weight="700" letter-spacing="1">✦</text>
       </svg>
     </div>
-    <p class="caption">MEMORY + freellmapi proxy = $0 per session. Annual savings: up to $6,000</p>
+    <p class="caption">MEMORY + freellmapi proxy = $0 per session. Annual savings: up to $6,000 per developer</p>
   </div>
 
   <!-- Key metrics -->

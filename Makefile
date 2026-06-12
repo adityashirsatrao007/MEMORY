@@ -107,9 +107,13 @@ license-server:  ## Start the license activation server
 	echo "  Admin panel: http://localhost:8443/admin"; \
 	python3 main.py
 
-license-cli:  ## Run the license CLI (activate / verify / status)
+license-cli:  ## Run the license CLI (activate / verify / status / premium)
 	@echo "=== MEMORY License CLI ==="
 	@python3 tools/license-cli/cli.py $(filter-out $@,$(MAKECMDGOALS))
+
+premium-modules:  ## List available premium modules
+	@echo "=== MEMORY Premium Modules ==="
+	@python3 tools/license-cli/cli.py premium list
 
 %:
 	@true
