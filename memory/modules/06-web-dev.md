@@ -275,31 +275,19 @@ All personal configs at `github.com/adityashirsatrao007/dotfiles`.
 - `aider` — Git-first AI pair programmer
 - `goose` — Open-source on-machine agent via MCP
 - `opencode` — Already configured
-- `RA.Aid` — LangGraph-powered CLI agent
-- `MyCoder.ai` — Modular CLI agent with GitHub integration
 - `Gemini CLI` — Official Google Gemini terminal assistant
 - `claude-code` — Official Anthropic terminal agent
 
 ### 2. Multi-Agent Orchestration
-- `vibe-kanban` — Visual Kanban for 10+ parallel agents
 - `Claude Task Master` — Subtask decomposition
-- `agent-hub` — Local multitask board
-- `Bernstein` — Deterministic parallel orchestrator
-- `VibeGrid` — Multi-agent terminal manager
 
 ### 3. Repository Auditing
-- `AgentLint` — 33 AI-friendly repo checks
 - `semgrep` — SAST + secrets detection
-- `toprank` — SEO + Google Ads plugin for Claude Code
+- `toprank` — SEO + Google Ads plugin
 
-### 4. Context & Cost Tracking
-- `Budi` — Local cost analytics for AI coding agents
-- `memov` — Git-based memory layer for Claude Code
-
-### 5. Prompt & Documentation Engineering
-- `LynxPrompt` — AI config management platform
-- `Prompt Tower` — Bundle files for large-scale refactors
-- `CodeGuide` — AI-readable project documentation
+### 4. Prompt & Documentation Engineering
+- `LynxPrompt` — AI config management
+- `CodeGuide` — AI-readable project docs
 
 ### Agent Execution Rule for Complex Projects
 If >5 components: create `tasks/master-plan.md`, launch parallel subagents, update `memory-bank/progress.md` after each.

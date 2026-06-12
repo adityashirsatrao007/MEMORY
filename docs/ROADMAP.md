@@ -2,14 +2,14 @@
 
 ## Q3 2026
 
-- [ ] **Supamem MCP integration** — dual-memory layer for persistent agent recall
-- [ ] **Bernstein audit module** — tamper-proof agent action logging
-- [ ] **VibeGrid multi-agent terminal** — orchestrate 5+ agents in parallel
+- [ ] **Dual-memory MCP integration** — persistent agent recall across sessions
+- [ ] **Audit module** — tamper-proof agent action logging
+- [ ] **Multi-agent terminal** — orchestrate 5+ agents in parallel
 
 ## Q4 2026
 
-- [ ] **AgentLint** — 33 AI-friendly repo checks pre-commit
-- [ ] **memov git-based memory** — version-controlled context snapshots
+- [ ] **Pre-commit repo checks** — automated quality gates
+- [ ] **Git-based memory snapshots** — version-controlled context history
 - [ ] **Custom module marketplace** — community-contributed brain modules
 - [ ] **Web UI dashboard** — real-time token savings + module usage analytics
 

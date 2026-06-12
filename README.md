@@ -317,18 +317,7 @@ Default: Gemini 3.5 Flash (Low). Never Claude Pro or Gemini Pro without explicit
 
 ## 🧪 Self-Healing & Error Prevention
 
-```mermaid
-flowchart LR
-    ERROR["Error Occurs"] --> DIAGNOSE["Diagnose via CLI"]
-    DIAGNOSE --> FIX["Fix Cause"]
-    FIX --> RE_RUN["Re-run"]
-    RE_RUN --> VERIFY["Verify"]
-    VERIFY --> DONE["✅ Done"]
-    ERROR --> CHECK_LOG["Check Error Logs (Module 11)"]
-    CHECK_LOG --> KNOWN{"Known Issue?"}
-    KNOWN -->|Yes| KNOWN_FIX["Apply known fix"]
-    KNOWN -->|No| DIAGNOSE
-```
+![Error Recovery Flow](docs/images/error-flow.png)
 
 ### Pre-Done Audit Checklist
 ```bash
@@ -349,24 +338,6 @@ done
 | 4 | IBus keybinding conflict | Clear IBus triggers before binding Super+Space |
 | 5 | NPM 404 halts setup | Append `\|\| true` on non-critical installs |
 | 6 | Token exhaustion (all APIs) | Route through freellmapi proxy |
-
----
-
-## 🔮 What's Next — New Tools Queued for Integration
-
-This is a **living system**. These tools are cued for the next integration pass:
-
-- [ ] **AgentLint** — 33 AI-friendly repo checks (`0xmariowu/AgentLint`)
-- [ ] **Budi** — Local cost analytics (`siropkin/budi`)
-- [ ] **Promp Tower** — Context bundling (`backnotprop/prompt-tower`)
-- [ ] **memov** — Git-based memory layer (`memovai/memov`)
-- [ ] **RA.Aid** — Autonomous software development (`ai-christianson/RA.Aid`)
-- [ ] **vibe-kanban** — Multi-agent Kanban orchestration (`BloopAI/vibe-kanban`)
-- [ ] **Supamem** — Dual-memory MCP (`dzmitrys-dev/supamem`)
-- [ ] **tessl** — Agent skills management CLI
-- [ ] **supersecrets** — API key vault expansion
-- [ ] **VibeGrid** — Multi-agent terminal manager
-- [ ] **Bernstein** — Audit-grade orchestration (`sipyourdrink-ltd/bernstein`)
 
 ---
 
