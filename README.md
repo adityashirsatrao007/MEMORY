@@ -317,7 +317,8 @@ Default: Gemini 3.5 Flash (Low). Never Claude Pro or Gemini Pro without explicit
 
 ## 🧪 Self-Healing & Error Prevention
 
-![Error Recovery Flow](docs/images/error-flow.png)
+Error → diagnose → fix → re-run → verify → done.  
+Unknown errors route through Module 11 (error logs) to check for known failure modes before diagnosing.
 
 ### Pre-Done Audit Checklist
 ```bash
