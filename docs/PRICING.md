@@ -32,6 +32,7 @@ MEMORY is **free for individuals and open-source projects** under the MIT Licens
 | 🚀 Startup | $49 | ₹4,699 |
 | 🏢 Business | $199 | ₹18,999 |
 | 🏛️ Enterprise | Custom | Custom |
+| 🏕️ Hackathon (one-time) | — | **₹2,000** |
 
 > Prices in INR are approximate equivalents at ₹95/USD (mid-market rate, Jun 2026). Actual billing in either currency.
 
@@ -56,6 +57,13 @@ Everything in Startup, plus:
 - 3 custom memory modules for your stack
 - 24-hour response SLA
 - Quarterly architecture reviews
+
+### 🏕️ Hackathon — ₹2,000 (one-time)
+Everything in Free, plus:
+- Full commercial license for your hackathon project
+- 30-day support during and after the event
+- Priority GitHub issues
+- Perfect for college hackathons, buildathons, and coding competitions
 
 ### 🏛️ Enterprise — Custom Pricing
 Everything in Business, plus:
