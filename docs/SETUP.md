@@ -2,22 +2,38 @@
 
 > Install MEMORY on any OS — Linux, macOS, or Windows (WSL2).
 
+## One-Click Install
+
+Open your terminal and paste this single command. Works on Linux, macOS, and Windows (WSL2):
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/adityashirsatrao007/MEMORY/main/tools/install.sh)
+```
+
+This installs **everything** — compilers, languages, tools, and MEMORY itself. No GitHub account needed.
+
+## What Gets Installed
+
+| Category | Tools |
+|----------|-------|
+| **Languages** | Python 3, Node.js, Java JDK 17, C/C++ (gcc/g++/make/cmake), Go, Rust |
+| **Version control** | Git, lazygit |
+| **Containers** | Docker, Docker Compose |
+| **Productivity** | ripgrep (grep), bat (cat), eza (ls), fd-find (find), tmux, zoxide, fzf, jq |
+| **AI / LLMs** | Ollama (qwen2.5-coder:3b, nomic-embed-text) |
+| **Agent tools** | opencode, aider-chat, codeburn, semgrep |
+| **Monitoring** | btop (top), procs (ps), du-dust (du) |
+| **MEMORY** | ChromaDB vector DB, CLI tools, shell config |
+
 ## Prerequisites
 
 | Requirement | Minimum |
 |------------|---------|
 | Python | 3.10+ |
 | Git | 2.30+ |
-| Disk | 2 GB free |
+| Disk | 5 GB free (includes compilers & models) |
 | RAM | 4 GB (8 GB recommended) |
-
-## Quick Install (Linux / macOS / WSL2)
-
-Paste this into your terminal:
-
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/adityashirsatrao007/MEMORY/main/tools/install.sh)
-```
+| OS | Linux, macOS, or Windows with WSL2 |
 
 ## Manual Step-by-Step
 
@@ -37,31 +53,39 @@ cd %USERPROFILE%\MEMORY
 
 #### 🐧 Linux (Debian/Ubuntu)
 ```bash
+# Compilers & languages
 sudo apt-get update && sudo apt-get install -y \
-  git curl wget build-essential python3 python3-pip python3-venv \
-  nodejs npm ripgrep bat eza fd-find tmux zoxide fzf jq unzip \
-  poppler-utils tesseract-ocr pandoc chromium-browser
+  build-essential gcc g++ gdb make cmake \
+  openjdk-17-jdk openjdk-17-jre \
+  python3 python3-pip python3-venv nodejs npm \
+  git curl wget docker.io ripgrep bat eza fd-find \
+  tmux zoxide fzf jq unzip poppler-utils \
+  tesseract-ocr pandoc chromium-browser sqlite3
 sudo ln -sf /usr/bin/batcat /usr/local/bin/bat 2>/dev/null
 ```
 
 #### 🍎 macOS
 ```bash
-# Install Homebrew first if missing
+# Homebrew (if missing)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-brew install git curl wget python3 nodejs ripgrep bat eza fd \
+# Compilers & languages
+brew install gcc gdb make cmake openjdk \
+  python3 nodejs git curl wget ripgrep bat eza fd \
   tmux zoxide fzf jq unzip poppler tesseract pandoc \
-  gh starship dust btop procs sd tokei onefetch fastfetch \
-  glow lazygit hyperfine nmap fx yq
+  gh starship dust btop procs sd glow lazygit sqlite3
 ```
 
 #### 🪟 Windows (WSL2)
 ```bash
-# Install WSL2 first, then inside Ubuntu:
+# Inside your Ubuntu WSL2 terminal:
 sudo apt-get update && sudo apt-get install -y \
-  git curl wget build-essential python3 python3-pip python3-venv \
-  nodejs npm ripgrep bat eza fd-find tmux zoxide fzf jq unzip \
-  poppler-utils tesseract-ocr pandoc
+  build-essential gcc g++ gdb make cmake \
+  openjdk-17-jdk openjdk-17-jre \
+  python3 python3-pip python3-venv nodejs npm \
+  git curl wget ripgrep bat eza fd-find \
+  tmux zoxide fzf jq unzip poppler-utils \
+  tesseract-ocr pandoc sqlite3
 sudo ln -sf /usr/bin/batcat /usr/local/bin/bat 2>/dev/null
 ```
 
@@ -76,7 +100,30 @@ pip install --upgrade pip
 pip install chromadb fastapi uvicorn matplotlib diagrams
 ```
 
-### 4. Install CLI Tools
+### 4. Install Go
+
+```bash
+# Linux
+wget https://go.dev/dl/go1.23.0.linux-amd64.tar.gz -O /tmp/go.tar.gz
+sudo tar -C /usr/local -xzf /tmp/go.tar.gz
+export PATH="/usr/local/go/bin:$PATH"
+
+# macOS
+brew install go
+```
+
+Verify: `go version`
+
+### 5. Install Rust
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source "$HOME/.cargo/env"
+```
+
+Verify: `rustc --version`
+
+### 6. Install CLI Tools
 
 ```bash
 # Node.js tools
@@ -86,13 +133,14 @@ npm install -g bun pm2 tldr @opencode/opencode
 pip install pipx && pipx ensurepath
 pipx install aider-chat codeburn semgrep trufflehog
 
-# Rust tools (optional, for speed)
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-source "$HOME/.cargo/env"
+# Rust CLIs (optional, for speed)
 cargo install lowfat du-dust procs sd tokei
+
+# Go CLIs
+go install github.com/steveiliop56/onlycli@latest
 ```
 
-### 5. Install Ollama (Local LLM)
+### 7. Install Ollama (Local LLM)
 
 ```bash
 # Linux
@@ -105,31 +153,46 @@ ollama pull qwen2.5-coder:3b
 ollama pull nomic-embed-text
 ```
 
-### 6. Configure Your Shell
+### 8. Configure Your Shell
 
-Add to `~/.bashrc`, `~/.zshrc`, or PowerShell profile:
+Add to your `~/.bashrc` or `~/.zshrc`:
 
 ```bash
-# MEMORY configuration
+# ── MEMORY Agent Environment ──
 export MEMORY_ROOT="$HOME/MEMORY"
-export MEMORY_MODE="lazy"      # "lazy" (~70 tokens) or "full" (~1420)
-export PATH="$MEMORY_ROOT/tools:$PATH"
+export MEMORY_MODE="lazy"
+export MEMORY_PATH="$MEMORY_ROOT/tools"
+export PATH="$MEMORY_ROOT/tools:$HOME/.local/bin:$HOME/go/bin:/usr/local/go/bin:$HOME/.cargo/bin:/usr/lib/jvm/java-17-openjdk-amd64/bin:$PATH"
 
-# Modern CLI replacements
+# ── Language paths ──
+export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+export GOPATH="$HOME/go"
+export PATH="/usr/local/go/bin:$GOPATH/bin:$PATH"
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+
+# ── Editor ──
+export EDITOR="nvim"
+
+# ── Aliases ──
 alias grep='rg'
 alias cat='bat'
 alias ls='eza --icons'
 alias ll='eza -la --icons --git'
+alias la='eza -a --icons'
 alias du='dust'
 alias top='btop'
 alias ps='procs'
 alias sed='sd'
 alias find='fd'
+alias v='nvim'
+alias mem='cd $MEMORY_ROOT'
+alias mem-search='python3 $MEMORY_ROOT/tools/memory-search'
+alias mem-validate='make -C $MEMORY_ROOT validate'
 ```
 
 Then reload: `source ~/.bashrc`
 
-### 7. Seed the Vector Database
+### 9. Seed the Vector Database
 
 ```bash
 cd ~/MEMORY
@@ -137,7 +200,7 @@ source .venv/bin/activate
 python tools/seed_vector_db.py --force
 ```
 
-### 8. Start the Dashboard (Optional)
+### 10. Start the Dashboard (Optional)
 
 ```bash
 pm2 start tools/dashboard.py --name memory-dashboard --interpreter python3
@@ -146,7 +209,7 @@ pm2 save
 
 The dashboard runs at `http://localhost:8082`.
 
-### 9. Link Your AI Agent
+### 11. Link Your AI Agent
 
 | Agent | File | Command |
 |-------|------|---------|
@@ -177,7 +240,7 @@ For OpenCode:
 }
 ```
 
-### 10. Verify Installation
+### 12. Verify Installation
 
 ```bash
 make validate          # Check all modules
