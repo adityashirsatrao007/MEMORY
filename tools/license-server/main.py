@@ -109,6 +109,7 @@ def send_email(to: str, subject: str, body: str) -> bool:
         req = Request(RESEND_API, data=payload, method="POST")
         req.add_header("Authorization", f"Bearer {RESEND_API_KEY}")
         req.add_header("Content-Type", "application/json")
+        req.add_header("User-Agent", "memory-license-server/1.0")
         with urlopen(req, timeout=15) as resp:
             resp_body = resp.read().decode()
             logger.info(f"Email sent to {to}: {subject} ({resp.status}) {resp_body}")
