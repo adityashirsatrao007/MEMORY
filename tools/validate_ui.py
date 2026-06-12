@@ -44,10 +44,6 @@ def check_file(file_path):
     except Exception as e:
         return [f"Could not read file: {e}"], []
 
-    # Check for font definitions (if CSS/Tailwind config or HTML is defined)
-    has_font_definition = False
-    uses_default_font = False
-    
     for i, line in enumerate(lines, 1):
         # 1. Banned Basic Colors Check
         for pattern in BANNED_BASIC_COLORS:
@@ -68,7 +64,6 @@ def check_file(file_path):
 
         # 4. Check for font families
         if 'font-family' in line:
-            has_font_definition = True
             if not any(font in line for font in APPROVED_FONTS):
                 warnings.append(f"Line {i}: custom font-family does not include Apple HIG / premium fonts (SF Pro Display, Inter, etc.).")
 

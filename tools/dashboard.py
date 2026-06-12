@@ -2,6 +2,12 @@ import os
 import httpx
 from fastapi import FastAPI
 import chromadb
+from pydantic import BaseModel
+from typing import Optional
+import urllib.request
+from bs4 import BeautifulSoup
+import markdownify
+import time
 
 app = FastAPI(title="Antigravity Supermemory Dashboard")
 
@@ -97,14 +103,6 @@ def search_memories(q: str):
         return {"memories": memories}
     except Exception as e:
         return {"error": str(e), "memories": []}
-
-from pydantic import BaseModel
-from typing import Optional
-import urllib.request
-from bs4 import BeautifulSoup
-import markdownify
-import time
-
 class SaveRequest(BaseModel):
     text: Optional[str] = None
     url: Optional[str] = None
