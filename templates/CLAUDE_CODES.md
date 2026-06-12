@@ -10,6 +10,8 @@ This document contains pre-defined prompt modifiers (Cindy's Claude Codes) that 
 - `OODA`: (Prefix) Runs the Observe · Orient · Decide · Act loop to propose next steps.
 - `L99`: (Prefix) Top-1% senior expert mode (20+ years of experience, no hand-holding).
 - `/GODMODE`: (Prefix) Aggressive, comprehensive, no-holds-barred expert output.
+- `CLAY`: (Prefix/Suffix) Triggers Clay lead generation and B2B enrichment prompts (e.g. "Find founders of DTC skincare brands...").
+
 
 ### 🎙️ Voice & Tone (Prefixes)
 - `BLUNT`: Brutally honest, skips diplomacy.
