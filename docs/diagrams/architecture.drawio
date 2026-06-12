@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="30.0.4">
+  <diagram name="Page-1" id="MEMORY-Arch">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ─── Agent Tools Container ─── -->
+        <mxCell id="c-agents" value="Agent Tools (symlinked to GEMINI.md)" style="swimlane;startSize=30;fillColor=#F5F5F7;strokeColor=#D1CFC5;rounded=1;arcSize=12;fontColor=#87867F;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="920" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="node-claude" value="Claude Code" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#141413;fontSize=11;" vertex="1" parent="c-agents">
+          <mxGeometry x="30" y="40" width="120" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="node-opencode" value="OpenCode" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#141413;fontSize=11;" vertex="1" parent="c-agents">
+          <mxGeometry x="190" y="40" width="120" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="node-cursor" value="Cursor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#141413;fontSize=11;" vertex="1" parent="c-agents">
+          <mxGeometry x="350" y="40" width="120" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="node-windsurf" value="Windsurf" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#141413;fontSize=11;" vertex="1" parent="c-agents">
+          <mxGeometry x="510" y="40" width="120" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="node-copilot" value="GitHub Copilot" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#141413;fontSize=11;" vertex="1" parent="c-agents">
+          <mxGeometry x="670" y="40" width="120" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ─── GEMINI.md Router ─── -->
+        <mxCell id="node-gemini" value="GEMINI.md&#xa;Router / Decision Engine" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#141413;fontSize=12;fontWeight=bold;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="400" y="190" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ─── Memory Modules Row 1 ─── -->
+        <mxCell id="c-modules1" value="12 Memory Modules (lazy-loaded)" style="swimlane;startSize=30;fillColor=#F5F5F7;strokeColor=#D1CFC5;rounded=1;arcSize=12;fontColor=#87867F;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="300" width="920" height="220" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="m1" value="01 Core Rules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="25" y="40" width="130" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="m2" value="02 CLI Tools" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="175" y="40" width="130" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="m3" value="03 ML Engineering" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="325" y="40" width="130" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="m4" value="04 Security" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="475" y="40" width="130" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="m5" value="05 UI/UX" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="625" y="40" width="130" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="m6" value="06 Web Dev" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="770" y="40" width="130" height="34" as="geometry"/>
+        </mxCell>
+
+        <!-- Row 2 -->
+        <mxCell id="m7" value="07 Job Hunt" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="25" y="95" width="130" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="m8" value="08 Architecture" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="175" y="95" width="130" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="m9" value="09 Misc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="325" y="95" width="130" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="m10" value="10 Lessons" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="475" y="95" width="130" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="m11" value="11 Errors" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="625" y="95" width="130" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="m12" value="12 Repo Teachings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#141413;fontSize=10;arcSize=6;" vertex="1" parent="c-modules1">
+          <mxGeometry x="770" y="95" width="130" height="34" as="geometry"/>
+        </mxCell>
+
+        <!-- Module chain edges (row 1) -->
+        <mxCell id="e-row1-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="c-modules1" source="m1" target="m2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-row1-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="c-modules1" source="m2" target="m3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-row1-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="c-modules1" source="m3" target="m4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-row1-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="c-modules1" source="m4" target="m5">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-row1-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="c-modules1" source="m5" target="m6">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Connect row 1 → row 2 (wrap to m7) -->
+        <mxCell id="e-wrap" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="c-modules1" source="m6" target="m7">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Row 2 chain -->
+        <mxCell id="e-row2-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="c-modules1" source="m7" target="m8">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-row2-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="c-modules1" source="m8" target="m9">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-row2-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="c-modules1" source="m9" target="m10">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-row2-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="c-modules1" source="m10" target="m11">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-row2-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="c-modules1" source="m11" target="m12">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ─── ChromaDB ─── -->
+        <mxCell id="node-chroma" value="ChromaDB&#xa;Vector Search" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#141413;fontSize=12;fontWeight=bold;" vertex="1" parent="1">
+          <mxGeometry x="420" y="570" width="120" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- ─── Edges: Agents → GEMINI (symlinks) ─── -->
+        <mxCell id="e-sym1" value="symlink" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.2;entryY=0;entryDx=0;entryDy=0;exitX=0.1;exitY=1;exitDx=0;exitDy=0;strokeColor=#CC5833;strokeWidth=1;strokeDashPattern=6 3;fontSize=9;fontColor=#87867F;" edge="1" parent="1" source="node-claude" target="node-gemini">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-sym2" value="symlink" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.35;entryY=0;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;strokeColor=#CC5833;strokeWidth=1;strokeDashPattern=6 3;fontSize=9;fontColor=#87867F;" edge="1" parent="1" source="node-opencode" target="node-gemini">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-sym3" value="symlink" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=#CC5833;strokeWidth=1;strokeDashPattern=6 3;fontSize=9;fontColor=#87867F;" edge="1" parent="1" source="node-cursor" target="node-gemini">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-sym4" value="symlink" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.65;entryY=0;entryDx=0;entryDy=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;strokeColor=#CC5833;strokeWidth=1;strokeDashPattern=6 3;fontSize=9;fontColor=#87867F;" edge="1" parent="1" source="node-windsurf" target="node-gemini">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-sym5" value="symlink" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.8;entryY=0;entryDx=0;entryDy=0;exitX=0.9;exitY=1;exitDx=0;exitDy=0;strokeColor=#CC5833;strokeWidth=1;strokeDashPattern=6 3;fontSize=9;fontColor=#87867F;" edge="1" parent="1" source="node-copilot" target="node-gemini">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ─── Edges: GEMINI → Module Row 1 ─── -->
+        <mxCell id="e-gemini-m1" value="lazy load" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.05;entryY=0;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;strokeColor=#2E4036;strokeWidth=1;fontSize=9;fontColor=#87867F;" edge="1" parent="1" source="node-gemini" target="m1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-gemini-m2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.3;entryY=0;entryDx=0;entryDy=0;exitX=0.4;exitY=1;exitDx=0;exitDy=0;strokeColor=#2E4036;strokeWidth=1;strokeDashPattern=3 2;fontSize=9;fontColor=#87867F;" edge="1" parent="1" source="node-gemini" target="m2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-gemini-m6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;exitX=0.7;exitY=1;exitDx=0;exitDy=0;strokeColor=#2E4036;strokeWidth=1;strokeDashPattern=3 2;fontSize=9;fontColor=#87867F;" edge="1" parent="1" source="node-gemini" target="m6">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-gemini-m7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.05;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=#2E4036;strokeWidth=1;strokeDashPattern=3 2;fontSize=9;fontColor=#87867F;" edge="1" parent="1" source="node-gemini" target="m7">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ─── Edges: Modules → ChromaDB (seeding) ─── -->
+        <mxCell id="e-seed-m1" value="seed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.1;exitY=1;exitDx=0;exitDy=0;entryX=0.1;entryY=0;entryDx=0;entryDy=0;strokeColor=#82b366;strokeWidth=1;strokeDashPattern=3 3;fontSize=8;fontColor=#87867F;" edge="1" parent="1" source="m1" target="node-chroma">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-seed-m3" value="seed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.35;exitY=1;exitDx=0;exitDy=0;entryX=0.35;entryY=0;entryDx=0;entryDy=0;strokeColor=#82b366;strokeWidth=1;strokeDashPattern=3 3;fontSize=8;fontColor=#87867F;" edge="1" parent="1" source="m3" target="node-chroma">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-seed-m6" value="seed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.65;exitY=1;exitDx=0;exitDy=0;entryX=0.65;entryY=0;entryDx=0;entryDy=0;strokeColor=#82b366;strokeWidth=1;strokeDashPattern=3 3;fontSize=8;fontColor=#87867F;" edge="1" parent="1" source="m6" target="node-chroma">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-seed-m9" value="seed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#82b366;strokeWidth=1;strokeDashPattern=3 3;fontSize=8;fontColor=#87867F;" edge="1" parent="1" source="m9" target="node-chroma">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-seed-m12" value="seed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.9;exitY=1;exitDx=0;exitDy=0;entryX=0.9;entryY=0;entryDx=0;entryDy=0;strokeColor=#82b366;strokeWidth=1;strokeDashPattern=3 3;fontSize=8;fontColor=#87867F;" edge="1" parent="1" source="m12" target="node-chroma">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ─── Edges: ChromaDB → GEMINI (search) ─── -->
+        <mxCell id="e-search" value="vector search" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#2E4036;strokeWidth=2;fontSize=10;fontWeight=bold;fontColor=#87867F;" edge="1" parent="1" source="node-chroma" target="node-gemini">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

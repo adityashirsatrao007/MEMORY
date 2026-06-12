@@ -1,6 +1,6 @@
-# 18 Repositories Architectural Knowledge & Integration Reference
+# 12 — Research Notes: Cross-Repo Architectural Patterns
 
-This module compiles the key developer architectures, setup commands, and integration patterns for the 18 repositories starred in this session.
+Personal research notes by Aditya Shirsatrao — architectural patterns extracted from studying 18 reference repositories. These are not dependencies or sources of MEMORY; they are studied references.
 
 ---
 

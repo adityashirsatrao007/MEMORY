@@ -128,7 +128,7 @@ Each module is a markdown file under `memory/modules/XX-*.md`. The agent loads O
 | 09 | **Misc** | 255 | Roadmaps, GitHub tricks, OSM, AlgoTracker | Everything else |
 | 10 | **Lessons Learned** | 17 | Hardcoded agent directives, configuration gotchas | Pre-flight check |
 | 11 | **Error Logs** | 30 | OOMs, PEP 668, Wayland, token exhaustion history | Before risky ops |
-| 12 | **Repo Teachings** | 107 | 18 starred repos architectural patterns | Cross-repo reference |
+| 12 | **Repo Teachings** | 107 | Aditya's cross-repo research notes | Personal reference |
 
 ```bash
 # Quick stats
@@ -269,153 +269,13 @@ Tracks active agent task states. Current: swarms, NeoAgent, MiMo-Code, taste-ski
 
 ---
 
-## ⭐ 120+ Starred Repos — Categorized Knowledge Base
+---
 
-### 🧠 Agent Skills & AI Frameworks
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [obra/superpowers](https://github.com/obra/superpowers) | 225.9k | Agentic skills framework & SD methodology |
-| [affaan-m/ECC](https://github.com/affaan-m/ECC) | 214.2k | Agent harness optimization system |
-| [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) | 191.9k | The agent that grows with you |
-| [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) | 174.2k | Karpathy's LLM coding pitfalls |
-| [langchain-ai/langchain](https://github.com/langchain-ai/langchain) | 139.1k | Agent engineering platform |
-| [anthropics/claude-code](https://github.com/anthropics/claude-code) | 132.1k | Official Anthropic terminal agent |
-| [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents) | 112.3k | Complete AI agency framework |
-| [thedotmack/claude-mem](https://github.com/thedotmack/claude-mem) | 82.0k | Persistent context across sessions |
-| [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) | 56.7k | Production-grade engineering skills |
-| [hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) | 46.3k | Curated Claude Code skills |
-| [sickn33/antigravity-awesome-skills](https://github.com/sickn33/antigravity-awesome-skills) | 40.5k | 1,500+ agentic skills library |
-| [mattpocock/skills](https://github.com/mattpocock/skills) | 126.9k | Skills for real engineers |
-| [mindfold-ai/Trellis](https://github.com/mindfold-ai/Trellis) | 10.2k | The best agent harness |
-| [kyegomez/swarms](https://github.com/kyegomez/swarms) | 6.8k | Multi-agent orchestration |
-| [phuryn/pm-skills](https://github.com/phuryn/pm-skills) | 16.9k | 100+ PM agentic skills |
-| [NeoLabs-Systems/NeoAgent](https://github.com/NeoLabs-Systems/NeoAgent) | 14 | Self-hosted AI agent |
+## 🧠 About the Creator
 
-### 🎨 UI/UX & Design
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 90.9k | Design intelligence for professional UI/UX |
-| [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) | 42.3k | Gives AI good taste — stops boring slop |
-| [saifyxpro/ui-ux-design-pro-skill](https://github.com/saifyxpro/ui-ux-design-pro-skill) | 37 | 107 styles, 127 palettes, 107 fonts |
-| [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | 6.0k | Stitch MCP server skill library |
-| [Agents365-ai/drawio-skill](https://github.com/Agents365-ai/drawio-skill) | 2.7k | Natural language → diagrams |
+**MEMORY** is an original project by **Aditya Shirsatrao** — built from scratch, every module, every tool, every pattern. Researched, designed, and implemented independently.
 
-### 💻 Developer Tools & CLI
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [stackblitz/bolt.new](https://github.com/stackblitz/bolt.new) | 16.4k | Prompt, run, edit, deploy |
-| [yetone/avante.nvim](https://github.com/yetone/avante.nvim) | 18.0k | Neovim → Cursor AI experience |
-| [RooCodeInc/Roo-Code](https://github.com/RooCodeInc/Roo-Code) | 24.2k | Dev team of AI agents in editor |
-| [continuedev/continue](https://github.com/continuedev/continue) | 33.7k | Source-controlled AI checks |
-| [enola-labs/enola](https://github.com/enola-labs/enola) | 33 | MCP architectural snapshot server |
-| [OnlyCLI/OnlyCLI](https://github.com/OnlyCLI/OnlyCLI) | 13 | OpenAPI spec → native CLI binary |
-| [DeepMyst/Mysti](https://github.com/DeepMyst/Mysti) | 1.1k | AI coding dream team in VS Code |
-
-### 🔧 Token Optimization & Cost Saving
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [chopratejas/headroom](https://github.com/chopratejas/headroom) | 24.5k | 60-95% fewer tokens, same answers |
-| [zdk/lowfat](https://github.com/zdk/lowfat) | 506 | Strip noise from command output |
-| [getagentseal/codeburn](https://github.com/getagentseal/codeburn) | 7.9k | Token cost observability TUI |
-| [EA-Studio-SHARK/lean-code](https://github.com/EA-Studio-SHARK/lean-code) | 27 | Save 40-80% tokens & costs |
-| [quilrai/AgentGuard](https://github.com/quilrai/AgentGuard) | 25 | Guardian agent & token savings |
-| [siropkin/budi](https://github.com/siropkin/budi) | 24 | Local-first cost analytics |
-| [guyu-adam/miser](https://github.com/guyu-adam/miser) | 1 | Local co-processor — save 60%+ tokens |
-| [memovai/memov](https://github.com/memovai/memov) | 193 | Git-based memory layer |
-| [OasAIStudio/ClawPiggy](https://github.com/OasAIStudio/ClawPiggy) | 9 | P2P token recycling network |
-
-### 📊 Data & Analytics
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [OpenBB-finance/OpenBB](https://github.com/OpenBB-finance/OpenBB) | 69.0k | Financial data platform |
-| [milvus-io/milvus](https://github.com/milvus-io/milvus) | 44.7k | High-performance vector database |
-| [apache/kafka](https://github.com/apache/kafka) | 32.8k | Distributed event streaming |
-| [SigNoz/signoz](https://github.com/SigNoz/signoz) | 27.3k | OpenTelemetry observability |
-| [feast-dev/feast](https://github.com/feast-dev/feast) | 7.1k | Feature store for AI/ML |
-| [windmill-labs/windmill](https://github.com/windmill-labs/windmill) | 16.7k | Scripts → workflows → UIs |
-
-### 🔐 Security & Secrets
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [Z4nzu/hackingtool](https://github.com/Z4nzu/hackingtool) | 77.4k | ALL IN ONE hacking tool |
-| [aquasecurity/trivy](https://github.com/aquasecurity/trivy) | 36.4k | Vulnerability scanner |
-| [Infisical/infisical](https://github.com/Infisical/infisical) | 27.3k | Open-source secrets manager |
-| [zitadel/zitadel](https://github.com/zitadel/zitadel) | 14.0k | Cloud-native IAM |
-| [Mbed-TLS/mbedtls](https://github.com/Mbed-TLS/mbedtls) | 6.7k | TLS/crypto library |
-
-### 🌐 Web Development
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [astral-sh/ruff](https://github.com/astral-sh/ruff) | 48.0k | Rust-based Python linter |
-| [colinhacks/zod](https://github.com/colinhacks/zod) | 43.0k | TypeScript schema validation |
-| [novuhq/novu](https://github.com/novuhq/novu) | 39.1k | Notification infrastructure |
-| [terrastruct/d2](https://github.com/terrastruct/d2) | 24.4k | Modern diagram scripting |
-| [VectifyAI/PageIndex](https://github.com/VectifyAI/PageIndex) | 33.0k | Reasoning-based RAG |
-| [supermemoryai/supermemory](https://github.com/supermemoryai/supermemory) | 26.9k | Memory and context engine |
-
-### 🚀 Infrastructure & DevOps
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [moby/buildkit](https://github.com/moby/buildkit) | 10.0k | Docker build engine |
-| [jetify-com/devbox](https://github.com/jetify-com/devbox) | 12.0k | Nix-based dev environments |
-| [nextcloud/all-in-one](https://github.com/nextcloud/all-in-one) | 9.9k | Private cloud suite |
-| [grokability/snipe-it](https://github.com/grokability/snipe-it) | 13.9k | IT asset management |
-| [fastfetch-cli/fastfetch](https://github.com/fastfetch-cli/fastfetch) | 23.2k | System info tool |
-| [ClementTsang/bottom](https://github.com/ClementTsang/bottom) | 13.5k | System monitor (btm) |
-
-### 🧪 Vibe Coding Ecosystem
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [BloopAI/vibe-kanban](https://github.com/BloopAI/vibe-kanban) | 27.0k | 10X Claude Code / Codex |
-| [coleam00/context-engineering-intro](https://github.com/coleam00/context-engineering-intro) | 13.5k | Context engineering for AI |
-| [filipecalegario/awesome-vibe-coding](https://github.com/filipecalegario/awesome-vibe-coding) | 4.7k | Curated vibe coding references |
-| [KhazP/vibe-coding-prompt-template](https://github.com/KhazP/vibe-coding-prompt-template) | 2.5k | PRD/Tech Design/MVP templates |
-| [superagent-ai/vibekit](https://github.com/superagent-ai/vibekit) | 1.8k | Agent sandbox with redaction |
-
-### 🎓 Education & Career
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [ByteByteGoHq/system-design-101](https://github.com/ByteByteGoHq/system-design-101) | 83.4k | Complex systems explained visually |
-| [santifer/career-ops](https://github.com/santifer/career-ops) | 53.2k | AI-powered job search system |
-| [Avik-Jain/100-Days-Of-ML-Code](https://github.com/Avik-Jain/100-Days-Of-ML-Code) | 51.2k | 100 days of ML coding |
-| [liquidslr/interview-company-wise-problems](https://github.com/liquidslr/interview-company-wise-problems) | 25.4k | Company-wise interview questions |
-| [emmabostian/developer-portfolios](https://github.com/emmabostian/developer-portfolios) | 24.2k | Developer portfolio inspiration |
-| [matiassingers/awesome-readme](https://github.com/matiassingers/awesome-readme) | 21.0k | Curated list of awesome READMEs |
-
-### 🎯 Multi-Agent Orchestration
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [eyaltoledano/claude-task-master](https://github.com/eyaltoledano/claude-task-master) | 27.4k | AI task management system |
-| [triggerdotdev/trigger.dev](https://github.com/triggerdotdev/trigger.dev) | 15.3k | AI agents and workflows |
-| [sipyourdrink-ltd/bernstein](https://github.com/sipyourdrink-ltd/bernstein) | 569 | Audit-grade multi-agent orchestration |
-| [hexo-ai/sia](https://github.com/hexo-ai/sia) | 1.6k | Self-improving AI framework |
-
-### 📚 Open Source Monetization (OSM)
-| Repo | Bounty | Fork |
-|------|--------|------|
-| [rudderlabs/rudder-server](https://github.com/rudderlabs/rudder-server) | $2,000/bounty | OSM-rudder-server |
-| [AppFlowy-IO/AppFlowy](https://github.com/AppFlowy-IO/AppFlowy) | $500/mo mentorship | OSM-AppFlowy |
-| [Expensify/App](https://github.com/Expensify/App) | $250-500/bounty | OSM-App |
-| [BusKill/buskill-app](https://github.com/BusKill/buskill-app) | ~$2,340/bounty | OSM-buskill-app |
-| [triggerdotdev/trigger.dev](https://github.com/triggerdotdev/trigger.dev) | $50-200/bounty | OSM-trigger.dev |
-| [ether/etherpad](https://github.com/ether/etherpad) | ~$80/bounty | OSM-etherpad-lite |
-
-### 📝 Prompt Engineering & Context
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [elder-plinius/CL4R1T4S](https://github.com/elder-plinius/CL4R1T4S) | 30.2k | Leaked system prompts |
-| [backnotprop/prompt-tower](https://github.com/backnotprop/prompt-tower) | 380 | Context management for LLMs |
-| [botingw/rulebook-ai](https://github.com/botingw/rulebook-ai) | 597 | Universal agent rules manager |
-| [GeiserX/LynxPrompt](https://github.com/GeiserX/LynxPrompt) | 41 | AI IDE rules management platform |
-
-### 🎯 Platforms & Enterprise
-| Repo | Stars | Description |
-|------|-------|-------------|
-| [AppFlowy-IO/AppFlowy](https://github.com/AppFlowy-IO/AppFlowy) | 72.3k | Open source Notion alternative |
-| [frappe/hrms](https://github.com/frappe/hrms) | 8.1k | Open source HR & payroll |
-| [Alishahryar1/free-claude-code](https://github.com/Alishahryar1/free-claude-code) | 34.1k | Free Claude Code in terminal |
-| [tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi) | 9.9k | 16 free LLM providers proxy |
-| [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | 849 | Lazy senior dev mindset |
+The 120+ starred repos in Module 12 are **research references** — repos Aditya has studied to extract patterns. MEMORY is not a fork, not a copy, and not derived from any of them. All code, documentation, and design is original.
 
 ---
 

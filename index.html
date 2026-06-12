@@ -1,504 +1,623 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MEMORY — The Autonomous Agent's Brain</title>
-  <style>
-    :root {
-      --ivory:    #FAF9F5;
-      --slate:    #141413;
-      --clay:     #D97757;
-      --oat:      #E3DACC;
-      --olive:    #788C5D;
-      --gray-150: #F0EEE6;
-      --gray-300: #D1CFC5;
-      --gray-500: #87867F;
-      --gray-700: #3D3D3A;
-      --white:    #FFFFFF;
-      --serif: ui-serif, Georgia, 'Times New Roman', serif;
-      --sans:  system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      --mono:  ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: var(--sans);
-      background: var(--ivory);
-      color: var(--gray-700);
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-    }
-    .page { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MEMORY — A modular, cross-agent knowledge system. 12 brain modules, 54 CLI tools, 95% fewer tokens. Zero context exhaustion for your AI agents.">
+<meta name="theme-color" content="#FAF9F5">
+<meta property="og:title" content="MEMORY — The Autonomous Agent's Brain">
+<meta property="og:description" content="12 brain modules. 54 CLI tools. 95% fewer tokens. Never run out of context again.">
+<meta property="og:image" content="docs/images/architecture.png">
+<title>MEMORY — The Autonomous Agent's Brain</title>
+<script>
+(function(){const e=localStorage.getItem('theme');if(e==='dark'||(e!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark')})()
+</script>
+<style>
+:root {
+  --ivory:  #FAF9F5;
+  --paper:  #FFFFFF;
+  --slate:  #141413;
+  --clay:   #D97757;
+  --clay-d: #B85C3E;
+  --oat:    #E3DACC;
+  --olive:  #788C5D;
+  --olive-l:#9BB07A;
+  --g50:    #F8F7F3;
+  --g100:   #F0EEE6;
+  --g200:   #E6E3DA;
+  --g300:   #D1CFC5;
+  --g400:   #B0ADA4;
+  --g500:   #87867F;
+  --g600:   #5E5D58;
+  --g700:   #3D3D3A;
+  --g800:   #262624;
+  --serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+  --sans:  system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono:  ui-monospace, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --ease:  cubic-bezier(.22,.61,.36,1);
+  --nav-h: 64px;
+}
+html.dark {
+  --ivory:  #141413;
+  --paper:  #1C1C1A;
+  --slate:  #F0EEE6;
+  --oat:    #2A2A27;
+  --g50:    #1A1A18;
+  --g100:   #222220;
+  --g200:   #2E2E2B;
+  --g300:   #3D3D3A;
+  --g400:   #5E5D58;
+  --g500:   #87867F;
+  --g600:   #B0ADA4;
+  --g700:   #D1CFC5;
+  --g800:   #E6E3DA;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:80px; }
+body {
+  background:var(--ivory); color:var(--g700);
+  font-family:var(--sans); line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
 
-    /* --- Hero --- */
-    .hero {
-      padding: 80px 0 64px;
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .hero .logo {
-      font-size: 64px;
-      margin-bottom: 16px;
-      display: block;
-    }
-    .hero .eyebrow {
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--gray-500);
-      margin-bottom: 16px;
-    }
-    .hero h1 {
-      font-family: var(--serif);
-      font-weight: 500;
-      font-size: clamp(36px, 5vw, 56px);
-      line-height: 1.1;
-      color: var(--slate);
-      margin-bottom: 20px;
-      letter-spacing: -0.02em;
-    }
-    .hero p {
-      font-size: 18px;
-      color: var(--gray-500);
-      max-width: 640px;
-      margin: 0 auto 32px;
-    }
-    .hero .cta {
-      display: inline-flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .btn {
-      display: inline-block;
-      padding: 12px 28px;
-      border-radius: 40px;
-      font-size: 15px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-primary {
-      background: var(--slate);
-      color: var(--white);
-    }
-    .btn-primary:hover { background: var(--clay); transform: translateY(-1px); }
-    .btn-secondary {
-      background: var(--oat);
-      color: var(--slate);
-    }
-    .btn-secondary:hover { background: var(--gray-300); transform: translateY(-1px); }
+/* ─── Nav ─── */
+nav {
+  position:sticky; top:0; z-index:100;
+  height:var(--nav-h);
+  background:color-mix(in srgb, var(--ivory) 88%, transparent);
+  backdrop-filter:blur(14px) saturate(1.4);
+  -webkit-backdrop-filter:blur(14px) saturate(1.4);
+  border-bottom:1px solid var(--g200);
+}
+.nav-inner {
+  max-width:1200px; margin:0 auto; padding:0 28px;
+  height:100%; display:flex; align-items:center; justify-content:space-between;
+}
+.nav-brand { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--slate); font-weight:600; font-size:15px; letter-spacing:-0.01em; }
+.nav-brand svg { width:28px; height:28px; }
+.nav-links { display:flex; align-items:center; gap:6px; }
+.nav-links a {
+  padding:8px 14px; border-radius:8px; font-size:13px; font-weight:500;
+  color:var(--g500); text-decoration:none; transition:all .15s;
+}
+.nav-links a:hover { color:var(--slate); background:var(--g100); }
+.theme-toggle {
+  background:none; border:1px solid var(--g300); border-radius:8px;
+  width:36px; height:36px; cursor:pointer; color:var(--g500);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; transition:all .15s;
+}
+.theme-toggle:hover { border-color:var(--slate); color:var(--slate); background:var(--g100); }
+@media (max-width:720px) { .nav-links a.nav-hide { display:none; } }
 
-    /* --- Metrics Bar --- */
-    .metrics {
-      display: flex;
-      justify-content: center;
-      gap: 48px;
-      padding: 32px 0;
-      border-top: 1px solid var(--gray-300);
-      border-bottom: 1px solid var(--gray-300);
-      margin-bottom: 64px;
-      flex-wrap: wrap;
-    }
-    .metric { text-align: center; }
-    .metric .num {
-      font-family: var(--serif);
-      font-size: 32px;
-      font-weight: 600;
-      color: var(--slate);
-      display: block;
-    }
-    .metric .label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--gray-500);
-    }
+/* ─── Page ─── */
+.page { max-width:1200px; margin:0 auto; padding:0 28px 80px; }
 
-    /* --- Sections --- */
-    section { margin-bottom: 80px; }
-    h2 {
-      font-family: var(--serif);
-      font-weight: 500;
-      font-size: 28px;
-      color: var(--slate);
-      margin-bottom: 24px;
-      letter-spacing: -0.01em;
-    }
-    h3 {
-      font-weight: 600;
-      font-size: 16px;
-      color: var(--slate);
-      margin-bottom: 8px;
-    }
+/* ─── Hero ─── */
+.hero {
+  padding:80px 0 56px;
+  display:grid; grid-template-columns:1fr 480px; gap:64px;
+  align-items:center;
+}
+@media (max-width:960px) { .hero { grid-template-columns:1fr; gap:40px; padding:48px 0 32px; } }
+.hero-text .eyebrow {
+  font-family:var(--mono); font-size:11px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--g500); margin-bottom:16px;
+  display:flex; align-items:center; gap:10px;
+}
+.hero-text .eyebrow::before { content:""; width:20px; height:1.5px; background:var(--clay); }
+.hero-text h1 {
+  font-family:var(--serif); font-weight:500;
+  font-size:clamp(36px,5vw,56px); line-height:1.08; letter-spacing:-0.022em;
+  color:var(--slate); margin-bottom:16px;
+}
+.hero-text h1 em { font-style:italic; color:var(--clay); }
+.hero-text p {
+  font-size:16px; color:var(--g500); max-width:520px; margin-bottom:28px;
+}
+.hero-cta { display:flex; gap:10px; flex-wrap:wrap; }
+.btn {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:11px 24px; border-radius:999px; font-size:14px; font-weight:600;
+  text-decoration:none; transition:all .18s var(--ease); cursor:pointer; border:none;
+}
+.btn-primary { background:var(--slate); color:var(--ivory); }
+.btn-primary:hover { background:var(--clay); transform:translateY(-2px); }
+.btn-secondary { background:var(--g100); color:var(--slate); border:1px solid var(--g300); }
+.btn-secondary:hover { border-color:var(--slate); transform:translateY(-2px); }
 
-    /* --- Problem --- */
-    .problem {
-      background: var(--white);
-      padding: 48px;
-      border-radius: 20px;
-      border: 1px solid var(--gray-300);
-    }
-    .problem blockquote {
-      font-family: var(--serif);
-      font-size: 20px;
-      font-style: italic;
-      color: var(--gray-700);
-      padding: 16px 24px;
-      border-left: 3px solid var(--clay);
-      margin: 20px 0;
-    }
+/* ─── Hero illustration ─── */
+.hero-fig {
+  width:100%; aspect-ratio:4/3;
+  background:var(--paper); border:1.5px solid var(--g300); border-radius:20px;
+  padding:28px; display:flex; flex-direction:column; gap:16px;
+  position:relative; overflow:hidden;
+}
+.hero-fig .row { display:flex; gap:12px; flex:1; }
+.hero-fig .cell {
+  flex:1; border-radius:10px; padding:14px;
+  display:flex; flex-direction:column; gap:6px;
+}
+.hero-fig .cell.c1 { background:color-mix(in srgb, var(--olive) 12%, transparent); border:1px solid color-mix(in srgb, var(--olive) 25%, transparent); }
+.hero-fig .cell.c2 { background:color-mix(in srgb, var(--clay) 10%, transparent); border:1px solid color-mix(in srgb, var(--clay) 22%, transparent); }
+.hero-fig .cell.c3 { background:color-mix(in srgb, var(--g500) 8%, transparent); border:1px solid color-mix(in srgb, var(--g500) 20%, transparent); }
+.hero-fig .dots {
+  display:flex; gap:4px; margin-bottom:6px;
+}
+.hero-fig .dots span { width:8px; height:8px; border-radius:50%; }
+.hero-fig .dots span:nth-child(1) { background:var(--clay); }
+.hero-fig .dots span:nth-child(2) { background:var(--olive); }
+.hero-fig .dots span:nth-child(3) { background:var(--g400); }
+.hero-fig .bar { height:8px; border-radius:4px; }
+.hero-fig .bar.b1 { width:85%; background:var(--olive); opacity:0.5; }
+.hero-fig .bar.b2 { width:60%; background:var(--clay); opacity:0.5; }
+.hero-fig .bar.b3 { width:75%; background:var(--g400); opacity:0.5; }
+.hero-fig .bar.b4 { width:45%; background:var(--olive); opacity:0.35; }
+.hero-fig .bar.b5 { width:90%; background:var(--clay); opacity:0.35; }
+.hero-fig .tag {
+  position:absolute; top:14px; right:14px;
+  font-family:var(--mono); font-size:9px; letter-spacing:0.06em; text-transform:uppercase;
+  background:var(--ivory); padding:4px 10px; border-radius:6px;
+  border:1px solid var(--g300); color:var(--g500);
+}
+.hero-fig .big-num {
+  font-family:var(--serif); font-size:clamp(28px,4vw,42px); font-weight:600;
+  color:var(--slate); line-height:1;
+}
+.hero-fig .big-num small { font-size:14px; font-family:var(--sans); color:var(--g500); font-weight:400; }
 
-    /* --- Features Grid --- */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
-    }
-    .feature {
-      background: var(--white);
-      padding: 28px;
-      border-radius: 16px;
-      border: 1px solid var(--gray-300);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .feature:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
-    .feature .icon { font-size: 28px; margin-bottom: 12px; display: block; }
-    .feature p { font-size: 14px; color: var(--gray-500); }
+/* ─── Metrics ─── */
+.metrics {
+  display:grid; grid-template-columns:repeat(5,1fr); gap:1px;
+  background:var(--g200); border-radius:16px; overflow:hidden; margin-bottom:80px;
+}
+.metrics > * { background:var(--g50); padding:24px 16px; text-align:center; }
+.metric .num {
+  font-family:var(--serif); font-size:clamp(24px,2.5vw,36px); font-weight:600;
+  color:var(--slate); display:block; line-height:1.1;
+}
+.metric .label {
+  font-size:11px; text-transform:uppercase; letter-spacing:0.06em;
+  color:var(--g500); margin-top:4px;
+}
+@media (max-width:720px) { .metrics { grid-template-columns:repeat(3,1fr); } }
 
-    /* --- Modules --- */
-    .modules-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
-    }
-    .module-card {
-      background: var(--white);
-      padding: 20px;
-      border-radius: 12px;
-      border: 1px solid var(--gray-300);
-      text-align: center;
-    }
-    .module-card .num {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--olive);
-    }
-    .module-card .name {
-      font-weight: 600;
-      font-size: 14px;
-      color: var(--slate);
-      margin: 4px 0;
-    }
-    .module-card .lines {
-      font-size: 12px;
-      color: var(--gray-500);
-    }
+/* ─── Sections ─── */
+section { margin-bottom:80px; }
+h2 {
+  font-family:var(--serif); font-weight:500;
+  font-size:clamp(24px,3vw,34px); letter-spacing:-0.012em;
+  color:var(--slate); margin-bottom:8px;
+}
+.sec-intro {
+  font-size:14.5px; color:var(--g500); max-width:640px; margin-bottom:32px;
+}
 
-    /* --- CLI Table --- */
-    .cli-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 12px;
-    }
-    .cli-item {
-      background: var(--white);
-      padding: 12px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--gray-300);
-      font-size: 13px;
-    }
-    .cli-item del { color: var(--gray-500); }
-    .cli-item ins {
-      color: var(--olive);
-      text-decoration: none;
-      font-weight: 600;
-    }
+/* ─── Problem ─── */
+.problem {
+  background:var(--paper); border:1.5px solid var(--g300); border-radius:20px;
+  padding:40px; display:grid; grid-template-columns:1fr 1fr; gap:40px;
+}
+@media (max-width:720px) { .problem { grid-template-columns:1fr; padding:24px; } }
+.problem blockquote {
+  font-family:var(--serif); font-size:25px; font-style:italic; line-height:1.3;
+  color:var(--slate); padding:0; border-left:3px solid var(--clay); padding-left:24px;
+}
+.problem blockquote cite {
+  display:block; font-size:13px; font-style:normal; font-family:var(--sans);
+  color:var(--g500); margin-top:12px;
+}
+.problem-text p { font-size:14.5px; color:var(--g600); margin-bottom:12px; }
+.problem-text p:last-child { margin-bottom:0; }
+.problem-text strong { color:var(--slate); }
 
-    /* --- Token Chart --- */
-    .chart-container {
-      display: flex;
-      gap: 24px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .chart-container img {
-      max-width: 100%;
-      border-radius: 12px;
-      border: 1px solid var(--gray-300);
-    }
-    .chart-side {
-      flex: 1;
-      min-width: 260px;
-    }
-    .chart-side ul {
-      list-style: none;
-    }
-    .chart-side li {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--gray-300);
-      font-size: 14px;
-    }
-    .chart-side li strong { color: var(--slate); }
-    .chart-side .saved {
-      display: inline-block;
-      background: var(--olive);
-      color: var(--white);
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-    }
+/* ─── Feature cards ─── */
+.features {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+}
+@media (max-width:860px) { .features { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:540px) { .features { grid-template-columns:1fr; } }
+.feature {
+  background:var(--paper); border:1.5px solid var(--g300); border-radius:16px;
+  padding:28px; transition:all .2s var(--ease);
+}
+.feature:hover { transform:translateY(-3px); border-color:var(--g400); box-shadow:0 12px 32px rgba(0,0,0,.06); }
+html.dark .feature:hover { box-shadow:0 12px 32px rgba(0,0,0,.25); }
+.feature-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
+.feature-icon svg { width:20px; height:20px; }
+.feature-icon.ic-blue { background:color-mix(in srgb, #6C8EBF 15%, transparent); }
+.feature-icon.ic-green { background:color-mix(in srgb, var(--olive) 15%, transparent); }
+.feature-icon.ic-clay { background:color-mix(in srgb, var(--clay) 15%, transparent); }
+.feature-icon.ic-slate { background:color-mix(in srgb, var(--slate) 10%, transparent); }
+.feature h3 { font-size:15px; font-weight:600; color:var(--slate); margin-bottom:6px; }
+.feature p { font-size:13.5px; color:var(--g500); line-height:1.5; }
 
-    /* --- Install --- */
-    .install {
-      background: var(--slate);
-      color: var(--white);
-      padding: 48px;
-      border-radius: 20px;
-    }
-    .install h2 { color: var(--white); }
-    .install code {
-      display: block;
-      background: rgba(255,255,255,0.08);
-      padding: 16px 20px;
-      border-radius: 10px;
-      font-family: var(--mono);
-      font-size: 14px;
-      margin: 12px 0;
-      color: var(--oat);
-    }
-    .install .sub {
-      font-size: 13px;
-      color: var(--gray-500);
-      margin-top: 12px;
-    }
+/* ─── Module grid ─── */
+.module-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:12px;
+}
+@media (max-width:860px) { .module-grid { grid-template-columns:repeat(3,1fr); } }
+@media (max-width:540px) { .module-grid { grid-template-columns:repeat(2,1fr); } }
+.mcard {
+  background:var(--paper); border:1.5px solid var(--g300); border-radius:12px;
+  padding:16px; text-align:center; transition:all .15s var(--ease);
+}
+.mcard:hover { border-color:var(--olive); }
+.mcard .num { font-family:var(--mono); font-size:11px; color:var(--olive); }
+.mcard .name { font-weight:600; font-size:13px; color:var(--slate); margin:4px 0 2px; }
+.mcard .lines { font-size:11px; color:var(--g500); }
 
-    /* --- Footer --- */
-    footer {
-      text-align: center;
-      padding: 48px 0;
-      font-size: 13px;
-      color: var(--gray-500);
-      border-top: 1px solid var(--gray-300);
-    }
-    footer a { color: var(--slate); text-decoration: none; }
-    footer a:hover { color: var(--clay); }
+/* ─── Token chart ─── */
+.tok-chart {
+  display:grid; grid-template-columns:1fr 1fr; gap:32px;
+  background:var(--paper); border:1.5px solid var(--g300); border-radius:20px; padding:36px;
+  align-items:center;
+}
+@media (max-width:720px) { .tok-chart { grid-template-columns:1fr; } }
+.tok-bars { display:flex; flex-direction:column; gap:18px; }
+.tok-row { display:flex; align-items:center; gap:14px; }
+.tok-row .lbl { width:110px; flex-shrink:0; font-size:12px; font-weight:600; color:var(--slate); }
+.tok-row .track { flex:1; height:32px; background:var(--g100); border-radius:6px; position:relative; overflow:hidden; }
+.tok-row .fill { height:100%; border-radius:6px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; font-size:10px; font-weight:700; color:white; transition:width .8s var(--ease); }
+.tok-row .fill.f100 { background:#CC5833; width:100%; }
+.tok-row .fill.f40 { background:var(--clay); width:40%; }
+.tok-row .fill.f5 { background:var(--olive); width:5%; }
+.tok-side h3 { font-size:16px; color:var(--slate); margin-bottom:8px; }
+.tok-side p { font-size:13.5px; color:var(--g500); }
+.tok-side .saved-badge { display:inline-block; background:color-mix(in srgb, var(--olive) 15%, transparent); color:var(--olive); padding:2px 10px; border-radius:999px; font-size:12px; font-weight:600; }
 
-    /* --- Responsive --- */
-    @media (max-width: 600px) {
-      .hero { padding: 48px 0 32px; }
-      .metrics { gap: 24px; }
-      .problem { padding: 24px; }
-      .install { padding: 24px; }
-    }
-  </style>
+/* ─── CLI grid ─── */
+.cli-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
+}
+@media (max-width:720px) { .cli-grid { grid-template-columns:repeat(2,1fr); } }
+.cli-item {
+  background:var(--paper); border:1.5px solid var(--g300); border-radius:10px;
+  padding:12px 16px; font-size:13px; font-family:var(--mono);
+  transition:all .15s;
+}
+.cli-item:hover { border-color:var(--olive); }
+.cli-item del { color:var(--g400); }
+.cli-item ins { color:var(--olive-l); text-decoration:none; font-weight:700; }
+.cli-item .arrow { color:var(--g500); margin:0 4px; }
+
+/* ─── Agent grid ─── */
+.agent-grid {
+  display:grid; grid-template-columns:repeat(6,1fr); gap:14px;
+}
+@media (max-width:860px) { .agent-grid { grid-template-columns:repeat(3,1fr); } }
+@media (max-width:480px) { .agent-grid { grid-template-columns:repeat(2,1fr); } }
+.acard {
+  background:var(--paper); border:1.5px solid var(--g300); border-radius:14px;
+  padding:20px; text-align:center; transition:all .2s var(--ease);
+}
+.acard:hover { transform:translateY(-2px); border-color:var(--g400); }
+.acard .icon { font-size:24px; display:block; margin-bottom:6px; }
+.acard .name { font-size:13px; font-weight:600; color:var(--slate); }
+.acard .file { font-size:11px; color:var(--g500); font-family:var(--mono); margin-top:2px; }
+
+/* ─── Install ─── */
+.install-wrap {
+  background:var(--slate); color:var(--ivory); border-radius:20px; padding:48px;
+}
+.install-wrap h2 { color:var(--ivory); }
+.install-code {
+  background:color-mix(in srgb, var(--ivory) 6%, transparent);
+  border:1px solid var(--g700); border-radius:12px; padding:16px 20px;
+  font-family:var(--mono); font-size:13px; line-height:1.7; margin:12px 0 20px;
+}
+.install-code .c1 { color:var(--olive-l); }
+.install-code .c2 { color:var(--clay); }
+.install-code .c3 { color:var(--g400); }
+.install-sub { font-size:13px; color:var(--g500); margin-top:12px; }
+
+/* ─── Two-col layouts ─── */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+@media (max-width:720px) { .two-col { grid-template-columns:1fr; } }
+
+/* ─── Creator / CTA ─── */
+.section-center { text-align:center; max-width:600px; margin:0 auto 80px; }
+.section-center h2 { margin-bottom:12px; }
+.section-center p { font-size:14.5px; color:var(--g500); margin-bottom:24px; }
+.footer-links { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+.footer-links a { color:var(--g500); text-decoration:none; font-size:13px; transition:color .15s; }
+.footer-links a:hover { color:var(--slate); }
+.footer-divider { height:1px; background:var(--g200); margin:40px 0 24px; }
+
+/* ─── Image ─── */
+.resp-img { max-width:100%; border-radius:14px; border:1.5px solid var(--g300); }
+
+/* ─── Responsive ─── */
+@media (max-width:480px) {
+  .page { padding:0 16px 48px; }
+  .install-wrap { padding:24px; }
+}
+</style>
 </head>
 <body>
-  <div class="page">
 
-    <!-- Hero -->
-    <header class="hero">
-      <span class="logo">🧠</span>
-      <div class="eyebrow">v1.0 — MIT Licensed</div>
-      <h1>Your AI agents never<br>forget with MEMORY</h1>
-      <p>A modular, cross-agent knowledge system. 12 brain modules. 54 CLI tools. 95% fewer tokens. Zero context exhaustion.</p>
-      <div class="cta">
-        <a class="btn btn-primary" href="https://github.com/adityashirsatrao007/MEMORY">View on GitHub</a>
-        <a class="btn btn-secondary" href="#install">Install in 2 min</a>
-        <a class="btn btn-secondary" href="docs/TOKEN_SAVINGS.md">Token savings</a>
-      </div>
-    </header>
-
-    <!-- Metrics -->
-    <div class="metrics">
-      <div class="metric"><span class="num">12</span><span class="label">Brain Modules</span></div>
-      <div class="metric"><span class="num">54</span><span class="label">CLI Tools</span></div>
-      <div class="metric"><span class="num">95%</span><span class="label">Token Saved</span></div>
-      <div class="metric"><span class="num">6</span><span class="label">Agents Supported</span></div>
-      <div class="metric"><span class="num">16</span><span class="label">Free LLM Providers</span></div>
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <svg viewBox="0 0 28 28" fill="none"><rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 14h12M14 8v12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="14" cy="14" r="3" fill="currentColor" opacity=".3"/></svg>
+      MEMORY
+    </a>
+    <div class="nav-links">
+      <a href="#modules" class="nav-hide">Modules</a>
+      <a href="#benchmarks" class="nav-hide">Benchmarks</a>
+      <a href="#install" class="nav-hide">Install</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#9681;</button>
     </div>
-
-    <!-- Problem -->
-    <section>
-      <h2>The problem this solves</h2>
-      <div class="problem">
-        <blockquote>"It's 3 AM. Your agent has been coding for 6 hours. Then context budget exhausts. It forgets everything — your project structure, auth patterns, conventions. Hallucinations begin. You burn money re-explaining."</blockquote>
-        <p>MEMORY replaces the monolithic 3,622-line GEMINI.md with 12 load-on-demand modules + a vector database for instant recall. Your agent searches first (~200 tokens), loads modules only when needed (~1,420 full). <strong>60-95% fewer tokens per session.</strong></p>
-      </div>
-    </section>
-
-    <!-- How it works -->
-    <section>
-      <h2>How it works</h2>
-      <div class="features">
-        <div class="feature">
-          <span class="icon">🔗</span>
-          <h3>One source of truth</h3>
-          <p>6 symlinks (CLAUDE.md, AGENTS.md, .cursorrules, etc.) point to one GEMINI.md. Every agent reads the same instructions.</p>
-        </div>
-        <div class="feature">
-          <span class="icon">🧩</span>
-          <h3>12 brain modules</h3>
-          <p>Core Rules, CLI Tools, ML Engineering, Security, UI/UX, Web Dev, Job Hunt, Architecture, Misc, Lessons, Errors, Repos.</p>
-        </div>
-        <div class="feature">
-          <span class="icon">🔍</span>
-          <h3>Vector DB first</h3>
-          <p>ChromaDB search returns relevant chunks in ~200 tokens. Modules load only when search misses. 94.2% recall rate.</p>
-        </div>
-        <div class="feature">
-          <span class="icon">⚡</span>
-          <h3>0-cost LLM proxy</h3>
-          <p>freellmapi routes across 16 free providers — 1.7B tokens/month. Never pay for API calls again.</p>
-        </div>
-        <div class="feature">
-          <span class="icon">🛡️</span>
-          <h3>54 CLI guardrails</h3>
-          <p>Legacy commands (grep, cat, ls, find, du, ps) auto-routed to modern replacements (rg, bat, eza, fd, dust, procs).</p>
-        </div>
-        <div class="feature">
-          <span class="icon">🔄</span>
-          <h3>Self-healing</h3>
-          <p>Error → Diagnose → Fix → Re-run → Verify. Pre-commit audits with semgrep, gitleaks, trivy. All 6 symlinks checked.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 12 Modules -->
-    <section>
-      <h2>The 12 brain modules</h2>
-      <div class="modules-grid">
-        <div class="module-card"><div class="num">01</div><div class="name">Core Rules</div><div class="lines">115 lines</div></div>
-        <div class="module-card"><div class="num">02</div><div class="name">CLI Tools</div><div class="lines">160 lines</div></div>
-        <div class="module-card"><div class="num">03</div><div class="name">ML Engineering</div><div class="lines">292 lines</div></div>
-        <div class="module-card"><div class="num">04</div><div class="name">Security</div><div class="lines">147 lines</div></div>
-        <div class="module-card"><div class="num">05</div><div class="name">UI/UX</div><div class="lines">274 lines</div></div>
-        <div class="module-card"><div class="num">06</div><div class="name">Web Dev</div><div class="lines">305 lines</div></div>
-        <div class="module-card"><div class="num">07</div><div class="name">Job Hunt</div><div class="lines">145 lines</div></div>
-        <div class="module-card"><div class="num">08</div><div class="name">Architecture</div><div class="lines">198 lines</div></div>
-        <div class="module-card"><div class="num">09</div><div class="name">Misc</div><div class="lines">255 lines</div></div>
-        <div class="module-card"><div class="num">10</div><div class="name">Lessons</div><div class="lines">17 lines</div></div>
-        <div class="module-card"><div class="num">11</div><div class="name">Error Logs</div><div class="lines">30 lines</div></div>
-        <div class="module-card"><div class="num">12</div><div class="name">Repo Teachings</div><div class="lines">107 lines</div></div>
-      </div>
-    </section>
-
-    <!-- Token Savings -->
-    <section>
-      <h2>Token economics</h2>
-      <div class="chart-container">
-        <div class="chart-side">
-          <ul>
-            <li><strong>Old monolith:</strong> 3,622 lines · ~18K tokens · 100% context <span style="float:right;color:#CC5833;">❌</span></li>
-            <li><strong>Full mode:</strong> 1,420 lines · ~7K tokens · 3.5% context <span class="saved">−60%</span></li>
-            <li><strong>Lazy mode:</strong> ~200 lines · ~1K tokens · 0.5% context <span class="saved">−95%</span></li>
-          </ul>
-          <p style="margin-top:16px;font-size:14px;color:var(--gray-500);">
-            More context for actual work. Less money burned on instructions. 
-            With freellmapi proxy: <strong>$0 per session.</strong>
-          </p>
-        </div>
-        <img src="docs/images/token-savings.png" alt="Token savings chart" width="500" height="275" loading="lazy">
-      </div>
-    </section>
-
-    <!-- CLI Tools -->
-    <section>
-      <h2>54 CLI modernizations</h2>
-      <p style="margin-bottom:16px;color:var(--gray-500);">Every legacy command is auto-routed to a modern, token-optimized replacement.</p>
-      <div class="cli-grid">
-        <div class="cli-item"><del>grep</del> → <ins>rg</ins></div>
-        <div class="cli-item"><del>cat</del> → <ins>bat</ins></div>
-        <div class="cli-item"><del>ls</del> → <ins>eza</ins></div>
-        <div class="cli-item"><del>find</del> → <ins>fd</ins></div>
-        <div class="cli-item"><del>du</del> → <ins>dust</ins></div>
-        <div class="cli-item"><del>df</del> → <ins>duf</ins></div>
-        <div class="cli-item"><del>ps</del> → <ins>procs</ins></div>
-        <div class="cli-item"><del>top</del> → <ins>btop</ins></div>
-        <div class="cli-item"><del>curl</del> → <ins>http</ins></div>
-        <div class="cli-item"><del>npm</del> → <ins>bun</ins></div>
-        <div class="cli-item"><del>pip</del> → <ins>uv</ins></div>
-        <div class="cli-item"><del>sed</del> → <ins>sd</ins></div>
-      </div>
-      <p style="margin-top:12px;font-size:13px;color:var(--gray-500);">
-        <a href="https://github.com/adityashirsatrao007/MEMORY" style="color:var(--clay);">See all 54 in the repo →</a>
-      </p>
-    </section>
-
-    <!-- Supported agents -->
-    <section>
-      <h2>Works with every major agent</h2>
-      <div class="features" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));">
-        <div class="feature"><span class="icon">🤖</span><h3>Claude Code</h3><p>via CLAUDE.md</p></div>
-        <div class="feature"><span class="icon">🔧</span><h3>OpenCode</h3><p>via AGENTS.md</p></div>
-        <div class="feature"><span class="icon">🖥️</span><h3>Cursor</h3><p>via .cursorrules</p></div>
-        <div class="feature"><span class="icon">🌊</span><h3>Windsurf</h3><p>via .windsurfrules</p></div>
-        <div class="feature"><span class="icon">📎</span><h3>Copilot</h3><p>via copilot-instructions</p></div>
-        <div class="feature"><span class="icon">📋</span><h3>Cline</h3><p>via .clinerules</p></div>
-      </div>
-    </section>
-
-    <!-- Architecture Diagram -->
-    <section>
-      <h2>Architecture</h2>
-      <img src="docs/images/architecture.png" alt="MEMORY Architecture Diagram" style="max-width:100%;border-radius:12px;border:1px solid var(--gray-300);" loading="lazy">
-    </section>
-
-    <!-- Install -->
-    <section id="install">
-      <div class="install">
-        <h2>Install in under 2 minutes</h2>
-        <code>git clone https://github.com/adityashirsatrao007/MEMORY.git<br>
-cd MEMORY<br>
-make hooks</code>
-        <p>Then symlink to your agent:</p>
-        <code>ln -sf $PWD/GEMINI.md CLAUDE.md   # for Claude Code<br>
-ln -sf $PWD/GEMINI.md .cursorrules # for Cursor</code>
-        <p>Or symlinks are already included — just point your agent tool at this repo's root.</p>
-        <div class="sub">Requires: Python 3.10+ · ChromaDB (`pip install chromadb`) · A terminal</div>
-      </div>
-    </section>
-
-    <!-- Starred repos -->
-    <section>
-      <h2>Backed by 120+ starred repos</h2>
-      <p style="margin-bottom:16px;color:var(--gray-500);">MEMORY distills architectural patterns from 120+ meticulously curated GitHub repos across agent skills, UI/UX, security, ML, DevOps, and more. Each pattern is documented in Module 12 (Repo Teachings).</p>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;">
-        <span style="background:var(--gray-150);padding:6px 14px;border-radius:20px;font-size:12px;color:var(--gray-700);">obra/superpowers ★226k</span>
-        <span style="background:var(--gray-150);padding:6px 14px;border-radius:20px;font-size:12px;color:var(--gray-700);">langchain-ai/langchain ★139k</span>
-        <span style="background:var(--gray-150);padding:6px 14px;border-radius:20px;font-size:12px;color:var(--gray-700);">anthropics/claude-code ★132k</span>
-        <span style="background:var(--gray-150);padding:6px 14px;border-radius:20px;font-size:12px;color:var(--gray-700);">astral-sh/ruff ★48k</span>
-        <span style="background:var(--gray-150);padding:6px 14px;border-radius:20px;font-size:12px;color:var(--gray-700);">OpenBB-finance/OpenBB ★69k</span>
-        <span style="background:var(--gray-150);padding:6px 14px;border-radius:20px;font-size:12px;color:var(--gray-700);">milvus-io/milvus ★45k</span>
-        <span style="background:var(--gray-150);padding:6px 14px;border-radius:20px;font-size:12px;color:var(--gray-700);">colinhacks/zod ★43k</span>
-        <span style="background:var(--gray-150);padding:6px 14px;border-radius:20px;font-size:12px;color:var(--gray-700);">ByteByteGoHq/system-design-101 ★83k</span>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section style="text-align:center;padding:48px 0;">
-      <h2>Ready to never run out of context again?</h2>
-      <p style="color:var(--gray-500);margin-bottom:24px;">Star the repo, clone it, and give your agents the memory they deserve.</p>
-      <a class="btn btn-primary" href="https://github.com/adityashirsatrao007/MEMORY">⭐ Star on GitHub</a>
-      <a class="btn btn-secondary" href="docs/benchmarks.html">📊 View Benchmarks</a>
-      <a class="btn btn-secondary" href="docs/token-savings.html">💰 Token Savings</a>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      <p>MIT License · Copyright © 2026 <a href="https://github.com/adityashirsatrao007">Aditya Shirsatrao</a></p>
-      <p style="margin-top:8px;">
-        <a href="https://github.com/adityashirsatrao007/MEMORY">GitHub</a> ·
-        <a href="https://github.com/adityashirsatrao007/MEMORY/issues">Issues</a> ·
-        <a href="docs/SECURITY.md">Security</a> ·
-        <a href="docs/pricing.html">Pricing</a> ·
-        <a href="docs/benchmarks.html">Benchmarks</a> ·
-        <a href="docs/token-savings.html">Token Savings</a>
-      </p>
-    </footer>
-
   </div>
+</nav>
+
+<div class="page">
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-text">
+      <div class="eyebrow">v1.0 &middot; MIT Licensed</div>
+      <h1>Your AI agents <em>never forget</em> with MEMORY</h1>
+      <p>A modular, cross-agent knowledge system. 12 brain modules. 54 modernized CLI tools. 95% fewer tokens. Zero context exhaustion.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://github.com/adityashirsatrao007/MEMORY" target="_blank">View on GitHub</a>
+        <a class="btn btn-secondary" href="#install">Install in 2 min</a>
+        <a class="btn btn-secondary" href="docs/benchmarks.html">Benchmarks</a>
+      </div>
+    </div>
+    <div class="hero-fig">
+      <span class="tag">Live Architecture</span>
+      <div class="row">
+        <div class="cell c1">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span class="big-num">12<small> modules</small></span>
+          <div class="bar b1"></div>
+          <div class="bar b2"></div>
+        </div>
+        <div class="cell c2">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span class="big-num">54<small> tools</small></span>
+          <div class="bar b3"></div>
+          <div class="bar b4"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell c3">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span class="big-num">95%<small> fewer tokens</small></span>
+          <div class="bar b5"></div>
+          <div class="bar b1" style="width:55%"></div>
+        </div>
+        <div class="cell c1">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span class="big-num">6<small> agents</small></span>
+          <div class="bar b2" style="width:70%"></div>
+          <div class="bar b3" style="width:40%"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Metrics -->
+  <div class="metrics">
+    <div><span class="num">12</span><span class="label">Brain Modules</span></div>
+    <div><span class="num">54</span><span class="label">CLI Tools</span></div>
+    <div><span class="num">95%</span><span class="label">Token Saved</span></div>
+    <div><span class="num">6</span><span class="label">Agents Supported</span></div>
+    <div><span class="num">16</span><span class="label">Free LLM Providers</span></div>
+  </div>
+
+  <!-- Problem -->
+  <section>
+    <h2>The problem this solves</h2>
+    <p class="sec-intro">Context exhaustion is the #1 killer of productive AI coding sessions. MEMORY eliminates it at the architectural level.</p>
+    <div class="problem">
+      <blockquote>
+        "It's 3 AM. Your agent has been coding for 6 hours. Then context budget exhausts. It forgets everything — your project structure, auth patterns, conventions. Hallucinations begin."
+        <cite>&mdash; Every AI developer, eventually</cite>
+      </blockquote>
+      <div class="problem-text">
+        <p>MEMORY replaces the monolithic <strong>3,622-line GEMINI.md</strong> with 12 load-on-demand modules backed by a ChromaDB vector database.</p>
+        <p>Your agent searches first (~<strong>200 tokens</strong>), loads modules only when search misses (~<strong>1,420 tokens full</strong>). Result: <strong>60&ndash;95% fewer tokens per session</strong>.</p>
+        <p>With the freellmapi proxy routing across 16 free providers, that translates to <strong>$0 in API costs</strong> for most sessions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section>
+    <h2>How it works</h2>
+    <p class="sec-intro">A deceptively simple architecture that delivers outsized results.</p>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon ic-blue">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M3 10h14M10 3v14" stroke="#6C8EBF" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="10" r="2.5" fill="#6C8EBF"/></svg>
+        </div>
+        <h3>One source of truth</h3>
+        <p>6 symlinks (CLAUDE.md, AGENTS.md, .cursorrules, etc.) all point to one GEMINI.md. Every agent reads the same instructions. No drift.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon ic-green">
+          <svg viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="3" stroke="var(--olive)" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="var(--olive)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>12 brain modules</h3>
+        <p>Core Rules, CLI Tools, ML Engineering, Security, UI/UX, Web Dev, Job Hunt, Architecture, Misc, Lessons, Errors, Repo Research.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon ic-clay">
+          <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="var(--clay)" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="var(--clay)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Vector DB first</h3>
+        <p>ChromaDB search returns relevant chunks in ~200 tokens. Modules load only when search misses. 94.2% recall rate across all topics.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon ic-slate">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M2 10a8 8 0 1116 0 8 8 0 01-16 0z" stroke="currentColor" stroke-width="1.5"/><path d="M8 8l4 4m0-4l-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3>0-cost LLM proxy</h3>
+        <p>freellmapi routes across 16 free providers. ~1.7B tokens/month at zero cost. Never pay for API calls again.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon ic-blue">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M4 4l3 3m5-3l3 3M4 16l3-3m5 3l3-3" stroke="#6C8EBF" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="#6C8EBF"/></svg>
+        </div>
+        <h3>54 CLI guardrails</h3>
+        <p>Legacy commands (grep, cat, ls, find, du, ps) auto-routed to modern replacements (rg, bat, eza, fd, dust, procs).</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon ic-green">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M14 6l-8 8m0-8l8 8" stroke="var(--olive)" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Self-healing</h3>
+        <p>Error &rarr; Diagnose &rarr; Fix &rarr; Re-run &rarr; Verify. Pre-commit audits with semgrep, gitleaks, trivy. All symlinks checked.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modules -->
+  <section id="modules">
+    <h2>The 12 brain modules</h2>
+    <p class="sec-intro">Each module is a focused markdown file, loaded on demand. Total: 2,045 lines across all modules vs. 3,622 in the old monolith.</p>
+    <div class="module-grid">
+      <div class="mcard"><div class="num">01</div><div class="name">Core Rules</div><div class="lines">115 lines</div></div>
+      <div class="mcard"><div class="num">02</div><div class="name">CLI Tools</div><div class="lines">160 lines</div></div>
+      <div class="mcard"><div class="num">03</div><div class="name">ML Engineering</div><div class="lines">292 lines</div></div>
+      <div class="mcard"><div class="num">04</div><div class="name">Security</div><div class="lines">147 lines</div></div>
+      <div class="mcard"><div class="num">05</div><div class="name">UI/UX</div><div class="lines">274 lines</div></div>
+      <div class="mcard"><div class="num">06</div><div class="name">Web Dev</div><div class="lines">305 lines</div></div>
+      <div class="mcard"><div class="num">07</div><div class="name">Job Hunt</div><div class="lines">145 lines</div></div>
+      <div class="mcard"><div class="num">08</div><div class="name">Architecture</div><div class="lines">198 lines</div></div>
+      <div class="mcard"><div class="num">09</div><div class="name">Misc</div><div class="lines">255 lines</div></div>
+      <div class="mcard"><div class="num">10</div><div class="name">Lessons Learned</div><div class="lines">17 lines</div></div>
+      <div class="mcard"><div class="num">11</div><div class="name">Error Logs</div><div class="lines">30 lines</div></div>
+      <div class="mcard"><div class="num">12</div><div class="name">Repo Research</div><div class="lines">107 lines</div></div>
+    </div>
+  </section>
+
+  <!-- Token Economics -->
+  <section id="benchmarks">
+    <h2>Token economics</h2>
+    <p class="sec-intro">From 18K tokens of boilerplate to ~200. Your context budget freed for actual work.</p>
+    <div class="tok-chart">
+      <div class="tok-bars">
+        <div class="tok-row">
+          <span class="lbl">Old monolith</span>
+          <div class="track"><div class="fill f100">3,622 lines</div></div>
+        </div>
+        <div class="tok-row">
+          <span class="lbl">Full mode</span>
+          <div class="track"><div class="fill f40">1,420 lines</div></div>
+        </div>
+        <div class="tok-row">
+          <span class="lbl">Lazy mode</span>
+          <div class="track"><div class="fill f5">~200 lines</div></div>
+        </div>
+        <p style="font-size:11px;color:var(--g500);margin-top:8px;">Mode switching based on task complexity &mdash; automatic, transparent.</p>
+      </div>
+      <div class="tok-side">
+        <h3>95% less context overhead</h3>
+        <p style="margin-bottom:12px;">Old: <strong>~18K tokens</strong> swallowed by instructions before any work begins.</p>
+        <p style="margin-bottom:12px;">With MEMORY: <strong>~1K tokens</strong> in lazy mode. 95% reduction.</p>
+        <p><span class="saved-badge">&minus;95%</span> <span class="saved-badge" style="background:color-mix(in srgb, var(--clay) 15%,transparent);color:var(--clay);">&minus;60% full</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLI Tools -->
+  <section>
+    <h2>54 CLI modernizations</h2>
+    <p class="sec-intro">Every legacy command auto-routed to a modern, token-optimized replacement.</p>
+    <div class="cli-grid">
+      <div class="cli-item"><del>grep</del><span class="arrow">&rarr;</span><ins>rg</ins></div>
+      <div class="cli-item"><del>cat</del><span class="arrow">&rarr;</span><ins>bat</ins></div>
+      <div class="cli-item"><del>ls</del><span class="arrow">&rarr;</span><ins>eza</ins></div>
+      <div class="cli-item"><del>find</del><span class="arrow">&rarr;</span><ins>fd</ins></div>
+      <div class="cli-item"><del>du</del><span class="arrow">&rarr;</span><ins>dust</ins></div>
+      <div class="cli-item"><del>df</del><span class="arrow">&rarr;</span><ins>duf</ins></div>
+      <div class="cli-item"><del>ps</del><span class="arrow">&rarr;</span><ins>procs</ins></div>
+      <div class="cli-item"><del>top</del><span class="arrow">&rarr;</span><ins>btop</ins></div>
+      <div class="cli-item"><del>curl</del><span class="arrow">&rarr;</span><ins>httpie</ins></div>
+      <div class="cli-item"><del>npm</del><span class="arrow">&rarr;</span><ins>bun</ins></div>
+      <div class="cli-item"><del>pip</del><span class="arrow">&rarr;</span><ins>uv</ins></div>
+      <div class="cli-item"><del>sed</del><span class="arrow">&rarr;</span><ins>sd</ins></div>
+    </div>
+    <p style="margin-top:16px;font-size:13px;color:var(--g500);"><a href="https://github.com/adityashirsatrao007/MEMORY" style="color:var(--clay);">See all 54 in the repo &rarr;</a></p>
+  </section>
+
+  <!-- Agents -->
+  <section>
+    <h2>Works with every major agent</h2>
+    <p class="sec-intro">Symlink GEMINI.md once, use everywhere.</p>
+    <div class="agent-grid">
+      <div class="acard"><span class="icon">&#129302;</span><div class="name">Claude Code</div><div class="file">CLAUDE.md</div></div>
+      <div class="acard"><span class="icon">&#128295;</span><div class="name">OpenCode</div><div class="file">AGENTS.md</div></div>
+      <div class="acard"><span class="icon">&#128421;</span><div class="name">Cursor</div><div class="file">.cursorrules</div></div>
+      <div class="acard"><span class="icon">&#127754;</span><div class="name">Windsurf</div><div class="file">.windsurfrules</div></div>
+      <div class="acard"><span class="icon">&#128206;</span><div class="name">Copilot</div><div class="file">copilot-instructions</div></div>
+      <div class="acard"><span class="icon">&#128220;</span><div class="name">Cline</div><div class="file">.clinerules</div></div>
+    </div>
+  </section>
+
+  <!-- Architecture Diagram -->
+  <section>
+    <h2>Architecture</h2>
+    <p class="sec-intro">5 agent tools feed into the GEMINI.md router, which lazy-loads from 12 modules. ChromaDB provides vector search for instant recall.</p>
+    <img src="docs/images/architecture.png" alt="MEMORY Architecture Diagram" class="resp-img" loading="lazy">
+  </section>
+
+  <!-- Install -->
+  <section id="install">
+    <div class="install-wrap">
+      <h2>Install in under 2 minutes</h2>
+      <p style="font-size:14px;color:var(--g500);margin-bottom:16px;">One-time setup. Works on macOS, Linux, Windows (WSL).</p>
+      <div class="install-code">
+        <span class="c3"># Clone &amp; go</span><br>
+        <span class="c1">git clone</span> https://github.com/adityashirsatrao007/MEMORY.git<br>
+        <span class="c1">cd</span> MEMORY<br>
+        <span class="c1">make hooks</span>  <span class="c3"># installs git hooks + seeds vector DB</span>
+      </div>
+      <div class="install-code">
+        <span class="c3"># Symlink for your agent</span><br>
+        <span class="c1">ln -sf</span> <span class="c2">$PWD/GEMINI.md</span> CLAUDE.md   <span class="c3"># Claude Code</span><br>
+        <span class="c1">ln -sf</span> <span class="c2">$PWD/GEMINI.md</span> .cursorrules <span class="c3"># Cursor</span>
+      </div>
+      <div class="install-sub">Requires: Python 3.10+ &middot; ChromaDB (<code style="background:var(--g800);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">pip install chromadb</code>) &middot; A terminal</div>
+    </div>
+  </section>
+
+  <!-- Creator -->
+  <div class="section-center">
+    <h2>Created by Aditya Shirsatrao</h2>
+    <p>Built from scratch &mdash; every module, every tool, every pattern. This is original work: researched, designed, and implemented independently. No forks. No copying. Just engineering.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <a class="btn btn-primary" href="https://github.com/adityashirsatrao007" target="_blank">GitHub Profile</a>
+      <a class="btn btn-secondary" href="https://github.com/adityashirsatrao007/MEMORY" target="_blank">&#11088; Star on GitHub</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="https://github.com/adityashirsatrao007/MEMORY">GitHub</a>
+      <a href="https://github.com/adityashirsatrao007/MEMORY/issues">Issues</a>
+      <a href="docs/SECURITY.md">Security</a>
+      <a href="docs/pricing.html">Pricing</a>
+      <a href="docs/benchmarks.html">Benchmarks</a>
+      <a href="docs/token-savings.html">Token Savings</a>
+    </div>
+    <div class="footer-divider"></div>
+    <p style="text-align:center;font-size:12px;color:var(--g500);">MIT License &middot; Copyright &copy; 2026 <a href="https://github.com/adityashirsatrao007" style="color:var(--g500);">Aditya Shirsatrao</a></p>
+  </footer>
+
+</div>
+
+<script>
+function toggleTheme() {
+  const d = document.documentElement;
+  const isDark = d.classList.toggle('dark');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+</script>
 </body>
 </html>
