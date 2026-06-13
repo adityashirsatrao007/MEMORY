@@ -73,15 +73,7 @@ def test_request_trial_duplicate():
     assert response.status_code == 400
     assert "already exists" in response.json()["detail"]
 
-def test_admin_login():
-    # Invalid token
-    response = client.post("/admin/login", json={"email": "admin@example.com", "token": "wrong-token"})
-    assert response.status_code == 401
-    
-    # Valid token
-    response = client.post("/admin/login", json={"email": "admin@example.com", "token": "test-admin-token"}, follow_redirects=False)
-    assert response.status_code == 302
-    assert "admin_session" in response.headers.get("set-cookie", "")
+# Admin login was removed
 
 def test_activate_invalid_key():
     response = client.post("/activate", json={
@@ -168,63 +160,25 @@ def test_activate_verify_refresh_revoke_flow():
     assert response.json()["valid"] is False
     assert "revoked" in response.json()["message"].lower()
 
-def test_admin_actions():
-    gen_payload = {
-        "email": "customer@example.com",
-        "tier": "pro",
-        "duration_days": 30,
-        "max_machines": 2
-    }
-    # Unauthorized generate
-    response = client.post("/admin/generate", json=gen_payload)
+def test_export_signups_csv():
+    # Unauthorized export
+    response = client.get("/export-signups-csv?token=test-admin-token") # wait, wrong token first
+    response = client.get("/export-signups-csv?token=wrong-token")
     assert response.status_code == 401
-
-    # Login to get cookie
-    login_response = client.post("/admin/login", json={"email": "admin@example.com", "token": "test-admin-token"}, follow_redirects=False)
-    assert login_response.status_code == 302
-
-    # Authorized generate (client automatically uses session cookie)
-    response = client.post("/admin/generate", json=gen_payload)
+    
+    # Generate some users and licenses by requesting a trial
+    trial_payload = {"email": "customer@example.com", "name": "Customer"}
+    client.post("/request-trial", json=trial_payload)
+    
+    # Authorized export
+    response = client.get("/export-signups-csv?token=test-admin-token")
     assert response.status_code == 200
-    gen_data = response.json()
-    license_key = gen_data["license_key"]
-    assert gen_data["tier"] == "pro"
-    assert gen_data["max_machines"] == 2
+    assert "text/csv" in response.headers["content-type"]
+    assert "attachment; filename=signups.csv" in response.headers["content-disposition"]
     
-    # List licenses
-    response = client.get("/admin/licenses")
-    assert response.status_code == 200
-    licenses = response.json()
-    assert any(l["license_key"] == license_key for l in licenses)
-    
-    # Stats
-    response = client.get("/admin/stats")
-    assert response.status_code == 200
-    stats = response.json()
-    assert stats["licenses"]["total"] >= 1
-
-    # Activate machine 1
-    client.post("/activate", json={
-        "license_key": license_key,
-        "machine_fingerprint": "mac-1",
-        "hostname": "h1"
-    })
-    
-    # Activate machine 2
-    client.post("/activate", json={
-        "license_key": license_key,
-        "machine_fingerprint": "mac-2",
-        "hostname": "h2"
-    })
-    
-    # Activate machine 3 (exceed max_machines = 2)
-    response = client.post("/activate", json={
-        "license_key": license_key,
-        "machine_fingerprint": "mac-3",
-        "hostname": "h3"
-    })
-    assert response.status_code == 403
-    assert "maximum activations" in response.json()["detail"].lower()
+    csv_content = response.text
+    assert "Email,Name,License Key,Tier" in csv_content
+    assert "customer@example.com" in csv_content
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__]))
