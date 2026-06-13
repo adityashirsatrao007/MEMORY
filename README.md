@@ -13,6 +13,45 @@
 
 ---
 
+## ⚡ Quick Start & Setup
+
+Follow these setup instructions based on your operating system:
+
+### 🍎 macOS
+1. **Install Prerequisites**: Ensure you have Python 3.10+ and Homebrew installed.
+   ```bash
+   brew install python@3.12
+   ```
+2. **Setup Environment**: Run the setup script to create a virtual environment and configure dependencies:
+   ```bash
+   make setup
+   ```
+3. **Run Validation**:
+   ```bash
+   source .venv/bin/activate
+   make validate
+   ```
+
+### 🐧 Linux (Ubuntu)
+1. **Install Prerequisites**: Ensure you have Python 3.10+ and system utilities installed.
+   ```bash
+   sudo apt update && sudo apt install -y python3 python3-venv python3-pip
+   ```
+2. **Setup Environment**: Run the setup script to create a virtual environment and configure dependencies:
+   ```bash
+   make setup
+   ```
+3. **Run Validation**:
+   ```bash
+   source .venv/bin/activate
+   make validate
+   ```
+
+> [!NOTE]
+> For non-commercial or personal use, you can bypass the license key activation check by setting `export MEMORY_NON_COMMERCIAL=1` in your environment.
+
+---
+
 ## 💀 The Problem That Built This
 
 It's 3 AM. You've been in the zone for 6 hours — agent is flying through code, shipping features, fixing bugs. Then it hits.
@@ -32,8 +71,6 @@ No more 3 AM context dumps. No more repeated explanations. No more burned credit
 ---
 
 ## 🏗️ Architecture
-
-![Architecture Diagram](docs/images/architecture.png)
 
 ---
 
@@ -71,8 +108,6 @@ done
 
 Each module is a markdown file under `memory/modules/XX-*.md`. The agent loads ONLY what it needs.
 
-![Module Sizes](docs/images/module-sizes.png)
-
 | # | Module | Lines | Domain | Load When |
 |---|--------|-------|--------|-----------|
 | 01 | **Core Rules** | 115 | Session protocol, Karpathy, prod standards | Every full session |
@@ -103,8 +138,6 @@ make seed
 
 ## 💰 Token Economics
 
-![Token Savings](docs/images/token-savings.png)
-
 | Mode | Lines Loaded | vs Old 3,622-line Monolith |
 |------|-------------|---------------------------|
 | **Lazy** (vector search) | ~200 | **−95%** |
@@ -112,8 +145,6 @@ make seed
 | Old monolithic GEMINI.md | 3,622 | Baseline |
 
 ### Cost Comparison
-
-![Cost Comparison](docs/images/cost-comparison.png)
 
 **The trick is simple:** agents search the vector DB first. If the answer exists in a cached chunk (~200 tokens), they use that instead of loading a 300-line module. Modules only load when the search misses.
 
@@ -370,11 +401,6 @@ MIT License — Copyright © 2026 **Aditya Shirsatrao**
   <br><br>
   <sub>
     <a href="https://github.com/adityashirsatrao007/MEMORY">GitHub</a> ·
-    <a href="https://github.com/adityashirsatrao007/MEMORY/issues">Issues</a> ·
-    <a href="docs/token-savings.html">💰 Token Savings</a> ·
-    <a href="docs/benchmarks.html">📊 Benchmarks</a> ·
-    <a href="docs/ARCHITECTURE.md">🏗️ Architecture</a> ·
-    <a href="docs/API_REFERENCE.md">🔌 API Reference</a> ·
-    <a href="docs/SECURITY.md">🔐 Security</a>
+    <a href="https://github.com/adityashirsatrao007/MEMORY/issues">Issues</a>
   </sub>
 </p>
