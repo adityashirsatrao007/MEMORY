@@ -6,7 +6,7 @@
 A modular, cross-agent knowledge system that replaces monolithic agent config files with 12 load-on-demand modules backed by ChromaDB vector search. Your agents use 60-95% fewer tokens per session.
 
 **Is it free?**
-The MIT-licensed core on GitHub is fully functional. Commercial plans (hackathon, startup, business, enterprise) are available at [pricing.html](pricing.html).
+Yes for personal/non-commercial use (set `MEMORY_NON_COMMERCIAL=1`). Commercial use requires an activation key from [pricing.html](pricing.html).
 
 **Which agents does it work with?**
 Claude Code, OpenCode, Cursor, Windsurf, GitHub Copilot, and Cline — any agent that reads a config file from the project root.
@@ -34,4 +34,4 @@ Yes. We accept USD and INR via UPI, wire, PayPal, and crypto.
 Full refund within 30 days of purchase.
 
 **Can I try before buying?**
-The MIT-licensed version on GitHub is fully functional. Test everything, then upgrade.
+Get a free trial key from [pricing.html](pricing.html). The source is fully visible on GitHub — try everything, then purchase when you need commercial use.

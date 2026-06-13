@@ -70,7 +70,7 @@ Everything in Business, plus:
 
 **Is this a finished product?** No — MEMORY is in testing phase. Expect changes. Early adopters help shape the roadmap.
 
-**Can I try before buying?** The MIT-licensed version on GitHub is fully functional. Test everything, then upgrade when you need support or legal coverage.
+**Can I try before buying?** Get a free trial key from [pricing.html](pricing.html). The full source is visible on GitHub — test everything, then purchase when you need commercial use.
 
 **What if my hackathon extends beyond 2 months?** Upgrade to Startup or contact us.
 

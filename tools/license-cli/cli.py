@@ -27,7 +27,7 @@ from verify import (
     check_offline, decode_jwt, VerifyResult
 )
 
-API_URL = os.getenv("MEMORY_LICENSE_API", "http://localhost:8443")
+API_URL = os.getenv("MEMORY_LICENSE_API", "https://memory-license-server.onrender.com")
 OFFLINE_OK = True  # allow grace when server is down
 
 

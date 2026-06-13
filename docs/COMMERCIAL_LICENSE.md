@@ -4,9 +4,9 @@
 
 **Copyright © 2026 Aditya Shirsatrao**
 
-While the MEMORY repository is available under the MIT License for personal and open-source use, **commercial use requires a separate Commercial License**.
+MEMORY is source-available with technical enforcement. **Commercial use requires an activation key** obtained from the pricing page.
 
-### What Requires a Commercial License?
+### What Requires a License?
 
 - Using MEMORY as part of a revenue-generating product or service
 - Embedding MEMORY's architecture in a commercial SaaS platform
@@ -16,22 +16,22 @@ While the MEMORY repository is available under the MIT License for personal and 
 ### What Does NOT Require a License?
 
 - Personal use, experimentation, and learning
-- Open-source projects using MEMORY under MIT terms
 - Individual developers (fewer than 5 users within an organization)
 - Non-profit and educational use
+- Set `MEMORY_NON_COMMERCIAL=1` to bypass the license gate
 
 ### Pricing
 
 | Tier | Users | Price | Support |
 |------|-------|-------|---------|
-| **Individual** | 1-4 | Free (MIT) | Community |
+| **Individual** | 1-4 | Free (non-commercial) | Community |
 | **Startup** | 5-20 | $99/year | Email + Discord |
 | **Business** | 21-100 | $499/year | Email + Discord + Priority |
 | **Enterprise** | 100+ | Custom | SLA + Dedicated support |
 
 ### What You Get
 
-- **Commercial License** — legal right to use MEMORY in your commercial product
+- **Activation Key** — unlocks all tools and Makefile targets
 - **Priority Support** — response within 24 hours
 - **Custom Modules** — we'll create bespoke memory modules for your stack
 - **Integration Help** — assistance integrating MEMORY into your CI/CD pipeline
@@ -39,9 +39,9 @@ While the MEMORY repository is available under the MIT License for personal and 
 
 ### How to Purchase
 
+Get a trial or purchase at: https://adityashirsatrao007.github.io/MEMORY/docs/pricing.html
 Email: adityashirsatrao007@gmail.com
-GitHub: [adityashirsatrao007](https://github.com/adityashirsatrao007)
 
 ---
 
-**Note:** The repository itself remains MIT. You can fork, study, and learn from it freely. Commercial licensing is for organizations that want support, custom work, and legal coverage for production deployment.
+**Note:** The source code is publicly visible on GitHub. You can fork, study, and learn from it freely. Commercial use requires activation.

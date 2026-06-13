@@ -8,7 +8,7 @@
   <img alt="Modules" src="https://img.shields.io/badge/Modules-12-2E4036?style=flat-square">
   <img alt="Tools" src="https://img.shields.io/badge/CLI%20Tools-54-CC5833?style=flat-square">
   <img alt="Vector" src="https://img.shields.io/badge/Vector%20DB-ChromaDB-CC5833?style=flat-square">
-  <img alt="License" src="https://img.shields.io/badge/License-MIT-1A1A1A?style=flat-square">
+  <img alt="License" src="https://img.shields.io/badge/License-Source--Available-1A1A1A?style=flat-square">
 </p>
 
 ---
@@ -388,19 +388,19 @@ See [LICENSE_SECURITY.md](docs/LICENSE_SECURITY.md) for threat model.
 
 ---
 
-## 📜 License & Commercial Use
+## 📜 License & Activation
 
-MIT License — Copyright © 2026 **Aditya Shirsatrao**
+Source-Available License — Copyright © 2026 **Aditya Shirsatrao**
 
 | Use Case | License |
 |----------|---------|
-| Individual / Open source | 🆓 MIT — free forever |
-| Hackathon teams | 🏕️ [₹2,000/2mo](docs/PRICING.md) |
+| Personal / Non-commercial | 🆓 Free — set `MEMORY_NON_COMMERCIAL=1` |
+| Hackathon teams | 🏕️ [₹2,000/2mo](docs/pricing.html) |
 | Startup (5-20 users) | 💰 [$49/yr (₹4,699/yr)](docs/pricing.html) |
 | Business (21-100) | 💰 [$199/yr (₹18,999/yr)](docs/pricing.html) |
-| Enterprise (100+) | 💰 [Custom](docs/COMMERCIAL_LICENSE.md) |
+| Enterprise (100+) | 💰 [Custom](docs/pricing.html) |
 
-📄 [MIT License](LICENSE) · 💼 [Commercial License](docs/COMMERCIAL_LICENSE.md) · 🏷️ [Pricing](docs/pricing.html)
+📄 [License](LICENSE) · 🏷️ [Pricing & Trial](docs/pricing.html) · 🛡️ [License Security](docs/LICENSE_SECURITY.md)
 
 ---
 

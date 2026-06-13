@@ -4,6 +4,9 @@
 """Seed ChromaDB with all module files (GEMINI.md + modules).
 Run with --force to re-seed even if entries exist or content unchanged."""
 
+from license import require_license
+require_license()
+
 import chromadb
 import hashlib
 import os

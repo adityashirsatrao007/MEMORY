@@ -2,6 +2,9 @@
 # Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
 # Proprietary — see LICENSE file. No copying, cloning, or distribution.
 
+from license import require_license
+require_license()
+
 import os
 import sys
 import re
