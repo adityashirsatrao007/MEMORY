@@ -179,6 +179,10 @@ class AdminGenerateRequest(BaseModel):
 app = FastAPI(title="MEMORY License Server", version="1.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
+@app.get("/")
+def root():
+    return RedirectResponse(url="/admin")
+
 @app.get("/health")
 def health():
     return {"status": "ok", "timestamp": datetime.now(timezone.utc).isoformat()}
