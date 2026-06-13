@@ -202,13 +202,23 @@ section { margin-bottom:48px; }
 
   <section class="trial-section">
     <h2>Try MEMORY Free for 3 Days</h2>
-    <p>Get a trial license key delivered to your email. No credit card required.</p>
+    <p>Enter your email, get a trial key, and activate in one minute. No credit card required.</p>
     <form id="trial-form">
       <input type="email" id="trial-email" placeholder="your@email.com" required>
       <input type="text" id="trial-name" placeholder="Your name (optional)">
       <button type="submit">Send Trial Key</button>
     </form>
-    <div id="trial-result"></div>
+    <div id="trial-result" style="margin-top:12px;"></div>
+    <div id="trial-steps" style="display:none;margin-top:20px;padding:20px;background:var(--g50);border-radius:12px;font-size:14px;">
+      <strong style="display:block;margin-bottom:12px;color:var(--slate);">&#128161; Next steps — activate your license:</strong>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;"><span style="background:var(--olive);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">1</span><div><strong>Clone the repo</strong><br><code style="font-family:var(--mono);font-size:13px;background:var(--g100);padding:2px 6px;border-radius:4px;">git clone https://github.com/adityashirsatrao007/MEMORY.git</code></div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;"><span style="background:var(--olive);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">2</span><div><strong>Run setup</strong><br><code style="font-family:var(--mono);font-size:13px;background:var(--g100);padding:2px 6px;border-radius:4px;">cd MEMORY &amp;&amp; bash setup.sh</code></div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;"><span style="background:var(--olive);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">3</span><div><strong>Activate with your key</strong><br><code id="activate-cmd" style="font-family:var(--mono);font-size:13px;background:var(--g100);padding:2px 6px;border-radius:4px;">memory license activate --key YOUR-KEY</code><br><span style="font-size:12px;color:var(--g500);">Replace <strong>YOUR-KEY</strong> with the trial key above</span></div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;"><span style="background:var(--olive);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">4</span><div><strong>Verify it works</strong><br><code style="font-family:var(--mono);font-size:13px;background:var(--g100);padding:2px 6px;border-radius:4px;">make validate</code></div></div>
+      </div>
+      <p style="margin-top:16px;font-size:13px;color:var(--g500);">&#128179; For personal / non-commercial use, you can <strong>skip the license</strong> by running:<br><code style="font-family:var(--mono);font-size:13px;background:var(--g100);padding:2px 6px;border-radius:4px;">export MEMORY_NON_COMMERCIAL=1 &amp;&amp; make validate</code></p>
+    </div>
   </section>
 
   <section>
@@ -239,6 +249,8 @@ document.getElementById('trial-form').addEventListener('submit', async function(
   e.preventDefault();
   const btn = this.querySelector('button');
   const res = document.getElementById('trial-result');
+  const steps = document.getElementById('trial-steps');
+  const cmd = document.getElementById('activate-cmd');
   btn.disabled = true; btn.textContent = 'Sending...';
   try {
     const r = await fetch(TRIAL_API, {
@@ -248,13 +260,17 @@ document.getElementById('trial-form').addEventListener('submit', async function(
     });
     const d = await r.json();
     if (r.ok) {
-      res.innerHTML = '<div class="trial-msg ok">License sent' + (d.email_delivered ? ' to your email' : '') + '!</div><div class="trial-key">' + d.license_key + '</div>';
+      res.innerHTML = '<div class="trial-msg ok">License key ready' + (d.email_delivered ? ' (also sent to your email)' : '') + '!</div><div class="trial-key">' + d.license_key + '</div>';
+      cmd.textContent = 'memory license activate --key ' + d.license_key;
+      steps.style.display = 'block';
       this.reset();
     } else {
       res.innerHTML = '<div class="trial-msg err">' + (d.detail || 'Error') + '</div>';
+      steps.style.display = 'none';
     }
   } catch(e) {
     res.innerHTML = '<div class="trial-msg err">Server unreachable. Try again later.</div>';
+    steps.style.display = 'none';
   }
   btn.disabled = false; btn.textContent = 'Send Trial Key';
 });
