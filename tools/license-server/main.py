@@ -15,7 +15,7 @@ from datetime import datetime, timedelta, timezone
 from contextlib import asynccontextmanager
 
 import jwt
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, HTTPException, Depends, Request, Header, Cookie
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import BaseModel, EmailStr
@@ -374,7 +374,7 @@ def verify_admin(authorization: str = "", admin_session: str = ""):
     raise HTTPException(401, "Unauthorized")
 
 @app.post("/admin/generate")
-def admin_generate(req: AdminGenerateRequest, authorization: str = "", admin_session: str = "", db: Session = Depends(get_db)):
+def admin_generate(req: AdminGenerateRequest, authorization: str = Header(default=""), admin_session: str = Cookie(default=""), db: Session = Depends(get_db)):
     verify_admin(authorization, admin_session)
     user = db.query(User).filter(User.email == req.email).first()
     if not user:
@@ -405,7 +405,7 @@ def admin_generate(req: AdminGenerateRequest, authorization: str = "", admin_ses
     }
 
 @app.post("/admin/send-license")
-def admin_send_license(req: AdminGenerateRequest, authorization: str = "", admin_session: str = "", db: Session = Depends(get_db)):
+def admin_send_license(req: AdminGenerateRequest, authorization: str = Header(default=""), admin_session: str = Cookie(default=""), db: Session = Depends(get_db)):
     verify_admin(authorization, admin_session)
     license = db.query(License).join(User).filter(User.email == req.email).order_by(License.issued_at.desc()).first()
     if not license:
@@ -424,7 +424,7 @@ def admin_send_license(req: AdminGenerateRequest, authorization: str = "", admin
     return {"status": "sent" if sent else "printed", "license_key": license.license_key, "email": req.email, "delivered": sent}
 
 @app.get("/admin/licenses")
-def admin_list(authorization: str = "", admin_session: str = "", db: Session = Depends(get_db)):
+def admin_list(authorization: str = Header(default=""), admin_session: str = Cookie(default=""), db: Session = Depends(get_db)):
     verify_admin(authorization, admin_session)
     licenses = db.query(License).all()
     result = []
@@ -441,7 +441,7 @@ def admin_list(authorization: str = "", admin_session: str = "", db: Session = D
     return result
 
 @app.get("/admin/activations")
-def admin_activations(authorization: str = "", admin_session: str = "", db: Session = Depends(get_db)):
+def admin_activations(authorization: str = Header(default=""), admin_session: str = Cookie(default=""), db: Session = Depends(get_db)):
     verify_admin(authorization, admin_session)
     activations = db.query(Activation).all()
     result = []
@@ -461,7 +461,7 @@ def admin_activations(authorization: str = "", admin_session: str = "", db: Sess
     return result
 
 @app.get("/admin/stats")
-def admin_stats(authorization: str = "", admin_session: str = "", db: Session = Depends(get_db)):
+def admin_stats(authorization: str = Header(default=""), admin_session: str = Cookie(default=""), db: Session = Depends(get_db)):
     verify_admin(authorization, admin_session)
     total_licenses = db.query(func.count(License.id)).scalar()
     active_licenses = db.query(func.count(License.id)).filter(
@@ -507,7 +507,7 @@ def admin_login(req: LoginRequest, db: Session = Depends(get_db)):
     raise HTTPException(401, "Invalid credentials")
 
 @app.get("/admin", response_class=HTMLResponse)
-def admin_panel(admin_session: str = ""):
+def admin_panel(admin_session: str = Cookie(default="")):
     session = verify_session(admin_session)
     if not session:
         return HTMLResponse(ADMIN_LOGIN_HTML)
