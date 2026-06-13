@@ -77,10 +77,6 @@ Runs a native Ubuntu Linux environment inside Windows.
    bash setup.sh
    source .venv/bin/activate
    ```
-
-> [!NOTE]
-> For non-commercial or personal use, you can bypass the license key activation check by setting `export MEMORY_NON_COMMERCIAL=1` in your environment.
-
 ---
 
 ## 💀 The Problem That Built This
