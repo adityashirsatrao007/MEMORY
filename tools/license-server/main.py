@@ -219,6 +219,20 @@ class RequestTrialRequest(BaseModel):
     email: str
     name: str = ""
 
+def save_signup_to_csv(email: str, name: str, license_key: str, tier: str):
+    import csv
+    import os
+    csv_file = "signups.csv"
+    file_exists = os.path.exists(csv_file)
+    try:
+        with open(csv_file, mode="a", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            if not file_exists:
+                writer.writerow(["Timestamp", "Email", "Name", "License Key", "Tier"])
+            writer.writerow([datetime.now(timezone.utc).isoformat(), email, name, license_key, tier])
+    except Exception as e:
+        logger.error(f"Failed to write signup to CSV: {e}")
+
 @app.post("/request-trial")
 def request_trial(req: RequestTrialRequest, db: Session = Depends(get_db)):
     lk = make_license_key("TRIAL")
@@ -239,6 +253,10 @@ def request_trial(req: RequestTrialRequest, db: Session = Depends(get_db)):
     )
     db.add(license)
     db.commit()
+
+    # Save to signups.csv
+    save_signup_to_csv(req.email, user.name, lk, "trial")
+
 
     body = (
         f"Your MEMORY trial license:\n\n"
