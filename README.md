@@ -18,9 +18,9 @@
 Follow these setup instructions based on your operating system:
 
 ### 🍎 macOS
-1. **Install Prerequisites**: Ensure you have Python 3.10+ and Homebrew installed.
+1. **Install Prerequisites**: Ensure you have Homebrew and Python 3.10+ installed:
    ```bash
-   brew install python@3.12
+   brew install python@3.12 make
    ```
 2. **Setup Environment**: Run the setup script to create a virtual environment and configure dependencies:
    ```bash
@@ -33,9 +33,9 @@ Follow these setup instructions based on your operating system:
    ```
 
 ### 🐧 Linux (Ubuntu)
-1. **Install Prerequisites**: Ensure you have Python 3.10+ and system utilities installed.
+1. **Install Prerequisites**: Ensure Python 3.10+, pip, venv, and build tools are installed:
    ```bash
-   sudo apt update && sudo apt install -y python3 python3-venv python3-pip
+   sudo apt update && sudo apt install -y build-essential python3 python3-venv python3-pip
    ```
 2. **Setup Environment**: Run the setup script to create a virtual environment and configure dependencies:
    ```bash
@@ -45,6 +45,37 @@ Follow these setup instructions based on your operating system:
    ```bash
    source .venv/bin/activate
    make validate
+   ```
+
+### 🪟 Windows
+
+#### Option A: WSL2 (Recommended & Fully Supported)
+Runs a native Ubuntu Linux environment inside Windows.
+1. Open PowerShell as Administrator and run:
+   ```powershell
+   wsl --install
+   ```
+   *(Restart Windows if prompted to complete setup).*
+2. Open your WSL (Ubuntu) terminal and install prerequisites:
+   ```bash
+   sudo apt update && sudo apt install -y build-essential python3 python3-venv python3-pip git
+   ```
+3. Clone and set up:
+   ```bash
+   git clone https://github.com/adityashirsatrao007/MEMORY.git
+   cd MEMORY
+   make setup
+   source .venv/bin/activate
+   make validate
+   ```
+
+#### Option B: Native Windows (Git Bash)
+1. Install [Git for Windows](https://git-scm.com/download/win) (provides Git Bash).
+2. Install [Python 3.10+](https://www.python.org/downloads/windows/) (ensure you check **"Add Python to PATH"**).
+3. Open **Git Bash** and run the setup script:
+   ```bash
+   bash setup.sh
+   source .venv/bin/activate
    ```
 
 > [!NOTE]
