@@ -518,6 +518,15 @@ def admin_stats(admin_session: str = Cookie(default=""), db: Session = Depends(g
         "by_tier": {tier: count for tier, count in by_tier}
     }
 
+@app.post("/admin/reset-db-dangerous")
+def admin_reset_db_dangerous(token: str, db: Session = Depends(get_db)):
+    if token != ADMIN_TOKEN:
+        raise HTTPException(401, "Unauthorized")
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    return {"status": "ok", "message": "Database reset successfully"}
+
+
 @app.get("/admin/login", response_class=HTMLResponse)
 def admin_login_page():
     return HTMLResponse(ADMIN_LOGIN_HTML)
