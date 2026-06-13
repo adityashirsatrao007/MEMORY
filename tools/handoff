@@ -13,22 +13,26 @@ fi
 
 TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
 USER_NOTES="$*"
-
 if [ "$GLOBAL" = false ]; then
     # Write local progress file
     cat > "$PROGRESS_FILE" << EOF
 # Agent Handoff Progress State
 - **Timestamp**: ${TIMESTAMP}
 
-EOF
+## Session Notes
+${USER_NOTES:-"Active session update"}
 
-    if [[ -n "$USER_NOTES" ]]; then
-        cat >> "$PROGRESS_FILE" << EOF
-## User/Session Notes
-${USER_NOTES}
+## Successfully Completed
+- [x] (List successfully completed items here)
+
+## Failures / Blockers
+- None (List any active issues or blockers here)
+
+## Incomplete / Next Steps
+1. (List next steps and incomplete tasks here)
+2. (List subsequent tasks)
 
 EOF
-    fi
 
     STATUS_OUTPUT=$(git status -s)
     DIFF_SUMMARY=$(git diff --stat)

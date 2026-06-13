@@ -58,3 +58,4 @@ templates/ponytail/
 *.tmp
 *.swp
 vector_db/
+memory/context-snapshot.md

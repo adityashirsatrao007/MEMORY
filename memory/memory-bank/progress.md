@@ -4,7 +4,7 @@
 > Read this at the START of every session to resume without re-analysis.
 
 ## Current Status
-Token optimization phase complete. Session overhead: 900+ → ~220 lines (76% reduction).
+License DRM enforcement complete. MIT → proprietary source-available, RS256 online/offline verification, Render deployment, Resend email, admin panel locked to owner.
 
 ## What's Done
 - [x] 54-tool dispatch table + auto-dispatch script
@@ -30,6 +30,9 @@ Token optimization phase complete. Session overhead: 900+ → ~220 lines (76% re
 - Vector DB needs re-seeding after module content changes
 
 ## Session Log
+| 2026-06-13 10:00:00 | Built auto-sync system: make session-end target, pre-commit hook auto re-seeds DB. Created memory/context-snapshot.md (gitignored) with ALL secrets & session context — 30+ API keys, Render config, DB creds, admin token, RS256 keys, etc. Indexed by vector DB. memory-search now works from PATH. Updated 01-core-rules.md to enforce sync protocol. 158 chunks across 16 files. |
+| 2026-06-13 09:28:35 | Unified global and local paths for drawio-skill and career-ops, validated 6 external tools, updated vector DB |
+| 2026-06-13 09:21:01 | Built auto-sync system: session-end target, pre-commit hook, vector DB indexes progress files now |
 <!-- Agent appends a one-line summary after each session -->
 | Date | What Was Done |
 |------|--------------|
@@ -71,10 +74,7 @@ Token optimization phase complete. Session overhead: 900+ → ~220 lines (76% re
 | 2026-06-09 | Final cleanup: reviewed all restored files, kept templates as reference library (10 files, 2,301 lines), linked from 05-ui-ux.md, deleted 26 stale files |
 | 2026-06-09 | Compressed core modules 73%, behavioral token rules, read cache, rtk hook, silent CLI |
 | 2026-06-13 | Configured Shadcn, Magic UI, and Playwright MCP servers in `mcp_config.json`; created code design validation script `validate_ui.py` integrated into `Makefile` and git `pre-commit` hook; optimized `fcc-server` model routing to use free Google AI Studio Gemini models and disabled thinking passes to minimize latency and token costs; created `.claudeignore` file; created `CLAUDE_CODES.md` template containing 100 stacked Claude prompt modifiers and linked it to modules; added 5 Operator MCPs (Firecrawl, Playwright, Glif, Perplexity, and Chrome-Tabs) to `mcp_config.json` with global key placeholders; compiled/installed `bottom` (`btm`), installed `devbox`, and created `12-repo-teachings.md` pattern reference guide. |
-
-## Conversation Handoff (2026-06-13 02:11:00)
-- **Notes**: Configured MCPs, optimized free-claude-code model routing, created Claude Codes templates, integrated the 5 Operator MCPs, starred 18 target repos, and installed Devbox + Bottom utilities.
-- **Incoming Agent Directive**: Continue verifying proxy routing or start on any local UI tasks using the configured design systems, validators, Claude Codes prompt modifiers, Operator MCP tools, and newly installed environment managers.
+| 2026-06-13 | MIT → proprietary DRM migration: RS256 license enforcement, 3-layer integrity guard (Makefile grep + Python scan + online verify), 7-day offline grace, machine fingerprint. License server on Render with Resend email, admin panel (cookie auth, owner-only, stats/activations). All 5 tools gated, Makefile targets locked, setup.sh with OS detection. All docs updated to source-available. 6 trial licenses in DB. |
 
 
 

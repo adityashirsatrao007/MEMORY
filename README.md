@@ -8,7 +8,7 @@
   <img alt="Modules" src="https://img.shields.io/badge/Modules-12-2E4036?style=flat-square">
   <img alt="Tools" src="https://img.shields.io/badge/CLI%20Tools-54-CC5833?style=flat-square">
   <img alt="Vector" src="https://img.shields.io/badge/Vector%20DB-ChromaDB-CC5833?style=flat-square">
-  <img alt="License" src="https://img.shields.io/badge/License-Source--Available-1A1A1A?style=flat-square">
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-green?style=flat-square">
 </p>
 
 ---
@@ -355,52 +355,11 @@ done
 
 ---
 
-## 🔑 License Activation System
+## 📜 License
 
-MEMORY includes a built-in license activation system for commercial deployments.
+MIT License — Copyright © 2026 **Aditya Shirsatrao**
 
-```bash
-# Start the license server locally (automatic fallback to SQLite)
-PORT=8443 python3 tools/license-server/main.py
-
-# Generate bulk licenses (creates 1,000 active keys in database and signups.csv)
-python3 tools/license-server/generate_bulk_licenses.py
-
-# Activate on client (exchanges key and automatically configures public_key.pem locally)
-MEMORY_LICENSE_API="http://localhost:8443" memory activate MEM-PRO-XXXX-XXXX-XXXX
-
-# Verify status
-memory verify
-```
-
-**Architecture:** FastAPI backend → PostgreSQL (fallback SQLite) → RS256 signed JWTs → machine-bound tokens.  
-7-day offline grace period.  
-
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/activate` | POST | Validate key, return JWT + server public key |
-| `/verify` | POST | Check token validity |
-| `/refresh` | POST | Renew expiring tokens |
-| `/revoke` | POST | Invalidate a license |
-| `/export-signups-csv` | GET | Download all user signups as a CSV spreadsheet (requires token) |
-
-See [LICENSE_SECURITY.md](docs/LICENSE_SECURITY.md) for threat model.
-
----
-
-## 📜 License & Activation
-
-Source-Available License — Copyright © 2026 **Aditya Shirsatrao**
-
-| Use Case | License |
-|----------|---------|
-| Personal / Non-commercial | 🆓 Free — set `MEMORY_NON_COMMERCIAL=1` |
-| Hackathon teams | 🏕️ [₹2,000/2mo](docs/pricing.html) |
-| Startup (5-20 users) | 💰 [$49/yr (₹4,699/yr)](docs/pricing.html) |
-| Business (21-100) | 💰 [$199/yr (₹18,999/yr)](docs/pricing.html) |
-| Enterprise (100+) | 💰 [Custom](docs/pricing.html) |
-
-📄 [License](LICENSE) · 🏷️ [Pricing & Trial](docs/pricing.html) · 🛡️ [License Security](docs/LICENSE_SECURITY.md)
+📄 [MIT License](LICENSE)
 
 ---
 
@@ -416,7 +375,6 @@ Source-Available License — Copyright © 2026 **Aditya Shirsatrao**
     <a href="docs/benchmarks.html">📊 Benchmarks</a> ·
     <a href="docs/ARCHITECTURE.md">🏗️ Architecture</a> ·
     <a href="docs/API_REFERENCE.md">🔌 API Reference</a> ·
-    <a href="docs/SECURITY.md">🔐 Security</a> ·
-    <a href="docs/pricing.html">🏷️ Pricing</a>
+    <a href="docs/SECURITY.md">🔐 Security</a>
   </sub>
 </p>

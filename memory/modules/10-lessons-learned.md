@@ -15,3 +15,8 @@
 - **Auth Key Separation**: Always set `ANTHROPIC_AUTH_TOKEN` to the target API token, and set `ANTHROPIC_API_KEY` to `""` (empty string) to prevent the CLI from attempting to log in/authenticate with Anthropic directly.
 - **Model Profile Requirement**: The top-level `"model": "sonnet[1m]"` parameter is strictly required for internal CLI validation (context window & token profiles). Do not remove it when overriding `ANTHROPIC_MODEL`.
 - **Session Reloading**: Claude Code settings do not hot-reload. Always launch a new terminal session for config modifications to take effect.
+
+## Tool Validation & Git Commit Safety Protocol (Enforced 2026-06-13)
+- **Local vs Global Skills Path Alignment**: When registering new agent skills, explicitly link their `SKILL.md` folder structure to `.agents/skills/`. Do not assume global path installations (`~/.claude/skills/`) are auto-inherited by local workspace agents.
+- **Git Hook Validator Scope Constraints**: Git pre-commit checkers (like `validate_ui.py`) must ignore the `.agents/` folder. Third-party skill code contains custom placeholders/styles that will trigger false failures and block all `git commit` actions.
+- **Form Attribute Validation Exceptions**: UI checkers scanning for placeholders must ignore standard HTML input `placeholder="..."` attributes to prevent normal HTML forms from triggering linter errors.

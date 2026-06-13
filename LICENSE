@@ -1,56 +1,21 @@
-MEMORY License — Source-Available, Commercial-Use Requires Activation
-Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
+MIT License
 
-Licensor:        Aditya Shirsatrao
-Software:        MEMORY (modular cross-agent knowledge system)
+Copyright (c) 2026 Aditya Shirsatrao
 
-1. Grant of License
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-   a. Personal / Non-Commercial Use:
-      You may view, fork, and modify the source code for personal,
-      educational, or non-commercial purposes. No activation key is required.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-   b. Commercial Use:
-      Any use of the Software within a business, organization, or
-      revenue-generating activity requires a valid activation key obtained
-      from the Licensor. Commercial use includes but is not limited to:
-      integration into commercial products, internal tooling for a
-      for-profit entity, or any deployment that generates income.
-
-2. Activation
-
-   The Software includes technical enforcement (license key + online/offline
-   verification). Without a valid activation key, the core tools
-   (seed, validate, dashboard, hooks, and all utility scripts) will refuse
-   to execute for commercial use. Personal/non-commercial use is exempt
-   from this enforcement.
-
-   Trial keys are available at https://adityashirsatrao007.github.io/MEMORY/docs/pricing.html
-   Commercial licenses can be purchased at the same URL or by emailing
-   adityashirsatrao007@gmail.com.
-
-3. Redistribution
-
-   You may not distribute, sublicense, or sell copies of the Software or
-   its modified versions without prior written consent from the Licensor.
-   Public forks that do not remove or bypass the license enforcement are
-   permitted for non-commercial purposes only.
-
-4. No Warranty
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-   IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-   LIABILITY.
-
-5. Termination
-
-   Any violation of these terms automatically terminates your rights under
-   this license. Upon termination, you must cease all use of the Software
-   and destroy all copies.
-
-6. Contact
-
-   Aditya Shirsatrao — adityashirsatrao007@gmail.com
-   https://github.com/adityashirsatrao007/MEMORY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

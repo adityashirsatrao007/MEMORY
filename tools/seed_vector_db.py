@@ -1,11 +1,8 @@
-# Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
-# Proprietary — see LICENSE file. No copying, cloning, or distribution.
+# Copyright (c) 2026 Aditya Shirsatrao
+# MIT License — see LICENSE file.
 
 """Seed ChromaDB with all module files (GEMINI.md + modules).
 Run with --force to re-seed even if entries exist or content unchanged."""
-
-from license import require_license
-require_license()
 
 import chromadb
 import hashlib
@@ -18,6 +15,9 @@ VECTOR_DB_PATH = BASE / "memory" / "vector_db"
 FILES = [
     BASE / "GEMINI.md",
     *(BASE / "memory/modules").glob("*.md"),
+    BASE / ".agent-progress.md",
+    BASE / "memory/memory-bank/progress.md",
+    BASE / "memory/context-snapshot.md",
 ]
 HASH_FILE = VECTOR_DB_PATH / "content_hash"
 

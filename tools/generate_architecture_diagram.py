@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """Generate architecture diagram for MEMORY system (WHITE background, compact layout)."""
 
-from license import require_license
-require_license()
-
 import os
 from pathlib import Path
 from diagrams import Diagram, Edge, Cluster

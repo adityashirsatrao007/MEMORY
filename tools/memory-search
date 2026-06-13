@@ -1,42 +1,33 @@
 #!/bin/sh
 # Search the MEMORY vector DB. Usage: memory-search <query> [top_k]
-SELF="$(python3 -c "import os; print(os.path.realpath('$0'))")"
-DIR="$(cd "$(dirname "$SELF")/.." && pwd)"
-exec "$DIR/.venv/bin/python3" -c "
-import sys, os, json
-sys.path.insert(0, os.path.expanduser('$DIR/.venv/lib/python*/site-packages'))
-import glob as _g
-for _p in _g.glob(os.path.expanduser('$DIR/.venv/lib/python*/site-packages')):
-    sys.path[:0] = [_p]
-    break
-import chromadb
+MEMORY_ROOT="${MEMORY_ROOT:-/home/aditya/Desktop/Projects/MEMORY}"
+. "$MEMORY_ROOT/.venv/bin/activate"
+QUERY="${1:-}"
+TOP_K="${2:-5}"
 
-DB = os.path.expanduser('$DIR/memory/vector_db')
-query = ' '.join(sys.argv[1:]) if len(sys.argv) > 1 else ''
+python3 - "$QUERY" "$TOP_K" "$MEMORY_ROOT" <<'PYEOF'
+import sys, os, chromadb
+query = sys.argv[1]
 top_k = int(sys.argv[2]) if len(sys.argv) > 2 else 5
+root = sys.argv[3] if len(sys.argv) > 3 else os.path.expanduser('~/Desktop/Projects/MEMORY')
+DB = os.path.join(root, 'memory', 'vector_db')
 c = chromadb.PersistentClient(path=DB)
 col = c.get_or_create_collection(name='antigravity_memory')
-
 if not query:
     results = col.get()
     seen = set()
-    srcs = []
     for m in results['metadatas']:
         f, s = m.get('file','?'), m.get('section','?')
         if (f,s) not in seen:
-            srcs.append((f,s)); seen.add((f,s))
-    print(f'  {len(srcs)} sections, {len(results[\"ids\"])} chunks')
-    for f,s in sorted(srcs): print(f'    {f} → {s}')
+            print(f'  {f} → {s}'); seen.add((f,s))
     sys.exit(0)
-
 results = col.query(query_texts=[query], n_results=top_k)
 if not results['documents'][0]:
     print('  no results'); sys.exit(0)
-
 for doc, meta, dist in zip(results['documents'][0], results['metadatas'][0], results['distances'][0]):
     src = meta.get('file','?'); section = meta.get('section','?')
     print(f'  [{src}] {section}  (d={dist:.2f})')
-    for l in doc.strip().split(chr(10))[:4]:
+    for l in doc.strip().split('\n')[:4]:
         if l.strip(): print(f'    {l[:120]}')
     print()
-" "$@"
+PYEOF

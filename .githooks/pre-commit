@@ -1,5 +1,6 @@
 #!/bin/bash
 # Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
 # Proprietary — see LICENSE file. No copying, cloning, or distribution.
-# Auto-validate UI design before committing
+# Auto-validate UI + sync session progress + re-seed vector DB before commit
 make validate-ui
+MEMORY_NON_COMMERCIAL=1 make seed 2>/dev/null

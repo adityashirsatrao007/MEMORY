@@ -6,7 +6,7 @@
 
 ## 🏗️ Enterprise Architecture & Scaling Protocols
 
-Reference runnable code blueprints under `/home/aditya/bin/templates/architecture/`.
+Reference runnable code blueprints under `/home/aditya/bin/templates/architecture/`. For reusable, production-ready authentication and security templates, see [templates/auth/README.md](file:///home/aditya/Desktop/Projects/MEMORY/templates/auth/README.md).
 
 ### 1. Microservices SAGA Pattern
 - **When:** Transaction spans multiple microservices requiring distributed consistency.

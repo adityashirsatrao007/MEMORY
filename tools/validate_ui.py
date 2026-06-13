@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
-# Proprietary — see LICENSE file. No copying, cloning, or distribution.
-
-from license import require_license
-require_license()
+# Copyright (c) 2026 Aditya Shirsatrao
+# MIT License — see LICENSE file.
 
 import os
 import sys
@@ -61,7 +58,6 @@ def check_file(file_path):
         for pattern in PLACEHOLDERS:
             match = re.search(pattern, line, re.IGNORECASE)
             if match:
-                # Skip if it is an HTML placeholder attribute (e.g. placeholder="your@email.com")
                 if pattern == r'\bplaceholder\b' and re.search(r'placeholder\s*=\s*["\']', line, re.IGNORECASE):
                     continue
                 errors.append(f"Line {i}: Found placeholder text/comment matching pattern '{pattern}'. Replace with real, high-quality content.")

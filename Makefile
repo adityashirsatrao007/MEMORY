@@ -1,33 +1,14 @@
-# Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
-# Proprietary — see LICENSE file. No copying, cloning, or distribution.
+# Copyright (c) 2026 Aditya Shirsatrao
+# MIT License — see LICENSE file.
 
-.PHONY: setup validate seed stats hooks fix-paths check-license
-
-check-license:  ## Verify commercial license (skip for personal/non-commercial)
-	@for f in tools/seed_vector_db.py tools/dashboard.py tools/validate_ui.py tools/generate_architecture_diagram.py tools/generate_readme_diagrams.py; do \
-	  if ! grep -q "require_license()" "$$f" 2>/dev/null; then \
-	    echo "ERROR: License gate removed from $$f"; \
-	    echo "This software requires a license. Do not bypass the license check."; \
-	    exit 1; \
-	  fi; \
-	done
-	@python3 -c "from tools.license import require_license; require_license()" 2>/dev/null; \
-	rc=$$?; \
-	if [ $$rc -ne 0 ]; then \
-	  echo "LICENSE REQUIRED for commercial use."; \
-	  echo "If you are using this personally/non-commercially, set:"; \
-	  echo "  export MEMORY_NON_COMMERCIAL=1"; \
-	  echo "and re-run. Otherwise, get a license at:"; \
-	  echo "  https://adityashirsatrao007.github.io/MEMORY/docs/pricing.html"; \
-	  exit $$rc; \
-	fi
+.PHONY: setup validate seed stats hooks fix-paths
 
 MODULES = $(wildcard memory/modules/*.md)
 
 setup:  ## First-time setup: check prerequisites, install deps, activate license
 	@bash setup.sh
 
-validate: check-license  ## Check all module files exist and have content, and run UI validation
+validate:  ## Check all module files exist and have content, and run UI validation
 	@echo "=== Module Validation ==="
 	@errors=0; \
 	for m in $(MODULES); do \
@@ -48,12 +29,12 @@ validate-ui:  ## Run the UI design system and placeholder validation script
 	@python3 tools/validate_ui.py .
 
 
-seed: check-license  ## Re-vector ChromaDB from all module files (--force)
+seed:  ## Re-vector ChromaDB from all module files (--force)
 	@echo "=== Seeding Vector DB ==="
 	@. .venv/bin/activate && python3 tools/seed_vector_db.py --force
 	@echo "  ✅ Done"
 
-stats: check-license  ## Module sizes and token savings
+stats:  ## Module sizes and token savings
 	@echo "=== MEMORY Stats ==="
 	@index_lines=$$(wc -l < GEMINI.md); \
 	module_total=0; \
@@ -86,7 +67,7 @@ hooks:  ## Install git hooks for auto-seed and UI validation (run after clone)
 	@echo "=== Installing git hooks ==="
 	@mkdir -p .githooks
 	@printf '%s\n' '#!/bin/bash' '# Auto-validate UI design before committing' \
-	  'MEMORY_NON_COMMERCIAL=1 make validate-ui' > .githooks/pre-commit
+	  'make validate-ui' > .githooks/pre-commit
 	@chmod +x .githooks/pre-commit
 	@printf '%s\n' '#!/bin/bash' '# Auto-re-vector ChromaDB when module files change' \
 	  'CHANGED=$$(git diff HEAD@{1} --name-only 2>/dev/null | grep -c "memory/modules/")' \
@@ -103,7 +84,7 @@ hooks:  ## Install git hooks for auto-seed and UI validation (run after clone)
 	@git config core.hooksPath .githooks 2>/dev/null || true
 	@echo "  ✅ pre-commit, post-merge, and post-commit hooks installed in .githooks/"
 
-all: check-license validate seed  ## Validate modules and re-seed vector DB
+all: validate seed  ## Validate modules and re-seed vector DB
 
 fix-paths:  ## Update relative paths in all modules to use $MEMORY_ROOT
 	@echo "=== Fixing cross-project module references ==="
@@ -120,18 +101,10 @@ fix-paths:  ## Update relative paths in all modules to use $MEMORY_ROOT
 	done; \
 	echo "  ✅ Done"
 
-# ─── License System ────────────────────────────────────────────
+# ─── Session Sync (AUTO-SYNC — run at end of every session) ──
 
-license-server:  ## Start the license activation server
-	@echo "=== Starting MEMORY License Server ==="
-	@cd tools/license-server && pip install -q -r requirements.txt 2>/dev/null; \
-	echo "  Server starting on http://localhost:8443"; \
-	echo "  Admin panel: http://localhost:8443/admin"; \
-	python3 main.py
-
-license-cli:  ## Run the license CLI (activate / verify / status)
-	@echo "=== MEMORY License CLI ==="
-	@python3 tools/license-cli/cli.py $(filter-out $@,$(MAKECMDGOALS))
+session-end:  ## End session: log progress to memory + re-seed vector DB
+	@bash tools/sync-session.sh "$(MSG)"
 
 %:
 	@true

@@ -91,12 +91,11 @@ If you hit a rate limit, token exhaustion, or get stuck and the user switches to
    - Outline: what was successfully built, what failed/blocked, and the next 2 tasks to complete.
    - This ensures the next agent picks up the context instantly with zero token startup overhead.
 
-## LICENSE (Source-Available)
+## LICENSE (MIT)
 
 ### RULE #6 — REPOSITORY LICENSING
-This repository is **Source-Available** — © 2026 Aditya Shirsatrao.
+This repository is **MIT Licensed** — © 2026 Aditya Shirsatrao.
 1. The LICENSE file at the repo root is the controlling legal document.
 2. Parts of this repo contain personal API key references and system prompts — use responsibly.
 3. If you clone this repo, respect the LICENSE terms.
-4. Personal/non-commercial use is free. Commercial use requires an activation key.
 
