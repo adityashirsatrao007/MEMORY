@@ -61,6 +61,9 @@ def check_file(file_path):
         for pattern in PLACEHOLDERS:
             match = re.search(pattern, line, re.IGNORECASE)
             if match:
+                # Skip if it is an HTML placeholder attribute (e.g. placeholder="your@email.com")
+                if pattern == r'\bplaceholder\b' and re.search(r'placeholder\s*=\s*["\']', line, re.IGNORECASE):
+                    continue
                 errors.append(f"Line {i}: Found placeholder text/comment matching pattern '{pattern}'. Replace with real, high-quality content.")
 
         # 3. Check for raw border-style defaults (often look unpolished)
@@ -98,7 +101,7 @@ def main():
         elif os.path.isdir(target):
             for root, dirs, files in os.walk(target):
                 # Ignore dependencies, build artifacts, and templates
-                if any(x in root for x in ['node_modules', '.next', 'dist', 'build', '.venv', 'venv', '.git', 'templates']):
+                if any(x in root for x in ['node_modules', '.next', 'dist', 'build', '.venv', 'venv', '.git', 'templates', '.agents']):
                     continue
                 for file in files:
                     full_path = os.path.join(root, file)
