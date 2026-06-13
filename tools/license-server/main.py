@@ -9,7 +9,7 @@ import json
 import secrets
 import hashlib
 import logging
-from urllib.request import Request, urlopen
+from urllib.request import Request as UrlRequest, urlopen
 from urllib.error import URLError, HTTPError
 from datetime import datetime, timedelta, timezone
 from contextlib import asynccontextmanager
@@ -32,6 +32,8 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg2://memory:memory@lo
 PRIVATE_KEY = os.getenv("LICENSE_PRIVATE_KEY", "").replace("\\n", "\n")
 PUBLIC_KEY = os.getenv("LICENSE_PUBLIC_KEY", "").replace("\\n", "\n")
 ADMIN_TOKEN = os.getenv("LICENSE_ADMIN_TOKEN", "change-me-in-production")
+if ADMIN_TOKEN == "change-me-in-production":
+    logger.warning("SECURITY WARNING: Using default ADMIN_TOKEN. Please set LICENSE_ADMIN_TOKEN environment variable in production!")
 OWNER_EMAIL = os.getenv("OWNER_EMAIL", "adityashirsatrao007@gmail.com")
 SESSION_SECRET = os.getenv("SESSION_SECRET", secrets.token_hex(32))
 ISSUER = "memory-license-server"
@@ -88,6 +90,7 @@ def sign_jwt(license_key: str, tier: str, email: str, machine_fp: str,
         "machine_fp": machine_fp,
         "iss": ISSUER,
         "iat": datetime.now(timezone.utc),
+        "jti": str(uuid.uuid4()),
     }
     if expires_at:
         payload["exp"] = expires_at
@@ -97,6 +100,21 @@ def sign_jwt(license_key: str, tier: str, email: str, machine_fp: str,
 
 def verify_jwt(token: str) -> dict:
     return jwt.decode(token, PUBLIC_KEY, algorithms=["RS256"], issuer=ISSUER)
+
+def is_future(dt: datetime | None) -> bool:
+    if not dt:
+        return False
+    if dt.tzinfo is not None:
+        return dt > datetime.now(timezone.utc)
+    return dt > datetime.now(timezone.utc).replace(tzinfo=None)
+
+def is_past(dt: datetime | None) -> bool:
+    if not dt:
+        return False
+    if dt.tzinfo is not None:
+        return dt < datetime.now(timezone.utc)
+    return dt < datetime.now(timezone.utc).replace(tzinfo=None)
+
 
 # ─── Session (admin cookie auth) ───
 
@@ -124,7 +142,7 @@ def send_email(to: str, subject: str, body: str) -> bool:
         return False
     try:
         payload = json.dumps({"from": EMAIL_FROM, "to": to, "subject": subject, "text": body}).encode()
-        req = Request(RESEND_API, data=payload, method="POST")
+        req = UrlRequest(RESEND_API, data=payload, method="POST")
         req.add_header("Authorization", f"Bearer {RESEND_API_KEY}")
         req.add_header("Content-Type", "application/json")
         req.add_header("User-Agent", "memory-license-server/1.0")
@@ -202,7 +220,7 @@ def request_trial(req: RequestTrialRequest, db: Session = Depends(get_db)):
     existing = db.query(License).filter(
         License.user_id == user.id, License.tier == "trial", License.revoked == False
     ).first()
-    if existing and existing.expires_at and existing.expires_at > datetime.now(timezone.utc):
+    if existing and existing.expires_at and is_future(existing.expires_at):
         raise HTTPException(400, "Active trial already exists for this email")
     expires_at = datetime.now(timezone.utc) + timedelta(days=3)
     license = License(
@@ -224,7 +242,6 @@ def request_trial(req: RequestTrialRequest, db: Session = Depends(get_db)):
         logger.info(f"Trial key for {req.email}: {lk}")
 
     return {
-        "license_key": lk,
         "tier": "trial",
         "expires_at": expires_at.isoformat(),
         "email": req.email,
@@ -235,10 +252,10 @@ def request_trial(req: RequestTrialRequest, db: Session = Depends(get_db)):
 def activate(req: ActivateRequest, db: Session = Depends(get_db)):
     license = db.query(License).filter(License.license_key == req.license_key).first()
     if not license:
-        raise HTTPException(400, "Invalid license key")
+        raise HTTPException(404, "License key not found")
     if license.revoked:
         raise HTTPException(403, "License has been revoked")
-    if license.expires_at and license.expires_at < datetime.now(timezone.utc):
+    if license.expires_at and is_past(license.expires_at):
         raise HTTPException(410, "License has expired")
 
     machine = db.query(Machine).filter(Machine.fingerprint == req.machine_fingerprint).first()
@@ -316,16 +333,19 @@ def verify(req: VerifyRequest, db: Session = Depends(get_db)):
         return VerifyResponse(valid=False, message="License not found")
     if license.revoked:
         return VerifyResponse(valid=False, message="License revoked")
-    if license.expires_at and license.expires_at < datetime.now(timezone.utc):
+    if license.expires_at and is_past(license.expires_at):
         return VerifyResponse(valid=False, message="License expired")
 
     activation = db.query(Activation).filter(
         Activation.license_id == license.id,
-        Activation.token == req.token
+        Activation.token == req.token,
+        Activation.active == True
     ).first()
-    if activation:
-        activation.last_verified = datetime.now(timezone.utc)
-        db.commit()
+    if not activation:
+        return VerifyResponse(valid=False, message="Activation not found or inactive")
+
+    activation.last_verified = datetime.now(timezone.utc)
+    db.commit()
 
     return VerifyResponse(valid=True, tier=license.tier, message="OK")
 
@@ -346,6 +366,14 @@ def refresh(req: VerifyRequest, db: Session = Depends(get_db)):
     if not license or license.revoked:
         raise HTTPException(403, "License invalid or revoked")
 
+    activation = db.query(Activation).filter(
+        Activation.license_id == license.id,
+        Activation.token == req.token,
+        Activation.active == True
+    ).first()
+    if not activation:
+        raise HTTPException(403, "Activation not found or inactive")
+
     new_token = sign_jwt(
         license_key=license.license_key,
         tier=license.tier,
@@ -353,6 +381,11 @@ def refresh(req: VerifyRequest, db: Session = Depends(get_db)):
         machine_fp=req.machine_fingerprint,
         expires_at=license.expires_at
     )
+
+    activation.token = new_token
+    activation.last_verified = datetime.now(timezone.utc)
+    db.commit()
+
     return {"token": new_token, "tier": license.tier}
 
 @app.post("/revoke")
