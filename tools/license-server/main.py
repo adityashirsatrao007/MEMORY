@@ -440,6 +440,51 @@ def admin_list(authorization: str = "", admin_session: str = "", db: Session = D
         })
     return result
 
+@app.get("/admin/activations")
+def admin_activations(authorization: str = "", admin_session: str = "", db: Session = Depends(get_db)):
+    verify_admin(authorization, admin_session)
+    activations = db.query(Activation).all()
+    result = []
+    for a in activations:
+        result.append({
+            "id": str(a.id),
+            "license_key": a.license.license_key if a.license else "",
+            "email": a.license.user.email if a.license and a.license.user else "",
+            "tier": a.license.tier if a.license else "",
+            "machine_fingerprint": a.machine.fingerprint[:16] + "..." if a.machine else "",
+            "hostname": a.machine.hostname if a.machine else "",
+            "platform": a.machine.platform if a.machine else "",
+            "activated_at": a.activated_at.isoformat(),
+            "last_verified": a.last_verified.isoformat() if a.last_verified else "",
+            "active": a.active
+        })
+    return result
+
+@app.get("/admin/stats")
+def admin_stats(authorization: str = "", admin_session: str = "", db: Session = Depends(get_db)):
+    verify_admin(authorization, admin_session)
+    total_licenses = db.query(func.count(License.id)).scalar()
+    active_licenses = db.query(func.count(License.id)).filter(
+        License.revoked == False,
+        (License.expires_at > datetime.now(timezone.utc)) | (License.expires_at == None)
+    ).scalar()
+    expired = db.query(func.count(License.id)).filter(
+        License.expires_at < datetime.now(timezone.utc)
+    ).scalar()
+    revoked = db.query(func.count(License.id)).filter(License.revoked == True).scalar()
+    total_activations = db.query(func.count(Activation.id)).scalar()
+    live_activations = db.query(func.count(Activation.id)).filter(Activation.active == True).scalar()
+    total_users = db.query(func.count(User.id)).scalar()
+    total_machines = db.query(func.count(Machine.id)).scalar()
+    by_tier = db.query(License.tier, func.count(License.id)).group_by(License.tier).all()
+    return {
+        "licenses": {"total": total_licenses, "active": active_licenses, "expired": expired, "revoked": revoked},
+        "activations": {"total": total_activations, "live": live_activations},
+        "users": total_users,
+        "machines": total_machines,
+        "by_tier": {tier: count for tier, count in by_tier}
+    }
+
 @app.get("/admin/login", response_class=HTMLResponse)
 def admin_login_page():
     return HTMLResponse(ADMIN_LOGIN_HTML)
@@ -538,12 +583,15 @@ ADMIN_HTML = """<!doctype html>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; background: #FAF9F5; color: #3D3D3A; padding: 32px; }
-  .wrap { max-width: 900px; margin: 0 auto; }
-  h1 { font-family: ui-serif, Georgia, serif; font-weight: 500; font-size: 32px; margin-bottom: 24px; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 { font-family: ui-serif, Georgia, serif; font-weight: 500; font-size: 32px; }
   .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-  .top-bar h1 { margin-bottom: 0; }
   .logout-btn { font-size: 12px; color: #B85450; text-decoration: none; padding: 6px 12px; border: 1px solid #B85450; border-radius: 6px; }
   .logout-btn:hover { background: #F8E0DE; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat { background: #fff; border: 1px solid #D1CFC5; border-radius: 8px; padding: 16px; text-align: center; }
+  .stat-num { font-size: 28px; font-weight: 700; color: #141413; }
+  .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #87867F; margin-top: 4px; }
   .card { background: #fff; border: 1px solid #D1CFC5; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
   .card h2 { font-size: 18px; margin-bottom: 16px; }
   label { display: block; font-size: 13px; font-weight: 600; margin: 8px 0 4px; }
@@ -551,20 +599,27 @@ ADMIN_HTML = """<!doctype html>
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   button { background: #141413; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 12px; }
   button:hover { background: #D97757; }
-  .btn-sm { font-size: 11px; padding: 4px 10px; margin: 0 2px; }
-  .btn-ok { background: #5E7A47; }
-  .btn-rv { background: #B85450; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th, td { padding: 6px 8px; text-align: left; border-bottom: 1px solid #E6E3DA; }
-  th { font-family: monospace; font-size: 9px; text-transform: uppercase; color: #87867F; white-space: nowrap; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  th, td { padding: 5px 6px; text-align: left; border-bottom: 1px solid #E6E3DA; }
+  th { font-family: monospace; font-size: 8px; text-transform: uppercase; color: #87867F; white-space: nowrap; }
+  td { vertical-align: top; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; white-space: nowrap; }
   .badge-ok { background: #E3F0D9; color: #5E7A47; }
   .badge-no { background: #F8E0DE; color: #B85450; }
   .badge-warn { background: #FDF3D0; color: #9A7D2A; }
+  .badge-soft { background: #E6E3DA; color: #87867F; }
   .msg { margin-top: 8px; font-size: 13px; padding: 8px 12px; border-radius: 6px; }
   .msg-ok { background: #E3F0D9; color: #5E7A47; }
   .msg-er { background: #F8E0DE; color: #B85450; }
   .key { font-family: monospace; font-size: 14px; font-weight: 600; color: #141413; background: #F0EEE6; padding: 8px 12px; border-radius: 6px; display: inline-block; margin-top: 8px; }
+  .tab-bar { display: flex; gap: 4px; margin-bottom: 16px; }
+  .tab { padding: 8px 16px; border: 1px solid #D1CFC5; border-radius: 8px 8px 0 0; font-size: 12px; font-weight: 600; cursor: pointer; background: #F0EEE6; color: #87867F; }
+  .tab.active { background: #fff; color: #141413; border-bottom-color: #fff; }
+  .tab:hover { background: #E6E3DA; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .scroll { overflow-x: auto; }
+  .mono { font-family: monospace; font-size: 10px; }
 </style>
 </head>
 <body>
@@ -573,6 +628,8 @@ ADMIN_HTML = """<!doctype html>
     <h1>MEMORY License Admin</h1>
     <a href="/admin/logout" class="logout-btn">Sign Out</a>
   </div>
+
+  <div id="stats-bar" class="stats"></div>
 
   <div class="card">
     <h2>Generate License Key</h2>
@@ -602,17 +659,52 @@ ADMIN_HTML = """<!doctype html>
   </div>
 
   <div class="card">
-    <h2>All Licenses</h2>
-    <button hx-get="/admin/licenses" hx-target="#licenses" style="background:transparent;color:#141413;border:1px solid #D1CFC5;padding:8px 16px;">Refresh</button>
-    <div id="licenses" style="margin-top:12px;"><p style="color:#87867F;">Click refresh to load.</p></div>
+    <div class="tab-bar">
+      <div class="tab active" onclick="switchTab('licenses-tab', this)">Licenses</div>
+      <div class="tab" onclick="switchTab('activations-tab', this)">Activated Machines</div>
+    </div>
+
+    <div id="licenses-tab" class="tab-content active scroll">
+      <button hx-get="/admin/licenses" hx-target="#licenses" style="background:transparent;color:#141413;border:1px solid #D1CFC5;padding:6px 14px;font-size:12px;margin-bottom:12px;">Refresh</button>
+      <div id="licenses"><p style="color:#87867F;">Click refresh to load.</p></div>
+    </div>
+
+    <div id="activations-tab" class="tab-content scroll">
+      <button hx-get="/admin/activations" hx-target="#activations" style="background:transparent;color:#141413;border:1px solid #D1CFC5;padding:6px 14px;font-size:12px;margin-bottom:12px;">Refresh</button>
+      <div id="activations"><p style="color:#87867F;">Click refresh to load.</p></div>
+    </div>
   </div>
 </div>
+
 <script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function loadStats() {
+  fetch('/admin/stats').then(function(r) { return r.json(); }).then(function(d) {
+    var html =
+      '<div class="stat"><div class="stat-num">' + d.licenses.total + '</div><div class="stat-label">Total Licenses</div></div>' +
+      '<div class="stat"><div class="stat-num">' + d.licenses.active + '</div><div class="stat-label">Active</div></div>' +
+      '<div class="stat"><div class="stat-num">' + d.licenses.expired + '</div><div class="stat-label">Expired</div></div>' +
+      '<div class="stat"><div class="stat-num">' + d.licenses.revoked + '</div><div class="stat-label">Revoked</div></div>' +
+      '<div class="stat"><div class="stat-num">' + d.activations.live + '</div><div class="stat-label">Live Machines</div></div>' +
+      '<div class="stat"><div class="stat-num">' + d.machines + '</div><div class="stat-label">Total Machines</div></div>' +
+      '<div class="stat"><div class="stat-num">' + d.users + '</div><div class="stat-label">Users</div></div>';
+    document.getElementById('stats-bar').innerHTML = html;
+  });
+}
+loadStats();
+
 document.addEventListener('htmx:afterRequest', function(e) {
   var el = e.detail.elt;
   if (e.detail.xhr.status === 200 && el.id === 'gen-result') {
     var d = JSON.parse(e.detail.xhr.responseText);
     el.innerHTML = '<div class="msg msg-ok">Key generated</div><div class="key">' + d.license_key + '</div>';
+    loadStats();
   }
   if (e.detail.xhr.status === 200 && el.id === 'email-result') {
     var d = JSON.parse(e.detail.xhr.responseText);
@@ -621,16 +713,35 @@ document.addEventListener('htmx:afterRequest', function(e) {
   if (e.detail.xhr.status === 200 && el.id === 'licenses') {
     var list = JSON.parse(e.detail.xhr.responseText);
     if (!list.length) { el.innerHTML = '<p style="color:#87867F;">No licenses yet.</p>'; return; }
-    var h = '<table><tr><th>Key</th><th>Tier</th><th>Email</th><th>Expires</th><th>Status</th><th>Machines</th></tr>';
+    var h = '<table><tr><th>Key</th><th>Tier</th><th>Email</th><th>Issued</th><th>Expires</th><th>Status</th><th>Machines</th></tr>';
     list.forEach(function(l) {
       var status = l.revoked ? '<span class="badge badge-no">Revoked</span>' :
                    l.expires_at === 'never' ? '<span class="badge badge-ok">Active</span>' :
                    new Date(l.expires_at) < new Date() ? '<span class="badge badge-no">Expired</span>' :
                    '<span class="badge badge-ok">Active</span>';
-      h += '<tr><td style="font-family:monospace;font-size:11px;">' + l.license_key + '</td>' +
+      var machineBadge = parseInt(l.activations) > 0 ? '<span class="badge badge-ok">' + l.activations + '</span>' : '<span class="badge badge-soft">' + l.activations + '</span>';
+      h += '<tr><td class="mono">' + l.license_key + '</td>' +
            '<td>' + l.tier + '</td><td>' + l.email + '</td>' +
-           '<td style="font-size:11px;">' + (l.expires_at === 'never' ? 'Never' : new Date(l.expires_at).toLocaleDateString()) + '</td>' +
-           '<td>' + status + '</td><td>' + l.activations + '</td></tr>';
+           '<td style="font-size:10px;">' + new Date(l.issued_at).toLocaleDateString() + '</td>' +
+           '<td style="font-size:10px;">' + (l.expires_at === 'never' ? 'Never' : new Date(l.expires_at).toLocaleDateString()) + '</td>' +
+           '<td>' + status + '</td><td>' + machineBadge + '</td></tr>';
+    });
+    h += '</table>';
+    el.innerHTML = h;
+  }
+  if (e.detail.xhr.status === 200 && el.id === 'activations') {
+    var list = JSON.parse(e.detail.xhr.responseText);
+    if (!list.length) { el.innerHTML = '<p style="color:#87867F;">No activations yet.</p>'; return; }
+    var h = '<table><tr><th>License Key</th><th>Email</th><th>Tier</th><th>Hostname</th><th>Platform</th><th>Activated</th><th>Last Verified</th><th>Status</th></tr>';
+    list.forEach(function(a) {
+      var status = a.active ? '<span class="badge badge-ok">Live</span>' : '<span class="badge badge-no">Inactive</span>';
+      h += '<tr><td class="mono">' + a.license_key + '</td>' +
+           '<td>' + a.email + '</td><td>' + a.tier + '</td>' +
+           '<td class="mono">' + (a.hostname || '-') + '</td>' +
+           '<td style="font-size:10px;">' + (a.platform || '-') + '</td>' +
+           '<td style="font-size:10px;">' + new Date(a.activated_at).toLocaleString() + '</td>' +
+           '<td style="font-size:10px;">' + (a.last_verified ? new Date(a.last_verified).toLocaleString() : '-') + '</td>' +
+           '<td>' + status + '</td></tr>';
     });
     h += '</table>';
     el.innerHTML = h;

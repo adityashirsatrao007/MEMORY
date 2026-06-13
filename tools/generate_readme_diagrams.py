@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Generate README diagrams with WHITE backgrounds for docs/print."""
 
+from license import require_license
+require_license()
+
 import os
 from pathlib import Path
 
