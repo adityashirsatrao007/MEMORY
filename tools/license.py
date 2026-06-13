@@ -17,10 +17,20 @@ PUBKEY_PATH = os.path.join(LICENSE_DIR, "public_key.pem")
 API_URL = os.getenv("MEMORY_LICENSE_API", "https://memory-license-server.onrender.com")
 GRACE_DAYS = 7
 
+# Files that must call require_license() — integrity guard
+_GATED_FILES = [
+    os.path.join(os.path.dirname(__file__), "seed_vector_db.py"),
+    os.path.join(os.path.dirname(__file__), "dashboard.py"),
+    os.path.join(os.path.dirname(__file__), "validate_ui.py"),
+    os.path.join(os.path.dirname(__file__), "generate_architecture_diagram.py"),
+    os.path.join(os.path.dirname(__file__), "generate_readme_diagrams.py"),
+]
+
 
 def require_license():
     """Exit with error if no valid license. Called at the top of every tool.
-    Set MEMORY_NON_COMMERCIAL=1 for personal/non-commercial use (skips check)."""
+    Set MEMORY_NON_COMMERCIAL=1 for personal/non-commercial use (skips license check, not integrity)."""
+    _check_integrity()
     if os.environ.get("MEMORY_NON_COMMERCIAL") == "1":
         return {"valid": True, "tier": "non-commercial", "source": "env"}
     token = _get_token()
@@ -30,6 +40,19 @@ def require_license():
     if not result["valid"]:
         _die(f"License invalid: {result['message']}")
     return result
+
+
+def _check_integrity():
+    """Verify gated files haven't had their require_license() call removed."""
+    for fpath in _GATED_FILES:
+        if not os.path.exists(fpath):
+            continue
+        with open(fpath) as f:
+            content = f.read()
+        if "from license import require_license" not in content:
+            _die(f"Integrity violation: {os.path.basename(fpath)} is missing the license gate")
+        if "require_license()" not in content:
+            _die(f"Integrity violation: {os.path.basename(fpath)} is missing the license gate")
 
 
 def _get_token():

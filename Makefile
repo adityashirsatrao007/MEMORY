@@ -4,6 +4,13 @@
 .PHONY: setup validate seed stats hooks fix-paths check-license
 
 check-license:  ## Verify commercial license (skip for personal/non-commercial)
+	@for f in tools/seed_vector_db.py tools/dashboard.py tools/validate_ui.py tools/generate_architecture_diagram.py tools/generate_readme_diagrams.py; do \
+	  if ! grep -q "require_license()" "$$f" 2>/dev/null; then \
+	    echo "ERROR: License gate removed from $$f"; \
+	    echo "This software requires a license. Do not bypass the license check."; \
+	    exit 1; \
+	  fi; \
+	done
 	@python3 -c "from tools.license import require_license; require_license()" 2>/dev/null; \
 	rc=$$?; \
 	if [ $$rc -ne 0 ]; then \
