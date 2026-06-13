@@ -178,6 +178,35 @@ npx shadcn@latest init
 
 ---
 
+## 💎 Agency-Grade Premium Web Design Workflow (The $10K Website Method)
+
+To avoid generating generic, forgettable AI layouts (e.g. standard white background, basic cards, default purple gradients), the agent must execute the following workflow:
+
+### 1. Establish the Design System/Brain First
+Before generating any components, build a dedicated Design System matching the product vibe:
+*   **Generate Core Tokens:** Select a style (e.g., Glassmorphism, Dark Luxury, Retro), choose a cohesive palette (e.g., Moss/Clay/Cream/Charcoal), and pair specific typography (headings like *Outfit*, *Plus Jakarta Sans*, or dramatic serif like *Cormorant Garamond*).
+*   **Establish Spacing & Radius Rules:** Enforce consistent variables (e.g., massive margins/gaps, border radii of `rounded-[2rem]` to `rounded-[3rem]`).
+*   **Enforce Aesthetic Coherence:** Use CSS Noise overlay patterns or radial gradient glows to instantly lift visual richness.
+
+### 2. Layout Integration via Proven Visual References
+*   Instead of letting the agent guess layout patterns, pull inspiration or code references from production libraries (e.g., **21st.dev**, **Awwwards**, **Dribbble**, **Linear**, **Vercel**).
+*   **Directing Code Generation:** Give the agent layout structural references and say: *"Build me a component/hero section like this reference, adapted exactly to my custom design system and copy."*
+
+### 3. Motion Engineering (The Framer Motion / GSAP Polish)
+Every custom build must feel responsive and alive:
+*   **Framer Motion (`framer-motion`):** Use for stagger reveals, fade-and-slide up on scroll, smooth page transitions, and card expansions.
+*   **Scroll-Triggered Reveals:** Always coordinate elements to fade and slide up staggered as the user scrolls.
+*   **Magnetic Hover Feel:** Add subtle micro-animations (e.g., magnetic button pull, hovering background transformations) on interactive elements.
+
+### 4. Setup Sequence
+When initializing a premium web project:
+```bash
+npx create-next-app@latest my-site --typescript --tailwind
+npm install framer-motion lenis gsap @gsap/react lucide-react
+```
+
+---
+
 ## TEXTURA / Claude Code Website Pipeline (Premium Animated Websites)
 
 ### The 11-Step Pipeline
