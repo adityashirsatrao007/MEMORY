@@ -183,6 +183,8 @@ class ActivateResponse(BaseModel):
     token: str
     tier: str
     expires_at: str | None
+    public_key: str | None = None
+
 
 class VerifyRequest(BaseModel):
     token: str
@@ -341,7 +343,8 @@ def activate(req: ActivateRequest, db: Session = Depends(get_db)):
     return ActivateResponse(
         token=token,
         tier=license.tier,
-        expires_at=license.expires_at.isoformat() if license.expires_at else None
+        expires_at=license.expires_at.isoformat() if license.expires_at else None,
+        public_key=PUBLIC_KEY
     )
 
 @app.post("/verify", response_model=VerifyResponse)

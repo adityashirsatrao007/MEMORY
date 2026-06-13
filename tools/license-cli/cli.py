@@ -70,7 +70,7 @@ def cmd_activate(args):
         print(f"Activation failed: {e}")
         sys.exit(1)
 
-    store_token(resp["token"], resp["tier"], resp.get("expires_at"))
+    store_token(resp["token"], resp["tier"], resp.get("expires_at"), resp.get("public_key", ""))
     print(f"Activated! Tier: {resp['tier']}")
     if resp.get("expires_at"):
         print(f"Expires: {resp['expires_at']}")
