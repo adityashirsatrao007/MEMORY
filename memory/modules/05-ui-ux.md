@@ -207,6 +207,24 @@ npm install framer-motion lenis gsap @gsap/react lucide-react
 
 ---
 
+## 🎨 DESIGN.md Ingestion & Application Protocol (Awesome Design MD)
+
+To deliver premium, visually coherent interfaces based on proven design languages, the agent must check for and apply a `DESIGN.md` specification:
+
+### 1. Detect & Parse Local DESIGN.md
+At the start of any frontend task:
+*   **Locate:** Always check if a `DESIGN.md` file exists in the workspace root.
+*   **Parse design tokens:** Read the YAML frontmatter for custom typography systems (e.g. Geist, JetBrains Mono, Inter), color definitions (accent, background, borders), spacing scales, and border-radius rules.
+*   **Ingest design intent:** Review the body of `DESIGN.md` to understand layout hierarchies, button hover behaviors, custom scroll mechanics, grid layouts, and visual densities.
+
+### 2. Leverage awesome-design-md References
+If a client or user wants a frontend matching a specific brand style (e.g., Vercel, Raycast, ElevenLabs, Claude, Stripe, Linear):
+*   **Locate repository source:** Query the VoltAgent `awesome-design-md` library (`https://github.com/VoltAgent/awesome-design-md`).
+*   **Direct Ingestion:** Retrieve or reference `DESIGN.md` documents directly from `https://raw.githubusercontent.com/VoltAgent/awesome-design-md/main/designs/<brand>/DESIGN.md`.
+*   **Match Vibe & Token Specs:** Apply the exact typography systems, custom animations, card densities, and gradients specified in the reference `DESIGN.md` to the current code output.
+
+---
+
 ## TEXTURA / Claude Code Website Pipeline (Premium Animated Websites)
 
 ### The 11-Step Pipeline
