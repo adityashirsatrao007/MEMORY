@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Aditya Shirsatrao. All rights reserved.
 # Proprietary — see LICENSE file. No copying, cloning, or distribution.
 
-.PHONY: validate seed stats hooks fix-paths check-license
+.PHONY: setup validate seed stats hooks fix-paths check-license
 
 check-license:  ## Verify commercial license (skip for personal/non-commercial)
 	@python3 -c "from tools.license import require_license; require_license()" 2>/dev/null; \
@@ -16,6 +16,9 @@ check-license:  ## Verify commercial license (skip for personal/non-commercial)
 	fi
 
 MODULES = $(wildcard memory/modules/*.md)
+
+setup:  ## First-time setup: check prerequisites, install deps, activate license
+	@bash setup.sh
 
 validate: check-license  ## Check all module files exist and have content, and run UI validation
 	@echo "=== Module Validation ==="

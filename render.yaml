@@ -17,15 +17,11 @@ services:
         sync: false
       - key: LICENSE_PUBLIC_KEY
         sync: false
-      - key: SMTP_HOST
-        value: smtp.gmail.com
-      - key: SMTP_PORT
-        value: "587"
-      - key: SMTP_USER
-        value: adityashirsatrao007@gmail.com
-      - key: SMTP_PASS
+      - key: RESEND_API_KEY
         sync: false
-      - key: SMTP_FROM
+      - key: EMAIL_FROM
+        value: MEMORY <onboarding@resend.dev>
+      - key: OWNER_EMAIL
         value: adityashirsatrao007@gmail.com
 
 databases:

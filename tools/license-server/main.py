@@ -6,6 +6,7 @@ import os
 import re
 import uuid
 import json
+import secrets
 import hashlib
 import logging
 from urllib.request import Request, urlopen
@@ -14,9 +15,9 @@ from datetime import datetime, timedelta, timezone
 from contextlib import asynccontextmanager
 
 import jwt
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import BaseModel, EmailStr
 from sqlalchemy import create_engine, select, func
 from sqlalchemy.orm import Session, sessionmaker
@@ -31,6 +32,8 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg2://memory:memory@lo
 PRIVATE_KEY = os.getenv("LICENSE_PRIVATE_KEY", "").replace("\\n", "\n")
 PUBLIC_KEY = os.getenv("LICENSE_PUBLIC_KEY", "").replace("\\n", "\n")
 ADMIN_TOKEN = os.getenv("LICENSE_ADMIN_TOKEN", "change-me-in-production")
+OWNER_EMAIL = os.getenv("OWNER_EMAIL", "adityashirsatrao007@gmail.com")
+SESSION_SECRET = os.getenv("SESSION_SECRET", secrets.token_hex(32))
 ISSUER = "memory-license-server"
 
 # Resend email config (optional — if unset, keys print to console/log)
@@ -69,7 +72,6 @@ def get_db():
         db.close()
 
 def make_license_key(tier: str = "TRIAL") -> str:
-    import secrets
     parts = [secrets.token_hex(2).upper() for _ in range(3)]
     return f"MEM-{tier}-{parts[0]}-{parts[1]}-{parts[2]}"
 
@@ -95,6 +97,22 @@ def sign_jwt(license_key: str, tier: str, email: str, machine_fp: str,
 
 def verify_jwt(token: str) -> dict:
     return jwt.decode(token, PUBLIC_KEY, algorithms=["RS256"], issuer=ISSUER)
+
+# ─── Session (admin cookie auth) ───
+
+def make_session_token(email: str) -> str:
+    payload = {
+        "email": email,
+        "exp": datetime.now(timezone.utc) + timedelta(days=30),
+        "iat": datetime.now(timezone.utc)
+    }
+    return jwt.encode(payload, SESSION_SECRET, algorithm="HS256")
+
+def verify_session(token: str) -> dict | None:
+    try:
+        return jwt.decode(token, SESSION_SECRET, algorithms=["HS256"])
+    except jwt.PyJWTError:
+        return None
 
 # ─── Email (Resend API) ───
 
@@ -345,14 +363,19 @@ def revoke(req: RevokeRequest, db: Session = Depends(get_db)):
 
 # ─── Admin Endpoints ───
 
-def verify_admin(auth: str = ""):
-    if auth != f"Bearer {ADMIN_TOKEN}":
-        raise HTTPException(401, "Unauthorized")
-    return True
+def verify_admin(authorization: str = "", admin_session: str = ""):
+    # Check session cookie first (logged-in users)
+    session = verify_session(admin_session)
+    if session and session.get("email"):
+        return session["email"]
+    # Fall back to Bearer token
+    if authorization == f"Bearer {ADMIN_TOKEN}":
+        return "admin"
+    raise HTTPException(401, "Unauthorized")
 
 @app.post("/admin/generate")
-def admin_generate(req: AdminGenerateRequest, authorization: str = "", db: Session = Depends(get_db)):
-    verify_admin(authorization)
+def admin_generate(req: AdminGenerateRequest, authorization: str = "", admin_session: str = "", db: Session = Depends(get_db)):
+    verify_admin(authorization, admin_session)
     user = db.query(User).filter(User.email == req.email).first()
     if not user:
         user = User(email=req.email, name=req.email.split("@")[0])
@@ -382,8 +405,8 @@ def admin_generate(req: AdminGenerateRequest, authorization: str = "", db: Sessi
     }
 
 @app.post("/admin/send-license")
-def admin_send_license(req: AdminGenerateRequest, authorization: str = "", db: Session = Depends(get_db)):
-    verify_admin(authorization)
+def admin_send_license(req: AdminGenerateRequest, authorization: str = "", admin_session: str = "", db: Session = Depends(get_db)):
+    verify_admin(authorization, admin_session)
     license = db.query(License).join(User).filter(User.email == req.email).order_by(License.issued_at.desc()).first()
     if not license:
         raise HTTPException(404, "No license found for this email")
@@ -401,8 +424,8 @@ def admin_send_license(req: AdminGenerateRequest, authorization: str = "", db: S
     return {"status": "sent" if sent else "printed", "license_key": license.license_key, "email": req.email, "delivered": sent}
 
 @app.get("/admin/licenses")
-def admin_list(authorization: str = "", db: Session = Depends(get_db)):
-    verify_admin(authorization)
+def admin_list(authorization: str = "", admin_session: str = "", db: Session = Depends(get_db)):
+    verify_admin(authorization, admin_session)
     licenses = db.query(License).all()
     result = []
     for lk in licenses:
@@ -417,9 +440,93 @@ def admin_list(authorization: str = "", db: Session = Depends(get_db)):
         })
     return result
 
+@app.get("/admin/login", response_class=HTMLResponse)
+def admin_login_page():
+    return HTMLResponse(ADMIN_LOGIN_HTML)
+
+class LoginRequest(BaseModel):
+    email: str
+    token: str
+
+@app.post("/admin/login")
+def admin_login(req: LoginRequest, db: Session = Depends(get_db)):
+    if req.email == OWNER_EMAIL and req.token == ADMIN_TOKEN:
+        session_token = make_session_token(req.email)
+        redirect = RedirectResponse(url="/admin", status_code=302)
+        redirect.set_cookie(key="admin_session", value=session_token,
+                           max_age=30*24*3600, httponly=True, samesite="lax")
+        return redirect
+    if req.token == ADMIN_TOKEN:
+        redirect = RedirectResponse(url="/admin", status_code=302)
+        return redirect
+    raise HTTPException(401, "Invalid credentials")
+
 @app.get("/admin", response_class=HTMLResponse)
-def admin_panel(authorization: str = ""):
+def admin_panel(admin_session: str = ""):
+    session = verify_session(admin_session)
+    if not session:
+        return HTMLResponse(ADMIN_LOGIN_HTML)
     return HTMLResponse(ADMIN_HTML)
+
+@app.get("/admin/logout")
+def admin_logout():
+    redirect = RedirectResponse(url="/admin", status_code=302)
+    redirect.delete_cookie(key="admin_session")
+    return redirect
+
+ADMIN_LOGIN_HTML = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MEMORY License Admin — Login</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #FAF9F5; color: #3D3D3A; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .card { background: #fff; border: 1px solid #D1CFC5; border-radius: 12px; padding: 32px; width: 380px; }
+  h1 { font-family: ui-serif, Georgia, serif; font-weight: 500; font-size: 24px; margin-bottom: 4px; }
+  p { color: #87867F; font-size: 14px; margin-bottom: 20px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+  input { width: 100%; padding: 10px 12px; border: 1px solid #D1CFC5; border-radius: 8px; font-size: 14px; }
+  button { background: #141413; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 16px; width: 100%; }
+  button:hover { background: #D97757; }
+  .error { background: #F8E0DE; color: #B85450; padding: 8px 12px; border-radius: 6px; font-size: 13px; margin-top: 8px; display: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>MEMORY License Admin</h1>
+  <p>Enter your admin credentials to continue.</p>
+  <form id="login-form" method="post" action="/admin/login">
+    <label>Email</label>
+    <input type="email" name="email" value="adityashirsatrao007@gmail.com" required>
+    <label>Admin Token</label>
+    <input type="password" name="token" required placeholder="Enter admin token">
+    <button type="submit">Sign In</button>
+    <div class="error" id="error-msg">Invalid credentials. Try again.</div>
+  </form>
+</div>
+<script>
+document.getElementById('login-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var form = e.target;
+  var errEl = document.getElementById('error-msg');
+  try {
+    var resp = await fetch('/admin/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email: form.email.value, token: form.token.value})
+    });
+    if (resp.redirected) { window.location.href = resp.url; return; }
+    if (!resp.ok) { errEl.style.display = 'block'; return; }
+    var data = await resp.json();
+    if (data.status === 'ok') { window.location.href = '/admin'; }
+  } catch(e) { errEl.style.display = 'block'; }
+});
+</script>
+</body>
+</html>
+"""
 
 ADMIN_HTML = """<!doctype html>
 <html lang="en">
@@ -433,6 +540,10 @@ ADMIN_HTML = """<!doctype html>
   body { font-family: system-ui, sans-serif; background: #FAF9F5; color: #3D3D3A; padding: 32px; }
   .wrap { max-width: 900px; margin: 0 auto; }
   h1 { font-family: ui-serif, Georgia, serif; font-weight: 500; font-size: 32px; margin-bottom: 24px; }
+  .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .top-bar h1 { margin-bottom: 0; }
+  .logout-btn { font-size: 12px; color: #B85450; text-decoration: none; padding: 6px 12px; border: 1px solid #B85450; border-radius: 6px; }
+  .logout-btn:hover { background: #F8E0DE; }
   .card { background: #fff; border: 1px solid #D1CFC5; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
   .card h2 { font-size: 18px; margin-bottom: 16px; }
   label { display: block; font-size: 13px; font-weight: 600; margin: 8px 0 4px; }
@@ -454,16 +565,18 @@ ADMIN_HTML = """<!doctype html>
   .msg-ok { background: #E3F0D9; color: #5E7A47; }
   .msg-er { background: #F8E0DE; color: #B85450; }
   .key { font-family: monospace; font-size: 14px; font-weight: 600; color: #141413; background: #F0EEE6; padding: 8px 12px; border-radius: 6px; display: inline-block; margin-top: 8px; }
-  .btn-wrap { white-space: nowrap; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>MEMORY License Admin</h1>
+  <div class="top-bar">
+    <h1>MEMORY License Admin</h1>
+    <a href="/admin/logout" class="logout-btn">Sign Out</a>
+  </div>
 
   <div class="card">
     <h2>Generate License Key</h2>
-    <form hx-post="/admin/generate" hx-target="#gen-result" hx-headers='{"Authorization":"Bearer " + document.getElementById("admin-token").value}'>
+    <form hx-post="/admin/generate" hx-target="#gen-result">
       <div class="row">
         <div><label>Email</label><input type="email" name="email" required placeholder="user@example.com"></div>
         <div><label>Tier</label><select name="tier"><option value="trial">Trial (3 days)</option><option value="pro">Pro (never expires)</option><option value="enterprise">Enterprise</option></select></div>
@@ -472,7 +585,6 @@ ADMIN_HTML = """<!doctype html>
         <div><label>Duration (days, 0 = never expires)</label><input type="number" name="duration_days" value="3"></div>
         <div><label>Max Machines</label><input type="number" name="max_machines" value="1"></div>
       </div>
-      <input type="hidden" name="admin_token" id="admin-token" value="">
       <button type="submit">Generate</button>
     </form>
     <div id="gen-result"></div>
@@ -480,7 +592,7 @@ ADMIN_HTML = """<!doctype html>
 
   <div class="card">
     <h2>Send License Key via Email</h2>
-    <form hx-post="/admin/send-license" hx-target="#email-result" hx-headers='{"Authorization":"Bearer " + document.getElementById("admin-token").value}'>
+    <form hx-post="/admin/send-license" hx-target="#email-result">
       <div class="row">
         <div><label>Email</label><input type="email" name="email" required placeholder="user@example.com"></div>
       </div>
@@ -491,16 +603,11 @@ ADMIN_HTML = """<!doctype html>
 
   <div class="card">
     <h2>All Licenses</h2>
-    <button hx-get="/admin/licenses" hx-target="#licenses" hx-headers='{"Authorization":"Bearer " + document.getElementById("admin-token").value}' style="background:transparent;color:#141413;border:1px solid #D1CFC5;padding:8px 16px;">Refresh</button>
+    <button hx-get="/admin/licenses" hx-target="#licenses" style="background:transparent;color:#141413;border:1px solid #D1CFC5;padding:8px 16px;">Refresh</button>
     <div id="licenses" style="margin-top:12px;"><p style="color:#87867F;">Click refresh to load.</p></div>
   </div>
 </div>
 <script>
-function adminToken() { return document.getElementById('admin-token').value; }
-document.getElementById('admin-token').value = prompt('Admin Token:') || '';
-document.body.addEventListener('htmx:configRequest', function(e) {
-  e.detail.headers['Authorization'] = 'Bearer ' + adminToken();
-});
 document.addEventListener('htmx:afterRequest', function(e) {
   var el = e.detail.elt;
   if (e.detail.xhr.status === 200 && el.id === 'gen-result') {
