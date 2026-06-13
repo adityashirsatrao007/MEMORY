@@ -60,9 +60,19 @@ if not PRIVATE_KEY:
     print("PRIVATE_KEY=" + PRIVATE_KEY.replace("\n", "\\n"))
     print("PUBLIC_KEY=" + PUBLIC_KEY.replace("\n", "\\n"))
 
-engine = create_engine(DATABASE_URL)
+try:
+    engine = create_engine(DATABASE_URL)
+    # Test connection
+    with engine.connect() as conn:
+        pass
+except Exception as e:
+    logger.warning(f"Could not connect to PostgreSQL ({e}). Falling back to SQLite (test_licenses.db)")
+    DATABASE_URL = "sqlite:///test_licenses.db"
+    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+
 Base.metadata.create_all(engine)
 SessionLocal = sessionmaker(bind=engine)
+
 
 # ─── Helpers ───
 

@@ -244,7 +244,10 @@ section { margin-bottom:48px; }
 
 <script>
 function toggleTheme(){const d=document.documentElement;const isDark=d.classList.toggle('dark');localStorage.setItem('theme',isDark?'dark':'light')}
-const TRIAL_API = 'https://memory-license-server.onrender.com/request-trial';
+const TRIAL_API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:'
+  ? 'http://localhost:8443/request-trial'
+  : 'https://memory-license-server.onrender.com/request-trial';
+
 document.getElementById('trial-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn = this.querySelector('button');
@@ -260,8 +263,8 @@ document.getElementById('trial-form').addEventListener('submit', async function(
     });
     const d = await r.json();
     if (r.ok) {
-      res.innerHTML = '<div class="trial-msg ok">License key ready' + (d.email_delivered ? ' (also sent to your email)' : '') + '!</div><div class="trial-key">' + d.license_key + '</div>';
-      cmd.textContent = 'memory license activate --key ' + d.license_key;
+      res.innerHTML = '<div class="trial-msg ok">Trial license key sent successfully! Check your email inbox (' + d.email + ') to retrieve your key.</div>';
+      cmd.textContent = 'memory license activate --key <PASTE_YOUR_KEY_HERE>';
       steps.style.display = 'block';
       this.reset();
     } else {
