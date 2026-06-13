@@ -38,9 +38,26 @@ done
 
 if [ -z "$PYTHON" ]; then
     echo -e "  ${RED}✗ Python 3.10+ not found${NC}"
-    echo "  Install it: https://www.python.org/downloads/"
-    echo "  Or on Ubuntu/Debian: sudo apt install python3 python3-venv python3-pip"
-    echo "  Or on macOS: brew install python@3.12"
+    case "$(uname -s)" in
+        Linux*)
+            if command -v apt &>/dev/null; then
+                echo "  → sudo apt install python3 python3-venv python3-pip"
+            elif command -v dnf &>/dev/null; then
+                echo "  → sudo dnf install python3 python3-pip"
+            elif command -v pacman &>/dev/null; then
+                echo "  → sudo pacman -S python python-pip"
+            else
+                echo "  Install it: https://www.python.org/downloads/"
+            fi
+            ;;
+        Darwin*)
+            echo "  → brew install python@3.12"
+            echo "  (If you don't have Homebrew: https://brew.sh)"
+            ;;
+        *)
+            echo "  Install it: https://www.python.org/downloads/"
+            ;;
+    esac
     exit 1
 fi
 echo -e "  ${GREEN}✓${NC} $("$PYTHON" --version) at $(command -v "$PYTHON")"
