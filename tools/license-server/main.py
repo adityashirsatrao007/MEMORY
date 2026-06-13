@@ -137,29 +137,48 @@ def verify_session(token: str) -> dict | None:
 RESEND_API = "https://api.resend.com/emails"
 
 def send_email(to: str, subject: str, body: str) -> bool:
-    if not RESEND_API_KEY:
-        logger.info(f"[EMAIL DISABLED] Would send to {to}: {subject}")
-        return False
-    try:
-        payload = json.dumps({"from": EMAIL_FROM, "to": to, "subject": subject, "text": body}).encode()
-        req = UrlRequest(RESEND_API, data=payload, method="POST")
-        req.add_header("Authorization", f"Bearer {RESEND_API_KEY}")
-        req.add_header("Content-Type", "application/json")
-        req.add_header("User-Agent", "memory-license-server/1.0")
-        with urlopen(req, timeout=15) as resp:
-            resp_body = resp.read().decode()
-            logger.info(f"Email sent to {to}: {subject} ({resp.status}) {resp_body}")
+    if RESEND_API_KEY:
+        try:
+            payload = json.dumps({"from": EMAIL_FROM, "to": to, "subject": subject, "text": body}).encode()
+            req = UrlRequest(RESEND_API, data=payload, method="POST")
+            req.add_header("Authorization", f"Bearer {RESEND_API_KEY}")
+            req.add_header("Content-Type", "application/json")
+            req.add_header("User-Agent", "memory-license-server/1.0")
+            with urlopen(req, timeout=15) as resp:
+                resp_body = resp.read().decode()
+                logger.info(f"Email sent via Resend to {to}: {subject} ({resp.status}) {resp_body}")
+                return True
+        except Exception as e:
+            logger.error(f"Resend failed to send email to {to}: {e}. Trying SMTP fallback...")
+
+    # Fallback to SMTP
+    smtp_host = os.getenv("SMTP_HOST")
+    smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    smtp_user = os.getenv("SMTP_USER")
+    smtp_pass = os.getenv("SMTP_PASS")
+    smtp_from = os.getenv("SMTP_FROM", "noreply@memory.dev")
+
+    if smtp_host and smtp_user and smtp_pass:
+        try:
+            import smtplib
+            from email.mime.text import MIMEText
+            msg = MIMEText(body, "plain", "utf-8")
+            msg["Subject"] = subject
+            msg["From"] = smtp_from
+            msg["To"] = to
+            with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as s:
+                s.starttls()
+                s.login(smtp_user, smtp_pass)
+                s.send_message(msg)
+            logger.info(f"Email sent via SMTP to {to}: {subject}")
             return True
-    except HTTPError as e:
-        body = e.read().decode()
-        logger.error(f"Email failed to {to}: {e.code} {body}")
-        return False
-    except URLError as e:
-        logger.error(f"Email failed to {to}: {e}")
-        return False
-    except Exception as e:
-        logger.error(f"Email failed to {to}: {e}")
-        return False
+        except Exception as e:
+            logger.error(f"SMTP fallback failed to {to}: {e}")
+            return False
+
+    logger.info(f"[EMAIL DISABLED] Would send to {to}: {subject} (Resend failed, SMTP config missing)")
+    return False
+
 
 # ─── Schemas ───
 
