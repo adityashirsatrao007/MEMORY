@@ -360,29 +360,29 @@ done
 MEMORY includes a built-in license activation system for commercial deployments.
 
 ```bash
-# Start the license server
-make license-server
+# Start the license server locally (automatic fallback to SQLite)
+PORT=8443 python3 tools/license-server/main.py
 
-# Activate on client
-memory activate MEM-PRO-XXXX-XXXX-XXXX
+# Generate bulk licenses (creates 1,000 active keys in database and signups.csv)
+python3 tools/license-server/generate_bulk_licenses.py
+
+# Activate on client (exchanges key and automatically configures public_key.pem locally)
+MEMORY_LICENSE_API="http://localhost:8443" memory activate MEM-PRO-XXXX-XXXX-XXXX
 
 # Verify status
 memory verify
 ```
 
-**Architecture:** FastAPI backend → PostgreSQL → RS256 signed JWTs → machine-bound tokens.  
+**Architecture:** FastAPI backend → PostgreSQL (fallback SQLite) → RS256 signed JWTs → machine-bound tokens.  
 7-day offline grace period.  
 
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
-| `/activate` | POST | Validate key, return JWT |
+| `/activate` | POST | Validate key, return JWT + server public key |
 | `/verify` | POST | Check token validity |
 | `/refresh` | POST | Renew expiring tokens |
 | `/revoke` | POST | Invalidate a license |
-| `/admin/generate` | POST | Generate license keys (set duration, tier, max machines) |
-| `/admin/licenses` | GET | List all licenses |
-
-Admin panel: `http://localhost:8443/admin`
+| `/export-signups-csv` | GET | Download all user signups as a CSV spreadsheet (requires token) |
 
 See [LICENSE_SECURITY.md](docs/LICENSE_SECURITY.md) for threat model.
 
