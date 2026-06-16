@@ -73,6 +73,8 @@ if existing and existing.get("ids") and "--force" not in sys.argv:
 
 all_chunks = []
 for fpath in sorted(FILES):
+    if not fpath.exists():
+        continue
     all_chunks.extend(chunk_file(fpath))
 
 ids, documents, metadatas = [], [], []
