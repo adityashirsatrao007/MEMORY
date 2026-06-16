@@ -146,4 +146,16 @@ The cache auto-cleans on session start (`rm -f .session-read-cache`). This saves
 for tool in $(rg "^\`([a-z][a-z-]+)\`" GEMINI.md -o --no-filename | sort -u); do which "$tool" &>/dev/null || echo "MISSING: $tool"; done
 find . -type d -empty -not -path './.git/*' -delete 2>/dev/null
 rg "/home/aditya/Desktop/Projects/MEMORY/" GEMINI.md && echo "WARN: hardcoded paths"
+
+## CI Must Pass Before Push — Zero Tolerance
+**Never push to GitHub without first verifying CI passes locally.** Run the full pipeline in order:
+```bash
+make lint       # ruff check (pre-existing errors allowed)
+make typecheck  # mypy
+make test       # pytest
+make validate   # module + UI validation
+make seed       # vector DB re-seed
+gitleaks detect --source . --log-opts="-1" --config .gitleaks.toml -v  # no leaks
+```
+Only after all green → commit → push. If any step fails, fix it before pushing. No exceptions. This rule was burned in after 3 consecutive CI failures on 2026-06-16 from: (1) tracked session tokens, (2) missing file in seed script, (3) broken gitleaks config syntax.
 ```
