@@ -82,15 +82,33 @@ Always auto-load from the global database: `/home/aditya/.config/global-apikeys/
 
 ## SESSION SYNC & AGENT HANDOFF
 
-### RULE #5 — DUAL-AGENT SESSION CONTINUATION
-If you hit a rate limit, token exhaustion, or get stuck and the user switches to a different agent (Claude Code, OpenCode, Aider):
-1. **Always check the local state first**:
-   - Check `git status` and `git diff` to see what code changes the previous agent completed.
-   - Read `.agent-progress.md` in the current project root or `$MEMORY_ROOT/memory/memory-bank/progress.md`.
-2. **Always write handoff notes before you exit or when close to limit (15-20 messages)**:
-   - Save current status to `.agent-progress.md` in the workspace root.
-   - Outline: what was successfully built, what failed/blocked, and the next 2 tasks to complete.
-   - This ensures the next agent picks up the context instantly with zero token startup overhead.
+### RULE #5 — HANDOFF PROTOCOL (MANDATORY)
+Every agent MUST follow this protocol on session start and session end.
+
+#### On Session START (read this, in order):
+1. **Check CWD** — `pwd`, `git status`, `git log --oneline -3`
+2. **Read handoff** — open `.agent-progress.md` in current project root (< 2KB, zero-cost read)
+3. **If no handoff file exists**, query vector DB:
+   ```
+   memory-search "handoff|current work|active project" 1
+   ```
+4. **Resume** from the "Next Steps" and git state described in the handoff
+
+#### On Session END (run these, in order):
+1. **Write handoff** — capture everything done, blocked, next:
+   ```
+   bash $MEMORY_ROOT/tools/handoff "Completed: <X>. Blocked: <Y>. Next: <Z>"
+   ```
+2. **Sync to memory + re-seed vector DB**:
+   ```
+   bash $MEMORY_ROOT/tools/sync-session.sh "Completed: <X>. Blocked: <Y>. Next: <Z>"
+   ```
+3. **Commit handoff** (if working tree is clean-enough):
+   ```
+   git add .agent-progress.md && git commit -m "handoff: <summary>" && git push
+   ```
+
+**Why this order:** The handoff file (< 2KB) is the fast path — zero vector search needed on resume. The vector DB is the fallback for cross-project discovery. Both are written together on every session end.
 
 ### RULE #7 — UNIFIED MEMORY
 **All agents MUST use a single shared memory at `$MEMORY_ROOT/memory/`.**
