@@ -11,7 +11,7 @@ GEMINI.md (197KB, 3543 lines) ─── MASTER rules file
   ├── opencode/AGENTS.md       ─┘
   └── .github/copilot-instructions.md
 
-LESSONS_LEARNED.md ─── standalone error log (NOT symlinked)
+14-lessons-learned.md ─── error log (moved to modules/)
 dotfiles/ ─────────── bashrc, gitconfig, starship.toml, tmux.conf
 templates/ ────────── animation libs, frontend refs, diagrams
 tools/ ────────────── MCP server, dashboard, SDK, OpenWebUI tool
@@ -23,7 +23,7 @@ vector_db/ ────────── ChromaDB persistent storage (gitignore
 | File | Purpose |
 |------|---------|
 | GEMINI.md | Master agent configuration (3543 lines, 197KB) |
-| LESSONS_LEARNED.md | Permanent error memory + prevention patterns |
+| 14-lessons-learned.md | Permanent error memory + prevention patterns |
 | opencode.json | Points OpenCode to AGENTS.md → GEMINI.md |
 | .agentignore | Prevents agents from reading build artifacts |
 | tools/mcp_server.py | ChromaDB MCP server for semantic memory search |

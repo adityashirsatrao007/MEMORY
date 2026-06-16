@@ -30,6 +30,8 @@ License DRM enforcement complete. MIT → proprietary source-available, RS256 on
 - Vector DB needs re-seeding after module content changes
 
 ## Session Log
+| 2026-06-16 22:08:06 | Completed: repo restructure - expanded .agentignore, moved LESSONS_LEARNED→modules/14, stripped API keys from context-snapshot, removed hardcoded key from dashboard.py, deleted 13-skills.md, consolidated session-end in Makefile+rules, added PreCompact prompt+session-read-cache rules, updated GEMINI.md references, re-seeded vector DB (169 chunks). Blocked: none. |
+| 2026-06-16 21:54:22 | Added optimal token conservation rules and skill discovery protocol |
 | 2026-06-16 21:47:07 | Unified memory: symlinked antigravity brain to MEMORY/memory, added RULE #7 (UNIFIED MEMORY) + hardened RULE #5 (HANDOFF PROTOCOL) with mandatory start/end commands to GEMINI.md |
 | 2026-06-14 14:43:42 | BSNL GPE600 router full research: config backup (1128 lines, 19 admin pages), UPnP/DoS protection enabled, superadmin attempt failed (administrator/system864 — IP session lock), all exploit paths documented (CVE config.dat 404, Boa CVE N/A, formPassword 404), form auth bypass discovered (postSecurityFlag can be omitted). Full handoff in .agent-progress.md |
 | 2026-06-13 10:00:00 | Built auto-sync system: make session-end target, pre-commit hook auto re-seeds DB. Created memory/context-snapshot.md (gitignored) with ALL secrets & session context — 30+ API keys, Render config, DB creds, admin token, RS256 keys, etc. Indexed by vector DB. memory-search now works from PATH. Updated 01-core-rules.md to enforce sync protocol. 158 chunks across 16 files. |

@@ -76,17 +76,18 @@
 | Long process without `tmux` | Start tmux session |
 
 ## Token Optimization Priority (every session)
-1. `onefetch` — repo summary (0 reads)
-2. `glow memory-bank/progress.md` — current status
-3. `eza --tree --level 2 --git-ignore` — structure
-4. `tokei` — code breakdown
-5. `rg "TODO|FIXME|HACK" .` — known issues
+1. `rm -f .session-read-cache` — clear cached reads
+2. `onefetch` — repo summary (0 reads)
+3. `bat --line-range :30 memory/memory-bank/progress.md` — current status (faster than glow)
+4. `eza --tree --level 2 --git-ignore` — structure
+5. `tokei` — code breakdown
+6. `rg "TODO|FIXME|HACK" .` — known issues
 Only THEN open files with `bat` if needed.
 
 ## Additional Token Rules
 - **Silent CLI** — suppress all command output unless error. Use `> /dev/null 2>&1 || echo "FAIL: ..."`.
 - **One-line reporting** — no prose explanations. `✅ done: N files, +X -Y lines` or `❌ error: ...`.
-- **No re-read** — if file was already read this session, use cached content. Track in `.session-read-cache`.
+- **No re-read** — if file was already read this session, use cached content. Track in `.session-read-cache`. Check with `grep -q "^file:" .session-read-cache` before reading.
 - **Enola before read** — `enola explore` gives symbols in ~200 tokens vs file read (500-2000).
 - **rg scope narrow** — `rg "pattern" --type ts -l .` for filenames only, then `bat --line-range` matches.
 - **No full diff** — use `git diff --stat` for summary. Full diff only if user asks.
@@ -113,6 +114,15 @@ Start every session in **lazy** (~70 tokens). Switch to **full** (~1420 tokens) 
 
 Switch with: `bat "$MEMORY_ROOT/memory/modules/01-core-rules.md"` (lazy→full).
 Stay lazy by running `memory-search "<task>"` instead of loading files.
+
+## Skill Discovery (do NOT load all 1147)
+**1147 skills exist in `$MEMORY_ROOT/.agents/skills/`. Loading even 10 summaries costs more than doing the task.**
+Find the right skill with minimum token spend:
+1. **Name match** — `ls $MEMORY_ROOT/.agents/skills/ | rg -i "<keyword>"` (fastest, ~50 tokens)
+2. **Description match** — `rg "description" $MEMORY_ROOT/.agents/skills/*/SKILL.md -l | head -5` (~100 tokens)
+3. **Vector DB** — `memory-search "skill for <task>" 2` (~200 tokens)
+4. **Load** — `bat --line-range :80 "$MEMORY_ROOT/.agents/skills/<match>/SKILL.md"` — read first 80 lines, stop if not relevant
+5. **Abort** — no match? Do the task directly. No skill is better than a wrong skill.
 
 ## Silent CLI (MANDATORY — saves 30-40% tokens)
 - EVERY bash command: suppress output unless error. Pattern: `cmd > /dev/null 2>&1 || echo "FAIL: cmd: $?"`

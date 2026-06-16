@@ -4,7 +4,7 @@ Repository setup and configuration — verified all dotfile symlinks, converted 
 ## Active Decisions
 - GEMINI.md is the single 197KB master rules file (3543 lines)
 - All agent config files symlink to GEMINI.md (no duplication)
-- LESSONS_LEARNED.md is a standalone error log (NOT a symlink)
+- 14-lessons-learned.md (in modules/) is the error log — memory/LESSONS_LEARNED.md is a symlink to it
 - vector_db/ is gitignored (ChromaDB persistent storage)
 - tools/static/ is for the dashboard frontend
 

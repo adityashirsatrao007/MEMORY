@@ -53,9 +53,19 @@ templates/fullstack-bolt-reference/
 templates/agent-skills/
 templates/ponytail/
 
+# Agents third-party skills directory
+.agents/
+
 # Misc
+vector_db/
+memory/context-snapshot.md
 .cache/
 *.tmp
 *.swp
-vector_db/
-memory/context-snapshot.md
+agent_workspace/
+data/
+dotfiles/
+scratch/
+pihole/
+bsnl-*.txt
+tv-setup.sh

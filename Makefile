@@ -103,7 +103,8 @@ fix-paths:  ## Update relative paths in all modules to use $MEMORY_ROOT
 
 # ─── Session Sync (AUTO-SYNC — run at end of every session) ──
 
-session-end:  ## End session: log progress to memory + re-seed vector DB
+session-end:  ## End session: write handoff + sync memory + re-seed vector DB
+	@bash tools/handoff "$(MSG)"
 	@bash tools/sync-session.sh "$(MSG)"
 
 %:

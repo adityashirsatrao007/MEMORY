@@ -18,7 +18,7 @@ VECTOR_DB_PATH = os.path.expanduser("~/Desktop/Projects/MEMORY/memory/vector_db"
 PROGRESS_FILE = os.path.expanduser("~/Desktop/Projects/MEMORY/memory/memory-bank/progress.md")
 
 FREELLMAPI_URL = os.environ.get("FREELLMAPI_BASE_URL", "http://localhost:3001/v1")
-FREELLMAPI_KEY = os.environ.get("FREELLMAPI_KEY", "freellmapi-c72bebe9578ae453d5d77b79af6e988e19405950c2087632")
+FREELLMAPI_KEY = os.environ.get("FREELLMAPI_KEY")
 
 try:
     chroma_client = chromadb.PersistentClient(path=VECTOR_DB_PATH)

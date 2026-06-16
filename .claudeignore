@@ -94,3 +94,6 @@ templates/frontend-v0-reference/
 templates/fullstack-bolt-reference/
 templates/agent-skills/
 templates/ponytail/
+
+# Agents third-party skills directory
+.agents/

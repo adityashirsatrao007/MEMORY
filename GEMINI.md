@@ -51,7 +51,7 @@ Open ONLY that file: `bat --line-range :80 "$MEMORY_ROOT/memory/modules/XX-*.md"
 | Architecture | `08-architecture.md` |
 | Misc | `09-misc.md` |
 | Architectural Patterns | `12-repo-teachings.md` |
-| Skills & Integration | `13-skills.md` |
+| Lessons Learned | `14-lessons-learned.md` |
 
 ## Tools
 `cat ~/.config/agent-tools/manifest.json` — 15 installed tools (CLI + infra + skills). Read once, cache in context, match task desc to tool.
@@ -74,6 +74,12 @@ Always auto-load from the global database: `/home/aditya/.config/global-apikeys/
 ### RULE #3 — TOKEN CONSERVATION & NO POLLING
 - **NEVER perform constant polling or loops** on background processes/tasks.
 - **Propose terminal commands for the user to run** or ask the user to monitor execution to avoid token-heavy notification loops.
+- **Auto-compact at 25K input tokens** — if input context exceeds 25K, run `rtk summary` and start fresh conversation. Do not wait for "feeling bloated."
+- **Response budget: 1-3 lines default** — never write paragraphs or explanations unless user explicitly says "detail" or "explain." One-line format: `✅ done: N files, +X -Y` or `❌ blocked: <reason>`. No preamble, no postamble, no greetings.
+- **Every bash command piped through `lowfat`** — `cmd | lowfat` suppresses verbose output. Only skip when user explicitly asks for full output.
+- **Write-mode compression** — always prefer `edit` tool (surgical string replacement) over `write` tool (full file dump). File rewrites dump entire content into context.
+- **`git diff --stat` default** — never show full diffs unless user explicitly asks. Summary-only saves 70-90% on diff tokens.
+- **No re-read** — cache file reads in `.session-read-cache`. If read once, never read again in same session.
 - Proactively prompt to start a new conversation when a thread exceeds 15-20 messages to prevent context build-up.
 
 ### RULE #4 — MODEL USAGE LIMITS
@@ -116,6 +122,16 @@ Every agent MUST follow this protocol on session start and session end.
 - Do not create or maintain a second memory store.
 - Read/write knowledge through `$MEMORY_ROOT/memory/modules/`, `$MEMORY_ROOT/memory/vector_db/`, and `$MEMORY_ROOT/memory/memory-bank/`.
 - This guarantees every model (current and future) reads the same memory.
+
+### RULE #8 — SKILL DISCOVERY (do NOT load all 1000+)
+**Never load all skills into context. Discover and load on-demand:**
+1. **Match task to skill** — `ls $MEMORY_ROOT/.agents/skills/ | rg -i "<keyword>"` to find a relevant skill by name
+2. **Search descriptions** — `rg "description" $MEMORY_ROOT/.agents/skills/*/SKILL.md -l | head -5` to find matching skill files
+3. **Vector DB** — `memory-search "skill for <task>" 2` to retrieve the right skill's trigger
+4. **Load only one** — `bat --line-range :80 "$MEMORY_ROOT/.agents/skills/<match>/SKILL.md"` — read the first 80 lines, stop if not relevant
+5. **Abort early** — if no skill matches, don't load any. Do the task directly.
+- 1147 skills exist. Loading even 10 prefix summaries costs more than doing the task without a skill.
+- Skills are for reference, not preloading.
 
 ## LICENSE (MIT)
 

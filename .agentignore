@@ -94,3 +94,24 @@ templates/frontend-v0-reference/
 templates/fullstack-bolt-reference/
 templates/agent-skills/
 templates/ponytail/
+
+# Agents third-party skills directory
+.agents/
+
+# ── Repo root bloat (never read by agent) ─────────────────
+README.md
+install.sh
+skills-lock.json
+bsnl-*.txt
+setup.sh
+tv-setup.sh
+
+# ── Dev artifacts & scratch ────────────────────────────
+scratch/
+data/
+agent_workspace/
+dotfiles/
+config/
+
+# ── Session caches (auto-managed) ─────────────────────────
+.session-read-cache
