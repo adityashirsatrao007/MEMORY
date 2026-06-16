@@ -30,6 +30,7 @@ License DRM enforcement complete. MIT → proprietary source-available, RS256 on
 - Vector DB needs re-seeding after module content changes
 
 ## Session Log
+| 2026-06-14 14:43:42 | BSNL GPE600 router full research: config backup (1128 lines, 19 admin pages), UPnP/DoS protection enabled, superadmin attempt failed (administrator/system864 — IP session lock), all exploit paths documented (CVE config.dat 404, Boa CVE N/A, formPassword 404), form auth bypass discovered (postSecurityFlag can be omitted). Full handoff in .agent-progress.md |
 | 2026-06-13 10:00:00 | Built auto-sync system: make session-end target, pre-commit hook auto re-seeds DB. Created memory/context-snapshot.md (gitignored) with ALL secrets & session context — 30+ API keys, Render config, DB creds, admin token, RS256 keys, etc. Indexed by vector DB. memory-search now works from PATH. Updated 01-core-rules.md to enforce sync protocol. 158 chunks across 16 files. |
 | 2026-06-13 09:28:35 | Unified global and local paths for drawio-skill and career-ops, validated 6 external tools, updated vector DB |
 | 2026-06-13 09:21:01 | Built auto-sync system: session-end target, pre-commit hook, vector DB indexes progress files now |

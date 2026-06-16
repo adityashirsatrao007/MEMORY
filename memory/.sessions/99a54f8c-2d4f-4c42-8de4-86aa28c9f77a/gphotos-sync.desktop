@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Google Photos Sync
+Comment=Synchronise local photos to Google Photos
+Exec=gnome-terminal -- bash -c "gphotos-sync %U; exec bash"
+Icon=folder-pictures
+Terminal=true
+Type=Application
+Categories=Utility;

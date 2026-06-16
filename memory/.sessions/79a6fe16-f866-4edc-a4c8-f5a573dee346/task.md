@@ -1,0 +1,4 @@
+- `[x]` System Package Updates & Compilers
+- `[x]` AI / ML Engineering Stack
+- `[x]` Cybersecurity & Networking Stack
+- `[x]` Cross-Platform App Development (Flutter & Java)

@@ -51,6 +51,7 @@ Open ONLY that file: `bat --line-range :80 "$MEMORY_ROOT/memory/modules/XX-*.md"
 | Architecture | `08-architecture.md` |
 | Misc | `09-misc.md` |
 | Architectural Patterns | `12-repo-teachings.md` |
+| Skills & Integration | `13-skills.md` |
 
 ## Tools
 `cat ~/.config/agent-tools/manifest.json` — 15 installed tools (CLI + infra + skills). Read once, cache in context, match task desc to tool.
@@ -90,6 +91,13 @@ If you hit a rate limit, token exhaustion, or get stuck and the user switches to
    - Save current status to `.agent-progress.md` in the workspace root.
    - Outline: what was successfully built, what failed/blocked, and the next 2 tasks to complete.
    - This ensures the next agent picks up the context instantly with zero token startup overhead.
+
+### RULE #7 — UNIFIED MEMORY
+**All agents MUST use a single shared memory at `$MEMORY_ROOT/memory/`.**
+- If you have a separate brain/memory/cache directory, symlink it to `$MEMORY_ROOT/memory/`.
+- Do not create or maintain a second memory store.
+- Read/write knowledge through `$MEMORY_ROOT/memory/modules/`, `$MEMORY_ROOT/memory/vector_db/`, and `$MEMORY_ROOT/memory/memory-bank/`.
+- This guarantees every model (current and future) reads the same memory.
 
 ## LICENSE (MIT)
 
