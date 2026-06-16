@@ -1,0 +1,21 @@
+title = "Gitleaks config for MEMORY repo"
+
+# Allowlist false positives
+[[allowlist]]
+description = "Known false positives — example keys, voice IDs, Firebase tokens in documentation"
+
+# Example API keys in skill docs
+regexes = [
+  '''sk_live_abc123''',
+  '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9''',
+]
+
+# ElevenLabs voice ID example in telephony script
+paths = [
+  '''\.agents/skills/telephony/scripts/telephony\.py''',
+]
+
+# Firebase storage tokens in markdown image URLs
+regexes = [
+  '''token=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}''',
+]

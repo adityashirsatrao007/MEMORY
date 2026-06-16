@@ -56,6 +56,9 @@ templates/ponytail/
 # Agents third-party skills directory
 .agents/
 
+# Session cache (contains transient agent tokens/session data)
+memory/.sessions/
+
 # Misc
 vector_db/
 memory/context-snapshot.md
