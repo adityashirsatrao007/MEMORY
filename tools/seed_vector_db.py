@@ -10,7 +10,7 @@ import os
 import sys
 from pathlib import Path
 
-BASE = Path(os.path.expanduser("~/Desktop/Projects/MEMORY"))
+BASE = Path(os.environ.get("MEMORY_ROOT", os.getcwd()))
 VECTOR_DB_PATH = BASE / "memory" / "vector_db"
 FILES = [
     BASE / "GEMINI.md",
