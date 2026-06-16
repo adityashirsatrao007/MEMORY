@@ -90,6 +90,225 @@ user_stats = FeatureView(
 - Runs as a CI check before training is triggered
 - Blocks pipeline on schema drift, nulls in critical columns, distribution shifts
 
+#### STEP 2.5: Data Quality Probe & Enhancement
+
+**Always probe the dataset before training.** Run this automated audit script first:
+
+```python
+# data/probe.py — run before any training job
+import pandas as pd
+import numpy as np
+
+df = pd.read_parquet("data/features/training_dataset.parquet")
+report = {}
+
+# 1. Missing values
+nulls = df.isnull().sum()
+null_cols = nulls[nulls > 0]
+report["null_columns"] = null_cols.to_dict()
+report["total_nulls"] = int(nulls.sum())
+
+# 2. Duplicates
+report["duplicate_rows"] = int(df.duplicated().sum())
+
+# 3. Class imbalance (if classification)
+target_col = "label"
+if target_col in df.columns and df[target_col].dtype in ("int64", "float64", "object"):
+    counts = df[target_col].value_counts()
+    if len(counts) == 2:  # binary
+        ratio = counts.iloc[0] / counts.iloc[1]
+        report["class_imbalance_ratio"] = round(max(ratio, 1/ratio), 2)
+    report["class_counts"] = counts.to_dict()
+
+# 4. Outliers (IQR method on numeric columns)
+num_cols = df.select_dtypes(include=np.number).columns
+outliers = {}
+for col in num_cols:
+    q1, q3 = df[col].quantile(0.25), df[col].quantile(0.75)
+    iqr = q3 - q1
+    outlier_mask = (df[col] < q1 - 1.5*iqr) | (df[col] > q3 + 1.5*iqr)
+    outlier_pct = outlier_mask.mean()
+    if outlier_pct > 0.01:
+        outliers[col] = f"{outlier_pct:.1%}"
+report["outlier_columns"] = outliers
+
+# 5. Cardinality (for categorical columns)
+cat_cols = df.select_dtypes(include="object").columns
+high_card = {c: int(df[c].nunique()) for c in cat_cols if df[c].nunique() > 100}
+report["high_cardinality"] = high_card
+
+# 6. Constant / near-constant columns
+constant_cols = []
+for col in df.columns:
+    top_ratio = df[col].value_counts(normalize=True).iloc[0]
+    if top_ratio > 0.99:
+        constant_cols.append(col)
+report["near_constant_columns"] = constant_cols
+
+print(json.dumps(report, indent=2))
+```
+
+### Agent Decision Tree — How to Fix Each Issue
+
+| Issue Found | Severity | Action |
+|------------|----------|--------|
+| Nulls in label column | **BLOCK** | Cannot train. Flag for human review or remove rows |
+| Nulls in feature column | WARN | Impute: mean/median for numeric, mode for categorical, or model-based (KNN/Iterative) |
+| Duplicate rows | WARN | Deduplicate, keep first occurrence |
+| Class imbalance > 5:1 | **BLOCK** | Apply weighted loss, oversample minority (SMOTE), or undersample majority |
+| Outliers in features | WARN | Cap at 99th percentile, log-transform, or remove if clearly erroneous |
+| High cardinality (>100) | WARN | Target encode, frequency encode, or group rare categories as "other" |
+| Near-constant column (99%+) | **BLOCK** | Drop — adds noise, no signal |
+| Leakage (target-in-feature) | **BLOCK** | Remove leaking feature, verify with Feast point-in-time join |
+
+### Missing Value Imputation Patterns
+```python
+# Numeric — always try iterative imputation first
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
+
+imputer = IterativeImputer(max_iter=10, random_state=42)
+df[num_cols] = imputer.fit_transform(df[num_cols])
+```
+```python
+# Categorical — model-based or mode fallback
+from sklearn.impute import SimpleImputer
+cat_imputer = SimpleImputer(strategy="most_frequent")
+df[cat_cols] = cat_imputer.fit_transform(df[cat_cols])
+```
+
+### Class Imbalance Correction
+```python
+# Option A: Weighted loss (preferred for large models)
+from sklearn.utils.class_weight import compute_class_weight
+weights = compute_class_weight("balanced", classes=np.unique(y), y=y)
+
+# Pass to loss function: F.cross_entropy(..., weight=torch.tensor(weights))
+
+# Option B: SMOTE oversampling (for tabular data < 1M rows)
+from imblearn.over_sampling import SMOTE
+smote = SMOTE(random_state=42)
+X_resampled, y_resampled = smote.fit_resample(X, y)
+
+# Option C: Random undersampling (only if > 100K majority samples)
+from imblearn.under_sampling import RandomUnderSampler
+rus = RandomUnderSampler(random_state=42)
+X_resampled, y_resampled = rus.fit_resample(X, y)
+```
+
+### Label Error Detection
+```python
+# Use confident learning (cleanlab) to find mislabeled samples
+from cleanlab.classification import CleanLearning
+
+cl = CleanLearning(model)  # any sklearn-compatible model
+label_issues = cl.find_label_issues(X, y)
+
+# Review top-50 most likely mislabeled
+suspicious = label_issues.sort_values("label_quality").head(50)
+print(f"Found {label_issues['is_label_issue'].sum()} potential label errors")
+# Action: flag for human review, exclude from training, relabel
+```
+
+### Leakage Detection
+```python
+# 1. Feature-label correlation check
+from scipy.stats import pointbiserialr
+
+for col in num_cols:
+    corr, pval = pointbiserialr(df[col], df[target_col])
+    if abs(corr) > 0.95:
+        print(f"LIKELY LEAKAGE: {col} correlates {corr:.3f} with target")
+
+# 2. Time-based leakage (if temporal data exists)
+if "timestamp" in df.columns:
+    sorted_df = df.sort_values("timestamp")
+    train = sorted_df.iloc[:int(0.8*len(sorted_df))]
+    test = sorted_df.iloc[int(0.8*len(sorted_df)):]
+    assert test["timestamp"].min() > train["timestamp"].max(), \
+        "TIME LEAKAGE: future data in training set"
+
+# 3. Group leakage (same entity in train and test)
+if "user_id" in df.columns:
+    train_users = set(train["user_id"].unique())
+    test_users = set(test["user_id"].unique())
+    overlap = train_users & test_users
+    if len(overlap) > 0:
+        print(f"GROUP LEAKAGE: {len(overlap)} entities appear in both train/test")
+        # Fix: sklearn.model_selection.GroupKFold
+```
+
+### Distribution Shift Detection
+```python
+# Compare training vs production/reference distributions
+from evidently.report import Report
+from evidently.metric_preset import DataDriftPreset
+
+data_drift_report = Report(metrics=[DataDriftPreset()])
+data_drift_report.run(reference_data=reference_df, current_data=new_data_df)
+drift_results = data_drift_report.as_dict()
+
+# If data_drift_score > 0.15: BLOCK training, re-collect/align data
+```
+
+### Dataset Enhancement
+```python
+# Text augmentation (NLP)
+from nlpaug.augmenter.word import SynonymAug, RandomWordAug
+aug = SynonymAug(aug_src="wordnet", aug_p=0.15)
+augmented_texts = [aug.augment(t) for t in df["text"]]
+
+# Image augmentation (Vision) — via torchvision transforms
+from torchvision import transforms
+train_transform = transforms.Compose([
+    transforms.RandomRotation(10),
+    transforms.RandomHorizontalFlip(p=0.5),
+    transforms.ColorJitter(brightness=0.1, contrast=0.1),
+    transforms.ToTensor(),
+])
+
+# Tabular — synthetic data via SDV (Synthetic Data Vault)
+from sdv.tabular import CTGAN
+model = CTGAN(epochs=100)
+model.fit(df)
+synthetic_data = model.sample(num_rows=len(df) // 2)
+df_augmented = pd.concat([df, synthetic_data], ignore_index=True)
+
+# Search HuggingFace for related datasets to supplement
+from datasets import load_dataset
+if task_is_too_small:
+    extra = load_dataset("related-dataset-name", split="train")
+    df_extra = extra.to_pandas()
+    df = pd.concat([df, df_extra], ignore_index=True)
+```
+
+### Data Quality Gate — Blocks Pipeline
+Add this as a CI check before training:
+```yaml
+# .github/workflows/data-ci.yaml
+name: Data CI
+on: [workflow_dispatch, push]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python data/probe.py > data/probe_report.json
+      - run: python data/great_expectations/check_suite.py
+      - name: Block on critical issues
+        run: |
+          python -c "
+          import json
+          r = json.load(open('data/probe_report.json'))
+          if r.get('null_columns', {}).get('label'):
+            exit(1)
+          if r.get('class_imbalance_ratio', 0) > 5:
+            exit(1)
+          "
+```
+
+**If data quality gates fail → DO NOT TRAIN.** Report the exact issues found, fix them, re-run validation, then proceed to Step 3.
+
 #### STEP 3: Distributed Training (FSDP/DeepSpeed) on K8s
 ```yaml
 # k8s/training-job.yaml
