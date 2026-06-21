@@ -33,6 +33,7 @@ MCP Memory Server built. Persistent SSE daemon on port 8932, systemd-enabled. 6 
 - Vector DB needs re-seeding after module content changes
 
 ## Session Log
+| 2026-06-21 12:47:29 | Completed: Symlinked notebooks and visualization MCP sockets from -visualstudiocode.sock to -antigravityide.sock, and automated this in session-start.sh. |
 | 2026-06-21 12:44:55 | Completed: Fixed Python 3.14 global packaging crash by upgrading to 26.2; installed jupyterlab, matplotlib, pandas, and ipywidgets in project .venv. Blocked: none. Next: verify if user's IDE-level notebook/visualization MCP servers connect without errors. |
 | 2026-06-21 11:14:03 | Completed: handoff written. User requested file organization after session save. |
 | 2026-06-21 11:51:03 | Built MCP Memory Server (FastMCP): 6 tools over SSE on port 8932, systemd service auto-starts on boot. opencode.json configured with stdio shim. agy knowledge symlinked to memory/modules+memory-bank. Port conflict 9002→8932 resolved (MinIO). Vector DB at memory/vector_db/ (ChromaDB, 197 chunks). |
