@@ -4,7 +4,7 @@
 > Read this at the START of every session to resume without re-analysis.
 
 ## Current Status
-License DRM enforcement complete. MIT → proprietary source-available, RS256 online/offline verification, Render deployment, Resend email, admin panel locked to owner.
+MCP Memory Server built. Persistent SSE daemon on port 8932, systemd-enabled. 6 tools exposing ChromaDB vector search + memory-bank RAG. Auto-connects via opencode.json mcpServers (stdio shim). agy knowledge dir symlinked to shared memory.
 
 ## What's Done
 - [x] 54-tool dispatch table + auto-dispatch script
@@ -17,12 +17,15 @@ License DRM enforcement complete. MIT → proprietary source-available, RS256 on
 - [x] Behavioral rules: silent CLI, ollama first, vector DB first, enola pre-flight, no re-read
 
 ## What's In Progress
-<!-- Nothing — optimization phase complete -->
+- MCP Memory Server running on SSE port 8932 — verify end-to-end tool calls from opencode
+- agy auto-connection via knowledge symlinks (no native MCP plugin yet)
 
 ## What's Next
-<!-- Future work if desired: context budget enforcement, auto-wrap sessions -->
 - [ ] Context budget enforcement (auto-summarize at 50K input tokens)
 - [ ] Makefile targets for vector DB re-seed + dashboard restart
+- [ ] Add `recall_context` call to opencode's AGENTS.md or hook for session-start auto-summary
+- [ ] Build agy native MCP plugin (or integrate via stdio wrapper)
+- [ ] Test MCP tools from both agents in a real session
 
 ## Known Issues / Tech Debt
 - session-start.sh receives stale "true" from `:` no-ops (benign)
@@ -30,6 +33,13 @@ License DRM enforcement complete. MIT → proprietary source-available, RS256 on
 - Vector DB needs re-seeding after module content changes
 
 ## Session Log
+| 2026-06-21 12:44:55 | Completed: Fixed Python 3.14 global packaging crash by upgrading to 26.2; installed jupyterlab, matplotlib, pandas, and ipywidgets in project .venv. Blocked: none. Next: verify if user's IDE-level notebook/visualization MCP servers connect without errors. |
+| 2026-06-21 11:14:03 | Completed: handoff written. User requested file organization after session save. |
+| 2026-06-21 11:51:03 | Built MCP Memory Server (FastMCP): 6 tools over SSE on port 8932, systemd service auto-starts on boot. opencode.json configured with stdio shim. agy knowledge symlinked to memory/modules+memory-bank. Port conflict 9002→8932 resolved (MinIO). Vector DB at memory/vector_db/ (ChromaDB, 197 chunks). |
+| 2026-06-18 23:56:33 | Completed: Fixed Cassandra JVM compat (JDK 21 + add-opens), verified ClickHouse 26.4.4, PostgreSQL, Hadoop, and Cassandra all running. Next: graphify dashboard, Airflow redeploy, integration. |
+| 2026-06-18 18:31:43 | System optimization: GPU VS Code, CPU perf governor, NVIDIA default GPU, Folding@home killed, avahi/CUPS/unnecessary autostarts removed, I/O tuning |
+| 2026-06-17 18:01:25 | Redelivered Round 1 deliverables: 5-slide PPT, 3-page PDF, submission.csv pushed to GitHub. Stripped back to fixed model as competition rules required. |
+| 2026-06-17 16:29:34 | Completed: Full pipeline verification. All 8 scripts compile and run. Confident learning CV best: 52.70% fold, 42.70% retrain (24/445 labels corrected). Baseline: 42.53%. Improved pipeline underperforms. Prediction: 115 test samples -> submission.csv. Key finding: 71.5% label noise too extreme for CleanLab. Next: iterative pseudo-labeling or production model on corrected labels. |
 | 2026-06-16 22:08:06 | Completed: repo restructure - expanded .agentignore, moved LESSONS_LEARNED→modules/14, stripped API keys from context-snapshot, removed hardcoded key from dashboard.py, deleted 13-skills.md, consolidated session-end in Makefile+rules, added PreCompact prompt+session-read-cache rules, updated GEMINI.md references, re-seeded vector DB (169 chunks). Blocked: none. |
 | 2026-06-16 21:54:22 | Added optimal token conservation rules and skill discovery protocol |
 | 2026-06-16 21:47:07 | Unified memory: symlinked antigravity brain to MEMORY/memory, added RULE #7 (UNIFIED MEMORY) + hardened RULE #5 (HANDOFF PROTOCOL) with mandatory start/end commands to GEMINI.md |
