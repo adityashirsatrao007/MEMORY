@@ -33,6 +33,7 @@ MCP Memory Server built. Persistent SSE daemon on port 8932, systemd-enabled. 6 
 - Vector DB needs re-seeding after module content changes
 
 ## Session Log
+| 2026-06-23 15:11:51 | Completed: Added GSAP timeline scroll pauses (holds) for scrollytelling slides and expanded scrolly container height to 800vh to ensure slower and smoother scroll animations. Blocked: None. Next: Check user feedback on the updated scroll timing. |
 | 2026-06-23 15:07:04 | Completed: Expanded layout to 500vh pinned scrollytelling with 5 slides, node laser connection lines, red alert light pulses, camera shake effects, and SF Pro system font stacks. Blocked: None. Next: Gather user feedback. |
 | 2026-06-23 14:51:01 | Completed: Fixed 3D canvas sizing and pinning bugs in App.jsx; implemented interactive mouse parallax, dynamic morphing grid terrain, and floating glassmorphic 3D shapes. Blocked: None. Next: Gather design feedback. |
 | 2026-06-23 14:46:07 | Cleaned background tasks and exposed 3D scrollytelling. |

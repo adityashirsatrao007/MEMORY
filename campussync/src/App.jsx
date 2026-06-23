@@ -214,30 +214,36 @@ function App() {
     gsap.set(slide4Ref.current, { opacity: 0, y: 30, pointerEvents: 'none' });
     gsap.set(slide5Ref.current, { opacity: 0, y: 30, pointerEvents: 'none' });
 
-    // Timeline steps representing 5 scroll phases
-    tl.to(slide1Ref.current, { opacity: 0, y: -30, duration: 1.5, pointerEvents: 'none' })
-      .to(camera.position, { x: 3, y: 3.5, z: 6, duration: 2.5 }, '<')
-      .to(slide2Ref.current, { opacity: 1, y: 0, duration: 1.5, pointerEvents: 'auto' })
+    // Timeline steps representing 5 scroll phases with holds/pauses
+    tl.to({}, { duration: 1.8 }) // Initial hold on slide 1
+      .to(slide1Ref.current, { opacity: 0, y: -30, duration: 1.0, pointerEvents: 'none' })
+      .to(camera.position, { x: 3, y: 3.5, z: 6, duration: 1.8 }, '<')
+      .to(slide2Ref.current, { opacity: 1, y: 0, duration: 1.0, pointerEvents: 'auto' })
       
-      .to(slide2Ref.current, { opacity: 0, y: -30, duration: 1.5, pointerEvents: 'none', delay: 1 })
-      .to(camera.position, { x: -3, y: 2, z: 5.5, duration: 2.5 }, '<')
-      .to(mesh.position, { y: -0.5, duration: 2.5 }, '<')
-      .to(gridMesh.position, { y: -0.48, duration: 2.5 }, '<')
-      .to(slide3Ref.current, { opacity: 1, y: 0, duration: 1.5, pointerEvents: 'auto' })
+      .to({}, { duration: 1.8 }) // Hold on slide 2
+      .to(slide2Ref.current, { opacity: 0, y: -30, duration: 1.0, pointerEvents: 'none' })
+      .to(camera.position, { x: -3, y: 2, z: 5.5, duration: 1.8 }, '<')
+      .to(mesh.position, { y: -0.5, duration: 1.8 }, '<')
+      .to(gridMesh.position, { y: -0.48, duration: 1.8 }, '<')
+      .to(slide3Ref.current, { opacity: 1, y: 0, duration: 1.0, pointerEvents: 'auto' })
       
-      .to(slide3Ref.current, { opacity: 0, y: -30, duration: 1.5, pointerEvents: 'none', delay: 1 })
-      .to(camera.position, { x: 0, y: 1.5, z: 4.5, duration: 2.5 }, '<')
-      .to(mesh.rotation, { x: -Math.PI / 6, duration: 2.5 }, '<')
-      .to(gridMesh.rotation, { x: -Math.PI / 6, duration: 2.5 }, '<')
-      .to(slide4Ref.current, { opacity: 1, y: 0, duration: 1.5, pointerEvents: 'auto' })
+      .to({}, { duration: 1.8 }) // Hold on slide 3
+      .to(slide3Ref.current, { opacity: 0, y: -30, duration: 1.0, pointerEvents: 'none' })
+      .to(camera.position, { x: 0, y: 1.5, z: 4.5, duration: 1.8 }, '<')
+      .to(mesh.rotation, { x: -Math.PI / 6, duration: 1.8 }, '<')
+      .to(gridMesh.rotation, { x: -Math.PI / 6, duration: 1.8 }, '<')
+      .to(slide4Ref.current, { opacity: 1, y: 0, duration: 1.0, pointerEvents: 'auto' })
 
-      .to(slide4Ref.current, { opacity: 0, y: -30, duration: 1.5, pointerEvents: 'none', delay: 1 })
-      .to(camera.position, { x: 0, y: 5, z: 10, duration: 2.5 }, '<')
-      .to(mesh.rotation, { x: -Math.PI / 3, duration: 2.5 }, '<')
-      .to(gridMesh.rotation, { x: -Math.PI / 3, duration: 2.5 }, '<')
-      .to(redAlertLight, { intensity: 6.0, duration: 2.5 }, '<')
-      .to(pointLight, { intensity: 0.1, duration: 2.5 }, '<')
-      .to(slide5Ref.current, { opacity: 1, y: 0, duration: 1.5, pointerEvents: 'auto' });
+      .to({}, { duration: 1.8 }) // Hold on slide 4
+      .to(slide4Ref.current, { opacity: 0, y: -30, duration: 1.0, pointerEvents: 'none' })
+      .to(camera.position, { x: 0, y: 5, z: 10, duration: 1.8 }, '<')
+      .to(mesh.rotation, { x: -Math.PI / 3, duration: 1.8 }, '<')
+      .to(gridMesh.rotation, { x: -Math.PI / 3, duration: 1.8 }, '<')
+      .to(redAlertLight, { intensity: 6.0, duration: 1.8 }, '<')
+      .to(pointLight, { intensity: 0.1, duration: 1.8 }, '<')
+      .to(slide5Ref.current, { opacity: 1, y: 0, duration: 1.0, pointerEvents: 'auto' })
+      
+      .to({}, { duration: 1.8 }); // Final hold on slide 5
 
     // --- 4. Animation Loop ---
     let animationFrameId;
@@ -402,7 +408,7 @@ function App() {
       </header>
 
       {/* Main Scrollytelling Pinned Section */}
-      <div ref={scrollyContainerRef} className="relative z-10 h-[500vh]">
+      <div ref={scrollyContainerRef} className="relative z-10 h-[800vh]">
         
         {/* Pinned WebGL viewport container */}
         <div className="webgl-bg-container fixed inset-0 w-screen h-screen pointer-events-none z-0">
