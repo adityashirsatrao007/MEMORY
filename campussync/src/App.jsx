@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
 import { 
   Shield, 
   MapPin, 
@@ -37,6 +38,33 @@ function App() {
   const slide3Ref = useRef(null);
   const slide4Ref = useRef(null);
   const slide5Ref = useRef(null);
+
+  // Initialize Lenis smooth scroll
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.8,
+      infinite: false,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+
+    const updateRaf = (time) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(updateRaf);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      lenis.destroy();
+      gsap.ticker.remove(updateRaf);
+    };
+  }, []);
 
   // Single unified useEffect for ThreeJS + GSAP ScrollTrigger
   useEffect(() => {
@@ -203,7 +231,7 @@ function App() {
         trigger: scrollyContainerRef.current,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 2.0 // Slower, smoother transition
+        scrub: 1.2 // Driven smoothly by Lenis scroll interpolation
       }
     });
 
