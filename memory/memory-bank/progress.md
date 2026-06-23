@@ -33,6 +33,43 @@ MCP Memory Server built. Persistent SSE daemon on port 8932, systemd-enabled. 6 
 - Vector DB needs re-seeding after module content changes
 
 ## Session Log
+| 2026-06-23 14:51:01 | Completed: Fixed 3D canvas sizing and pinning bugs in App.jsx; implemented interactive mouse parallax, dynamic morphing grid terrain, and floating glassmorphic 3D shapes. Blocked: None. Next: Gather design feedback. |
+| 2026-06-23 14:46:07 | Cleaned background tasks and exposed 3D scrollytelling. |
+| 2026-06-23 14:42:53 | Integrated GSAP ScrollTrigger for cinematic scrollytelling. |
+| 2026-06-23 14:41:03 | Exposed campus safety dashboard 3D mockup as WebGL texture. |
+| 2026-06-23 14:37:52 | Enhanced 3D scrollytelling with native WebGL Three.js interactive mesh. |
+| 2026-06-23 14:26:37 | Created 3D scrollytelling home page for base project. |
+| 2026-06-23 14:22:00 | Exposed all 5 CampusSync design variants using persistent localhost.run tunnels on public URLs. |
+| 2026-06-23 14:20:50 | Exposed all 5 CampusSync design variants on public URLs. |
+| 2026-06-23 14:13:40 | Completed: Overhauled all 5 CampusSync frontend design variants (ports 3003-3007) with unique visual layouts, typography, and tactile styles. Blocked: None. Next: None. |
+| 2026-06-23 14:09:15 | Completed: Refactored all 5 design variants of CampusSync with distinct layout styles (Glassmorphism, Aurora, Neumorphism, Brutalist, Claymorphism) running on ports 3003-3007. Blocked: None. Next: None. |
+| 2026-06-23 14:06:56 | Completed: Deployed all 5 variants of CampusSync as active background processes in the agent session on ports 3003-3007. Blocked: None. Next: None. |
+| 2026-06-23 14:04:55 | Completed: Created all 5 design variants (Glassmorphism, Aurora, Neumorphism, Brutalist, Claymorphism) and ran them on ports 3003-3007. Blocked: None. Next: None. |
+| 2026-06-23 13:58:51 | Completed: Cloned and recreated the CampusSync React project from scratch with premium aesthetics and Tailwind CSS v4 in the campussync/ folder. Deployed server on port 3002. Blocked: None. Next: None. |
+| 2026-06-22 21:51:24 | Completed: Explained which command to bind for Live Preview. Blocked: None. Next: None. |
+| 2026-06-22 21:49:49 | Completed: Answered live preview shortcut questions. Blocked: None. Next: None. |
+| 2026-06-22 20:48:08 | Completed: Uninstalled deprecated extensions (minovative-mind-vscode, gemini-cli-vscode-ide-companion, geminicodeassist) and configured settings.json for fastest IntelliSense and Emmet suggestions. Blocked: None. Next: None. |
+| 2026-06-22 20:41:12 | Completed: Set system-wide GNOME dark mode (color-scheme prefer-dark) to make the top panel dark, and explained Wayland logout requirement for Vitals extension. Blocked: None. Next: None. |
+| 2026-06-22 20:39:46 | Completed: Installed Vitals GNOME extension for top panel GPU monitoring, and explained why Next.js occupies 50% CPU. Blocked: None. Next: None. |
+| 2026-06-22 20:36:44 | Completed: Terminated Next.js server processes, and explained Brave browser CPU vs GPU execution characteristics. Blocked: None. Next: None. |
+| 2026-06-22 20:31:13 | Completed: Successfully uninstalled unused language extensions (Java, C/C++, Flutter/Dart), duplicate AI assistants, and duplicate layout tools to improve VS Code performance. Blocked: None. Next: None. |
+| 2026-06-22 20:25:43 | Completed: Disabled Continue focusContinueInput on Ctrl+L and re-bound it to default expandLineSelection in keybindings.json. Blocked: None. Next: None. |
+| 2026-06-22 20:23:10 | Completed: Replied to user about Ctrl+L default line selection shortcut. Blocked: None. Next: None. |
+| 2026-06-22 20:20:10 | Completed: Set editor.quickSuggestionsDelay to 0, editor.suggest.delay to 0, and configured Emmet settings to trigger instantly in settings.json. Blocked: None. Next: None. |
+| 2026-06-22 20:14:32 | Completed: Set editor.suggestDelay and editor.quickSuggestionsDelay to 0 to make autosuggestions trigger instantly as user types. Blocked: None. Next: None. |
+| 2026-06-22 20:11:13 | Completed: Installed Blur My Shell, Compiz Windows Effect, and Compiz Alike Magic Lamp Effect GNOME extensions to enable liquid glass/macOS-style wobbly animations. Blocked: None. Next: None. |
+| 2026-06-22 20:04:53 | Completed: Installed GlassIt-VSC extension for glassmorphism, configured Prettier/Black formatters, and added high-end custom token highlights (comments, keywords, functions, variables) to settings.json. Blocked: None. Next: None. |
+| 2026-06-22 20:01:04 | Completed: Confirmed settings are strictly VS Code native settings in the default path, and no external tool overrides them. Blocked: None. Next: None. |
+| 2026-06-22 20:00:10 | Completed: Added editor.gpuAcceleration: on to settings.json to ensure hardware GPU rendering is active. Blocked: None. Next: None. |
+| 2026-06-22 19:58:16 | Completed: Created keybindings.json to override Jupyter ctrl+enter keybindings and mapped it to insertLineAfter. Blocked: None. Next: None. |
+| 2026-06-22 19:54:53 | Completed: Restored keyboard.dispatch keyCode to settings.json and explained Jupyter keymap conflict with Ctrl+Enter. Blocked: None. Next: None. |
+| 2026-06-22 19:53:40 | Completed: Set cursor blinking and 144hz smooth options for both terminal and editor in settings.json. Blocked: None. Next: None. |
+| 2026-06-22 19:50:57 | Completed: Backed up settings.json and reset it to default empty brackets. Blocked: None. Next: None. |
+| 2026-06-22 19:47:40 | Completed: Explained that toggling is a state-change that stays permanently visible, and added settings to disable sidebar hiding in Zen Mode. Blocked: None. Next: None. |
+| 2026-06-22 19:45:27 | Completed: Replied to user regarding LLM latency and layout visibility troubleshooting steps. Blocked: None. Next: None. |
+| 2026-06-22 19:41:17 | Completed: Enabled terminal cursor blinking and GPU acceleration in settings.json, and explained Ctrl+Enter keyboard conflict issues. Blocked: None. Next: None. |
+| 2026-06-22 19:38:01 | Completed: Enabled smooth typing animations, blinking cursor, and smooth scrolling configurations in settings.json. Blocked: None. Next: None. |
+| 2026-06-22 19:35:33 | Completed: Fixed VS Code keybindings by setting keyboard.dispatch to keyCode in settings.json. Blocked: None. Next: Check if user requires further keyboard customizations. |
 | 2026-06-21 12:47:29 | Completed: Symlinked notebooks and visualization MCP sockets from -visualstudiocode.sock to -antigravityide.sock, and automated this in session-start.sh. |
 | 2026-06-21 12:44:55 | Completed: Fixed Python 3.14 global packaging crash by upgrading to 26.2; installed jupyterlab, matplotlib, pandas, and ipywidgets in project .venv. Blocked: none. Next: verify if user's IDE-level notebook/visualization MCP servers connect without errors. |
 | 2026-06-21 11:14:03 | Completed: handoff written. User requested file organization after session save. |
