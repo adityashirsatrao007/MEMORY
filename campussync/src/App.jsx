@@ -35,6 +35,8 @@ function App() {
   const slide1Ref = useRef(null);
   const slide2Ref = useRef(null);
   const slide3Ref = useRef(null);
+  const slide4Ref = useRef(null);
+  const slide5Ref = useRef(null);
 
   // Single unified useEffect for ThreeJS + GSAP ScrollTrigger
   useEffect(() => {
@@ -70,6 +72,11 @@ function App() {
     const pointLight = new THREE.PointLight(0x00f0ff, 2.5, 50);
     pointLight.position.set(5, 5, 5);
     scene.add(pointLight);
+
+    // Alert Light (activated on final slide)
+    const redAlertLight = new THREE.PointLight(0xff0055, 0, 50);
+    redAlertLight.position.set(0, 3, 3);
+    scene.add(redAlertLight);
 
     // Dashboard texture
     const textureLoader = new THREE.TextureLoader();
@@ -130,7 +137,7 @@ function App() {
       new THREE.OctahedronGeometry(0.25)
     ];
     const shapes = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 20; i++) {
       const geo = shapeGeometries[Math.floor(Math.random() * shapeGeometries.length)];
       const mat = new THREE.MeshPhongMaterial({
         color: Math.random() > 0.5 ? 0x00f0ff : 0xa855f7,
@@ -142,9 +149,9 @@ function App() {
       });
       const meshShape = new THREE.Mesh(geo, mat);
       meshShape.position.set(
-        (Math.random() - 0.5) * 12,
-        (Math.random() - 0.5) * 8,
-        (Math.random() - 0.5) * 10
+        (Math.random() - 0.5) * 14,
+        (Math.random() - 0.5) * 9,
+        (Math.random() - 0.5) * 12
       );
       meshShape.rotation.set(
         Math.random() * Math.PI,
@@ -161,6 +168,18 @@ function App() {
       shapesGroup.add(meshShape);
       shapes.push(meshShape);
     }
+
+    // Dynamic Connections Linking the Nodes
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0x00f0ff,
+      transparent: true,
+      opacity: 0.18
+    });
+    const lineGeometry = new THREE.BufferGeometry();
+    const linePositions = new Float32Array(shapes.length * shapes.length * 6);
+    lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+    const connectionLines = new THREE.LineSegments(lineGeometry, lineMaterial);
+    scene.add(connectionLines);
 
     // SOS beacon marker
     const beaconGeo = new THREE.SphereGeometry(0.18, 16, 16);
@@ -184,30 +203,41 @@ function App() {
         trigger: scrollyContainerRef.current,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 1.5
+        scrub: 2.0 // Slower, smoother transition
       }
     });
 
     // Initial state setup
-    gsap.set(slide1Ref.current, { opacity: 1, y: 0 });
-    gsap.set(slide2Ref.current, { opacity: 0, y: 50 });
-    gsap.set(slide3Ref.current, { opacity: 0, y: 50 });
+    gsap.set(slide1Ref.current, { opacity: 1, y: 0, pointerEvents: 'auto' });
+    gsap.set(slide2Ref.current, { opacity: 0, y: 30, pointerEvents: 'none' });
+    gsap.set(slide3Ref.current, { opacity: 0, y: 30, pointerEvents: 'none' });
+    gsap.set(slide4Ref.current, { opacity: 0, y: 30, pointerEvents: 'none' });
+    gsap.set(slide5Ref.current, { opacity: 0, y: 30, pointerEvents: 'none' });
 
-    // Timeline steps
-    tl.to(slide1Ref.current, { opacity: 0, y: -50, duration: 2 })
-      .to(camera.position, { x: 3, y: 3.5, z: 6, duration: 3 }, '<')
-      .to(slide2Ref.current, { opacity: 1, y: 0, duration: 2 })
+    // Timeline steps representing 5 scroll phases
+    tl.to(slide1Ref.current, { opacity: 0, y: -30, duration: 1.5, pointerEvents: 'none' })
+      .to(camera.position, { x: 3, y: 3.5, z: 6, duration: 2.5 }, '<')
+      .to(slide2Ref.current, { opacity: 1, y: 0, duration: 1.5, pointerEvents: 'auto' })
       
-      .to(slide2Ref.current, { opacity: 0, y: -50, duration: 2, delay: 1 })
-      .to(camera.position, { x: -3, y: 2, z: 5.5, duration: 3 }, '<')
-      .to(mesh.position, { y: -0.5, duration: 3 }, '<')
-      .to(gridMesh.position, { y: -0.48, duration: 3 }, '<')
-      .to(slide3Ref.current, { opacity: 1, y: 0, duration: 2 })
+      .to(slide2Ref.current, { opacity: 0, y: -30, duration: 1.5, pointerEvents: 'none', delay: 1 })
+      .to(camera.position, { x: -3, y: 2, z: 5.5, duration: 2.5 }, '<')
+      .to(mesh.position, { y: -0.5, duration: 2.5 }, '<')
+      .to(gridMesh.position, { y: -0.48, duration: 2.5 }, '<')
+      .to(slide3Ref.current, { opacity: 1, y: 0, duration: 1.5, pointerEvents: 'auto' })
       
-      .to(slide3Ref.current, { opacity: 0, y: -50, duration: 2, delay: 1 })
-      .to(camera.position, { x: 0, y: 5, z: 12, duration: 3 }, '<')
-      .to(mesh.rotation, { x: -Math.PI / 3, duration: 3 }, '<')
-      .to(gridMesh.rotation, { x: -Math.PI / 3, duration: 3 }, '<');
+      .to(slide3Ref.current, { opacity: 0, y: -30, duration: 1.5, pointerEvents: 'none', delay: 1 })
+      .to(camera.position, { x: 0, y: 1.5, z: 4.5, duration: 2.5 }, '<')
+      .to(mesh.rotation, { x: -Math.PI / 6, duration: 2.5 }, '<')
+      .to(gridMesh.rotation, { x: -Math.PI / 6, duration: 2.5 }, '<')
+      .to(slide4Ref.current, { opacity: 1, y: 0, duration: 1.5, pointerEvents: 'auto' })
+
+      .to(slide4Ref.current, { opacity: 0, y: -30, duration: 1.5, pointerEvents: 'none', delay: 1 })
+      .to(camera.position, { x: 0, y: 5, z: 10, duration: 2.5 }, '<')
+      .to(mesh.rotation, { x: -Math.PI / 3, duration: 2.5 }, '<')
+      .to(gridMesh.rotation, { x: -Math.PI / 3, duration: 2.5 }, '<')
+      .to(redAlertLight, { intensity: 6.0, duration: 2.5 }, '<')
+      .to(pointLight, { intensity: 0.1, duration: 2.5 }, '<')
+      .to(slide5Ref.current, { opacity: 1, y: 0, duration: 1.5, pointerEvents: 'auto' });
 
     // --- 4. Animation Loop ---
     let animationFrameId;
@@ -219,8 +249,15 @@ function App() {
       mouse.y += (mouse.targetY - mouse.y) * 0.05;
 
       // Mouse tilts scene rotation
-      scene.rotation.y = mouse.x * 0.3;
-      scene.rotation.x = mouse.y * 0.2;
+      scene.rotation.y = mouse.x * 0.25;
+      scene.rotation.x = mouse.y * 0.15;
+
+      // Camera Emergency Vibration Shake (if Alert light is active)
+      if (redAlertLight.intensity > 1.0) {
+        const shake = redAlertLight.intensity * 0.0035;
+        camera.position.x += (Math.random() - 0.5) * shake;
+        camera.position.y += (Math.random() - 0.5) * shake;
+      }
 
       // Slow idle spin
       mesh.rotation.z = Math.sin(Date.now() * 0.0003) * 0.05;
@@ -233,6 +270,26 @@ function App() {
         s.rotation.y += s.userData.rotY;
         s.position.y = s.userData.initialY + Math.sin(Date.now() * s.userData.floatSpeed) * s.userData.floatDistance;
       });
+
+      // Update Node Laser Connections
+      let lineIdx = 0;
+      const linePositionsAttr = connectionLines.geometry.attributes.position;
+      const linePosArray = linePositionsAttr.array;
+      for (let i = 0; i < shapes.length; i++) {
+        for (let j = i + 1; j < shapes.length; j++) {
+          const dist = shapes[i].position.distanceTo(shapes[j].position);
+          if (dist < 4.5) {
+            linePosArray[lineIdx++] = shapes[i].position.x;
+            linePosArray[lineIdx++] = shapes[i].position.y;
+            linePosArray[lineIdx++] = shapes[i].position.z;
+            linePosArray[lineIdx++] = shapes[j].position.x;
+            linePosArray[lineIdx++] = shapes[j].position.y;
+            linePosArray[lineIdx++] = shapes[j].position.z;
+          }
+        }
+      }
+      linePositionsAttr.needsUpdate = true;
+      connectionLines.geometry.setDrawRange(0, lineIdx);
 
       // Digital Grid Mesh displacement/morph wave terrain
       const timeVal = Date.now() * 0.0012;
@@ -328,7 +385,7 @@ function App() {
     <div className="min-h-screen bg-[#030008] text-slate-100 font-sans selection:bg-purple-500 selection:text-white">
       
       {/* HUD Header */}
-      <header className="fixed top-0 left-0 right-0 z-55 p-6 flex justify-between items-center bg-[#030008]/40 backdrop-blur-xl border-b border-white/5">
+      <header className="fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-center bg-[#030008]/40 backdrop-blur-xl border-b border-white/5">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-sky-500 to-purple-500 flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.3)]">
             <Shield className="w-5 h-5 text-white" />
@@ -340,75 +397,99 @@ function App() {
         </div>
 
         <nav className="hidden md:flex items-center gap-8 text-xs uppercase font-bold tracking-widest text-slate-400">
-          <a href="#scrolly-1" className="hover:text-sky-400 transition-colors">01 / Concept</a>
-          <a href="#scrolly-2" className="hover:text-sky-400 transition-colors">02 / Architecture</a>
-          <a href="#scrolly-3" className="hover:text-sky-400 transition-colors">03 / Dashboard</a>
-          <a href="#try-it" className="hover:text-sky-400 transition-colors">04 / Sandbox</a>
+          <a href="#try-it" className="hover:text-sky-400 transition-colors">Sandbox Desk</a>
         </nav>
       </header>
 
       {/* Main Scrollytelling Pinned Section */}
-      <div ref={scrollyContainerRef} className="relative z-10">
+      <div ref={scrollyContainerRef} className="relative z-10 h-[500vh]">
         
         {/* Pinned WebGL viewport container */}
         <div className="webgl-bg-container fixed inset-0 w-screen h-screen pointer-events-none z-0">
           <div ref={containerRef} className="w-full h-full relative" />
         </div>
 
-        {/* Section 1: Hero */}
-        <section id="scrolly-1" className="min-h-screen flex flex-col justify-center px-6 md:px-20 relative z-20">
-          <div ref={slide1Ref} className="max-w-xl flex flex-col items-start gap-6">
-            <span className="bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full">
-              NEXT-GEN RESPONSE INFRASTRUCTURE
-            </span>
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-none font-display">
-              Real-Time <br />
-              <span className="text-gradient">Campus Response</span> <br />
-              Synthesizer
-            </h1>
-            <p className="text-slate-400 text-sm md:text-base max-w-md leading-relaxed font-semibold">
-              Connecting students and security desks through an instant, localized 3D mesh network. Zero lag, high fidelity dispatch.
-            </p>
-            <div className="flex items-center gap-2 text-slate-500 text-xs font-bold uppercase mt-8 animate-bounce">
-              <ArrowDown className="w-4 h-4" /> Scroll to explore telemetry
+        {/* Pinned text slides overlay */}
+        <div className="fixed inset-0 w-screen h-screen flex items-center px-6 md:px-20 pointer-events-none z-20">
+          <div className="max-w-xl w-full pointer-events-auto flex flex-col gap-6 relative h-[350px]">
+            
+            {/* Slide 1: Hero */}
+            <div ref={slide1Ref} className="absolute inset-0 flex flex-col items-start gap-6 select-none opacity-0 pointer-events-none">
+              <span className="bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full">
+                Phase 01 // Secure Network Telemetry
+              </span>
+              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-none font-display text-white">
+                Real-Time <br />
+                <span className="text-gradient">Campus Response</span> <br />
+                Synthesizer
+              </h1>
+              <p className="text-slate-400 text-sm md:text-base leading-relaxed font-semibold">
+                Connecting students and security desks through an instant, localized 3D mesh network. Zero lag, high fidelity dispatch.
+              </p>
+              <div className="flex items-center gap-2 text-slate-500 text-xs font-bold uppercase mt-4">
+                <ArrowDown className="w-4 h-4 animate-bounce" /> Scroll to explore network nodes
+              </div>
             </div>
-          </div>
-        </section>
 
-        {/* Section 2: Core Concept scrolly */}
-        <section id="scrolly-2" className="min-h-screen flex items-center px-6 md:px-20 relative z-20">
-          <div ref={slide2Ref} className="max-w-xl ml-auto flex flex-col items-start gap-6">
-            <span className="text-purple-400 text-xs font-bold tracking-widest uppercase flex items-center gap-2">
-              <Layers className="w-4 h-4" /> 3D PERSPECTIVE MONITORING
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-none font-display">
-              Holographic Incident Map
-            </h2>
-            <p className="text-slate-400 text-sm md:text-base leading-relaxed">
-              Every panic signal triggers a high fidelity, 3D coordinate point on the supervisor's dashboard. Location accuracy is tracked dynamically using cell-mesh triangulation.
-            </p>
-          </div>
-        </section>
+            {/* Slide 2: Nodes */}
+            <div ref={slide2Ref} className="absolute inset-0 flex flex-col items-start gap-6 select-none opacity-0 pointer-events-none">
+              <span className="bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full">
+                Phase 02 // Node Triangulation
+              </span>
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-none font-display text-white">
+                Localized Mesh Network
+              </h1>
+              <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                Campus devices function as interactive wireless routers. As you move, the grid dynamically calculates peer-to-peer latency connections to form a robust safety shield.
+              </p>
+            </div>
 
-        {/* Section 3: Responder Dispatch */}
-        <section id="scrolly-3" className="min-h-screen flex items-center px-6 md:px-20 relative z-20">
-          <div ref={slide3Ref} className="max-w-xl flex flex-col items-start gap-6">
-            <span className="text-sky-400 text-xs font-bold tracking-widest uppercase flex items-center gap-2">
-              <UserCheck className="w-4 h-4" /> VELOCITY TRACKING
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-none font-display">
-              Immediate Responder Coordination
-            </h2>
-            <p className="text-slate-400 text-sm md:text-base leading-relaxed">
-              Officers receive immediate vector maps mapped to the dispatch point, showing stairs, exits, and rooms in full detail.
-            </p>
+            {/* Slide 3: Morphing Data Terrain */}
+            <div ref={slide3Ref} className="absolute inset-0 flex flex-col items-start gap-6 select-none opacity-0 pointer-events-none">
+              <span className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full">
+                Phase 03 // 3D Topography
+              </span>
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-none font-display text-white">
+                Dynamic Incident Mapping
+              </h1>
+              <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                Watch the terrain grid morph in real-time. Alert densities distort the grid mesh, creating immediate visual elevation peaks at high-priority hotspots for dispatcher awareness.
+              </p>
+            </div>
+
+            {/* Slide 4: Dispatcher Desk */}
+            <div ref={slide4Ref} className="absolute inset-0 flex flex-col items-start gap-6 select-none opacity-0 pointer-events-none">
+              <span className="bg-pink-500/10 border border-pink-500/20 text-pink-400 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full">
+                Phase 04 // Command Center
+              </span>
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-none font-display text-white">
+                Interactive Control Desks
+              </h1>
+              <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                Emergency dispatchers oversee the campus in an interactive 3D space. Panning the camera focuses on specific incident beacons, linking dispatch paths to responders.
+              </p>
+            </div>
+
+            {/* Slide 5: SOS Alert System */}
+            <div ref={slide5Ref} className="absolute inset-0 flex flex-col items-start gap-6 select-none opacity-0 pointer-events-none">
+              <span className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full">
+                Phase 05 // Active Emergency Beacon
+              </span>
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-none font-display text-white">
+                Fast SOS Integration
+              </h1>
+              <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                Activating the SOS button emits high-frequency packets. Watch the 3D beacons pulse, shifting lights to active red warning alerts while routing immediate dispatch vectors.
+              </p>
+            </div>
+
           </div>
-        </section>
+        </div>
 
       </div>
 
       {/* Section 4: Live Sandboxed Console Embed */}
-      <section id="try-it" className="min-h-screen flex flex-col justify-center px-6 md:px-20 py-20 bg-slate-950/80 border-t border-white/5 relative z-20">
+      <section id="try-it" className="relative min-h-screen flex flex-col justify-center px-6 md:px-20 py-20 bg-slate-950/90 border-t border-white/5 z-30">
         <div className="max-w-5xl mx-auto w-full flex flex-col gap-10">
           
           <div className="text-center max-w-xl mx-auto flex flex-col items-center gap-3">
