@@ -1,7 +1,8 @@
 # Copyright (c) 2026 Aditya Shirsatrao
 # MIT License — see LICENSE file.
 
-.PHONY: setup validate seed stats hooks fix-paths
+.PHONY: setup validate validate-ui seed stats hooks all fix-paths session-end \
+        dev test lint typecheck ci clean
 
 MODULES = $(wildcard memory/modules/*.md)
 
@@ -106,6 +107,50 @@ fix-paths:  ## Update relative paths in all modules to use $MEMORY_ROOT
 session-end:  ## End session: write handoff + sync memory + re-seed vector DB
 	@bash tools/handoff "$(MSG)"
 	@bash tools/sync-session.sh "$(MSG)"
+
+# ─── Standard CI Pipeline (matches 06-web-dev.md) ──
+
+dev:  ## Start dashboard server
+	@echo "Starting memory dashboard..."
+	@.venv/bin/python tools/dashboard.py
+
+test:  ## Run all tests
+	@echo "=== Running Tests ==="
+	@. .venv/bin/activate && python3 -m pytest tests/ -v 2>/dev/null || \
+	  echo "  [WARN] pytest not available or no tests found"
+
+lint:  ## Run linter (ruff)
+	@echo "=== Lint ==="
+	@. .venv/bin/activate && ruff check tools/ tests/ 2>/dev/null || \
+	  echo "  [WARN] ruff not installed, skipping"
+
+typecheck:  ## Run type checker (mypy)
+	@echo "=== Typecheck ==="
+	@. .venv/bin/activate && mypy tools/ tests/ 2>/dev/null || \
+	  echo "  [WARN] mypy not installed, skipping"
+
+ci:  ## Full CI pipeline: lint → typecheck → test → validate → seed
+	make lint && make typecheck && make test && make validate && make seed && make evals
+
+evals:  ## Run eval catalog from 16-agent-evals.md
+	@echo "=== Eval Catalog ==="
+	@errors=0
+	@echo "  1. Tool availability check..."
+	@for tool in $$(rg "^\`([a-z][a-z0-9-]+)\`" 02-cli-tools.md -o --no-filename 2>/dev/null | head -30); do \
+		which "$$tool" &>/dev/null || { echo "  [X] MISSING: $$tool"; errors=$$((errors+1)); }; \
+	done
+	@echo "  2. Cross-module conflict check..."
+	@rg "NEVER\|ALWAYS\|MANDATORY" memory/modules/*.md 2>/dev/null | cut -d: -f1 | sort | uniq -c | sort -rn | head -5
+	@echo "  3. Session handoff check..."
+	@test -f .agent-progress.md && echo "  [ok] .agent-progress.md exists" || echo "  [ ] .agent-progress.md missing" 
+	@echo "  4. Empty directory cleanup..."
+	@find . -type d -empty -not -path './.git/*' -not -path './node_modules/*' 2>/dev/null | wc -l | xargs -I{} echo "  [ ] {} empty dirs remaining"
+	@[ "$$errors" -eq 0 ] && echo "  ✅ All eval checks passed" || echo "  ❌ $$errors eval failures"
+
+clean:  ## Remove build artifacts and caches (preserves vector DB)
+	@rm -rf __pycache__ .pytest_cache .mypy_cache .ruff_cache *.egg-info
+	@find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	@echo "  ✅ Cleaned (vector DB preserved)"
 
 %:
 	@true

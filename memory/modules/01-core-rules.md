@@ -45,6 +45,16 @@ The agent must dynamically apply prompt modifiers from `$MEMORY_ROOT/templates/C
 - Antigravity only for: coordination, single-line fixes, CLI commands, answering
 - If opencode fails → fall back silently, never stop
 
+## Eval-First Design Gate (MANDATORY)
+Before adding any new module, rule, or tool to MEMORY:
+1. Define success criteria: "What specific agent behavior does this improve?"
+2. Define regression detection: "How do I know if this breaks?"
+3. Define measurement: "How do I prove it works?"
+4. Only then: implement. See `16-agent-evals.md` for methodology.
+
+## Skill Composition Requirement
+Every skill/rule block must have: trigger condition + actionable instructions + bounded toolset + validation check. Avoid triggerless instructions, assumptions of prior context, or missing verification steps. See `16-agent-evals.md` §2.
+
 ## Karpathy Guidelines
 1. **Think before coding** — state assumptions, surface tradeoffs, push back if simpler exists
 2. **Simplicity first** — minimum code, no speculative features/abstractions/flexibility
@@ -140,6 +150,15 @@ echo "memory/modules/01-core-rules.md:1-122 $(date +%s)" >> .session-read-cache
 grep -q "^$filename:" .session-read-cache 2>/dev/null && echo "CACHED: $filename" && continue
 ```
 The cache auto-cleans on session start (`rm -f .session-read-cache`). This saves 500-2000 tokens per prevented re-read.
+
+## Harness Self-Audit (before multi-step tasks)
+Before any multi-step agent task, verify:
+- [ ] Can user interject? (session handoff exists in .agent-progress.md)
+- [ ] Are tool calls traceable? (output captured, not suppressed)
+- [ ] Are dangerous tools sandboxed? (guardrails active)
+- [ ] Is there a rollback plan? (git, undo, restore)
+- [ ] Are resource limits set? (timeout, token budget)
+See `16-agent-evals.md` §3 for full harness design principles.
 
 ## Pre-Done Audit
 ```bash

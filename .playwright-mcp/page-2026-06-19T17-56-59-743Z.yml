@@ -1,0 +1,30 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - link "Cloudinary Logo" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img "Cloudinary Logo" [ref=e8]
+      - button "English 🇺🇸" [active] [ref=e10] [cursor=pointer]:
+        - text: English 🇺🇸
+        - img [ref=e11]
+    - heading "Clara Denari and the Mysterious Transformations" [level=1] [ref=e14]
+  - main [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - img "Stolen!" [ref=e21]
+        - generic [ref=e24]:
+          - heading "Inventory (0 / 5)" [level=2] [ref=e26]
+          - generic [ref=e28]: Sorry, there are no items here yet
+      - generic [ref=e29]:
+        - heading "Stolen!" [level=2] [ref=e30]
+        - generic [ref=e32]: "|"
+      - button "Grab a Taxi to Boston HQ" [ref=e35] [cursor=pointer]
+  - contentinfo [ref=e36]:
+    - paragraph [ref=e37]:
+      - text: © 2026
+      - link "Cloudinary" [ref=e38] [cursor=pointer]:
+        - /url: https://cloudinary.com
+      - text: .
+      - link "A Cloudinary Experiment" [ref=e39] [cursor=pointer]:
+        - /url: about
+      - text: . Stay Curious!

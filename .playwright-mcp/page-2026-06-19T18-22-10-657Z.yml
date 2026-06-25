@@ -1,0 +1,1014 @@
+- generic [ref=e2]:
+  - region "Notifications (F8)":
+    - list
+  - region "Notifications alt+T"
+  - generic [ref=e5]:
+    - banner [ref=e6]:
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - img "HACKHAZARDS '26 Logo" [ref=e9]
+          - img "Namespace Logo" [ref=e10]
+        - generic [ref=e12]:
+          - generic [ref=e13]:
+            - img [ref=e14]
+            - generic [ref=e17]: "Build submissions close in:"
+          - generic [ref=e18]:
+            - generic [ref=e19]: 11d
+            - generic [ref=e20]: 0h
+            - generic [ref=e21]: 7m
+            - generic [ref=e22]: 48s
+        - generic [ref=e23]:
+          - generic [ref=e24]:
+            - link "Apply Now" [ref=e25] [cursor=pointer]:
+              - /url: https://www.namespace.world/events/AH6926
+            - link "Join Discord" [ref=e26] [cursor=pointer]:
+              - /url: https://discord.gg/W978VhSjbh
+            - link "Participant Manual" [ref=e27] [cursor=pointer]:
+              - /url: /hackhazards/participant-manual
+          - button "Toggle navigation menu" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+    - main [ref=e30]:
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic:
+            - img
+        - heading "HACKHAZARDS '26" [level=1] [ref=e39]
+        - paragraph [ref=e40]: World's Largest Community-Run Hackathon
+        - paragraph [ref=e42]: "Build Submission Deadline: 30th June '26"
+        - generic [ref=e43]:
+          - link "Apply Now" [ref=e44] [cursor=pointer]:
+            - /url: https://www.namespace.world/events/AH6926
+          - link "Join Discord" [ref=e45] [cursor=pointer]:
+            - /url: https://discord.gg/W978VhSjbh
+          - link "Participant Manual" [ref=e46] [cursor=pointer]:
+            - /url: /hackhazards/participant-manual
+      - generic [ref=e49]:
+        - heading "Build Today to Shape Tomorrow" [level=2] [ref=e50]
+        - generic [ref=e51]:
+          - paragraph [ref=e52]: HACKHAZARDS is not just a hackathon — it's a launchpad for startups and careers. Where innovation meets opportunity, and where the next generation of tech leaders are born.
+          - paragraph [ref=e53]: Join thousands of developers, designers, and innovators from across the globe as we hack solutions that matter, build connections that last, and create the future together.
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - heading "HACKHAZARDS '25 Impact" [level=2] [ref=e58]
+          - paragraph [ref=e59]: Last year's numbers speak for themselves - and 2026 is going to be even bigger.
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - generic [ref=e62]: 17,000+
+            - generic [ref=e63]: Hackers
+          - generic [ref=e64]:
+            - generic [ref=e65]: 3,000+
+            - generic [ref=e66]: Proposals
+          - generic [ref=e67]:
+            - generic [ref=e68]: 780+
+            - generic [ref=e69]: Builds
+          - generic [ref=e70]:
+            - generic [ref=e71]: $10,000+
+            - generic [ref=e72]: Cash Prize Pool
+          - generic [ref=e73]:
+            - generic [ref=e74]: 25+
+            - generic [ref=e75]: Countries
+          - generic [ref=e76]:
+            - generic [ref=e77]: 500+
+            - generic [ref=e78]: Indian Cities and Towns
+          - generic [ref=e79]:
+            - generic [ref=e80]: 1500+
+            - generic [ref=e81]: Institutions
+          - generic [ref=e82]:
+            - generic [ref=e83]: 200+
+            - generic [ref=e84]: Outreach Partners
+          - generic [ref=e85]:
+            - generic [ref=e86]: 2mn+
+            - generic [ref=e87]: Social Media Impressions
+          - generic [ref=e88]:
+            - generic [ref=e89]: 35%
+            - generic [ref=e90]: Women
+          - generic [ref=e91]:
+            - generic [ref=e92]: 35%
+            - generic [ref=e93]: First-timers
+          - generic [ref=e94]:
+            - generic [ref=e95]: 25%
+            - generic [ref=e96]: Participants from Rural Areas
+        - link "Explore Past Projects" [ref=e98] [cursor=pointer]:
+          - /url: https://hackhazards25.devfolio.co/projects
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - heading "What Makes HACKHAZARDS '26 Different?" [level=2] [ref=e103]
+          - paragraph [ref=e104]: Four core pillars that set us apart from every other hackathon.
+        - generic [ref=e105]:
+          - generic [ref=e108]:
+            - img [ref=e110]
+            - heading "Learning" [level=3] [ref=e113]
+            - paragraph [ref=e114]: Comprehensive bootcamps and workshops to upskill participants and enhance their technical expertise
+          - generic [ref=e117]:
+            - img [ref=e119]
+            - heading "Hacking" [level=3] [ref=e125]
+            - paragraph [ref=e126]: Global digital hackathon bringing together the brightest minds to solve real-world challenges
+          - generic [ref=e129]:
+            - img [ref=e131]
+            - heading "Funding" [level=3] [ref=e133]
+            - paragraph [ref=e134]: Direct access to VCs, incubators, and investors ready to fund your next big idea
+          - generic [ref=e137]:
+            - img [ref=e139]
+            - heading "Hiring" [level=3] [ref=e144]
+            - paragraph [ref=e145]: Top companies actively scouting and recruiting talent from our participant pool
+      - generic [ref=e148]:
+        - generic [ref=e149]:
+          - generic [ref=e150]:
+            - img [ref=e151]
+            - generic [ref=e153]: A Map of Innovation
+          - heading "Domains of Innovation" [level=2] [ref=e154]
+          - paragraph [ref=e155]: Explore the problem spaces shaping the future of software.
+          - paragraph [ref=e156]: Build any software-based solution using any tech stack — across web, mobile, desktop, browser extensions, or beyond.
+        - generic [ref=e157]:
+          - button "Human Experience & Productivity Explore →" [ref=e158] [cursor=pointer]:
+            - generic [ref=e161]:
+              - img [ref=e163]
+              - heading "Human Experience & Productivity" [level=3] [ref=e165]
+              - generic [ref=e166]:
+                - generic [ref=e167]: Explore
+                - generic [ref=e168]: →
+          - button "Climate & Sustainability Systems Explore →" [ref=e169] [cursor=pointer]:
+            - generic [ref=e172]:
+              - img [ref=e174]
+              - heading "Climate & Sustainability Systems" [level=3] [ref=e177]
+              - generic [ref=e178]:
+                - generic [ref=e179]: Explore
+                - generic [ref=e180]: →
+          - button "HealthTech & Bio Platforms Explore →" [ref=e181] [cursor=pointer]:
+            - generic [ref=e184]:
+              - img [ref=e186]
+              - heading "HealthTech & Bio Platforms" [level=3] [ref=e189]
+              - generic [ref=e190]:
+                - generic [ref=e191]: Explore
+                - generic [ref=e192]: →
+          - button "Learning & Knowledge Systems Explore →" [ref=e193] [cursor=pointer]:
+            - generic [ref=e196]:
+              - img [ref=e198]
+              - heading "Learning & Knowledge Systems" [level=3] [ref=e201]
+              - generic [ref=e202]:
+                - generic [ref=e203]: Explore
+                - generic [ref=e204]: →
+          - button "Work, Finance & Digital Economy Explore →" [ref=e205] [cursor=pointer]:
+            - generic [ref=e208]:
+              - img [ref=e210]
+              - heading "Work, Finance & Digital Economy" [level=3] [ref=e213]
+              - generic [ref=e214]:
+                - generic [ref=e215]: Explore
+                - generic [ref=e216]: →
+          - button "Infrastructure, Mobility & Smart Systems Explore →" [ref=e217] [cursor=pointer]:
+            - generic [ref=e220]:
+              - img [ref=e222]
+              - heading "Infrastructure, Mobility & Smart Systems" [level=3] [ref=e225]
+              - generic [ref=e226]:
+                - generic [ref=e227]: Explore
+                - generic [ref=e228]: →
+          - button "Trust, Identity & Security Explore →" [ref=e229] [cursor=pointer]:
+            - generic [ref=e232]:
+              - img [ref=e234]
+              - heading "Trust, Identity & Security" [level=3] [ref=e237]
+              - generic [ref=e238]:
+                - generic [ref=e239]: Explore
+                - generic [ref=e240]: →
+          - button "Media, Social & Interactive Platforms Explore →" [ref=e241] [cursor=pointer]:
+            - generic [ref=e244]:
+              - img [ref=e246]
+              - heading "Media, Social & Interactive Platforms" [level=3] [ref=e252]
+              - generic [ref=e253]:
+                - generic [ref=e254]: Explore
+                - generic [ref=e255]: →
+          - button "Public Systems, Governance & Civic Tech Explore →" [ref=e256] [cursor=pointer]:
+            - generic [ref=e259]:
+              - img [ref=e261]
+              - heading "Public Systems, Governance & Civic Tech" [level=3] [ref=e263]
+              - generic [ref=e264]:
+                - generic [ref=e265]: Explore
+                - generic [ref=e266]: →
+          - button "Developer Tools & Software Infrastructure Explore →" [ref=e267] [cursor=pointer]:
+            - generic [ref=e270]:
+              - img [ref=e272]
+              - heading "Developer Tools & Software Infrastructure" [level=3] [ref=e274]
+              - generic [ref=e275]:
+                - generic [ref=e276]: Explore
+                - generic [ref=e277]: →
+        - generic [ref=e278]:
+          - generic [ref=e279]:
+            - img [ref=e280]
+            - generic [ref=e284]: No restrictions on tech stack
+          - generic [ref=e285]:
+            - img [ref=e286]
+            - generic [ref=e290]: Build any type of software product
+          - generic [ref=e291]:
+            - img [ref=e292]
+            - generic [ref=e294]: Projects can span multiple domains
+      - generic [ref=e297]:
+        - generic [ref=e298]:
+          - heading "Opportunities for Participants" [level=2] [ref=e299]
+          - paragraph [ref=e300]: More than just a competition - it's your gateway to the future.
+        - generic [ref=e301]:
+          - generic [ref=e303]:
+            - img [ref=e305]
+            - generic [ref=e311]:
+              - heading "Win Big Prizes" [level=3] [ref=e312]
+              - paragraph [ref=e313]: Cash prizes, gadgets, and exclusive swag for top performers
+          - generic [ref=e315]:
+            - img [ref=e317]
+            - generic [ref=e327]:
+              - heading "Expert Mentorship" [level=3] [ref=e328]
+              - paragraph [ref=e329]: Learn from industry leaders and experienced entrepreneurs
+          - generic [ref=e331]:
+            - img [ref=e333]
+            - generic [ref=e336]:
+              - heading "Global Exposure" [level=3] [ref=e337]
+              - paragraph [ref=e338]: Showcase your work to an international audience
+          - generic [ref=e340]:
+            - img [ref=e342]
+            - generic [ref=e345]:
+              - heading "Funding Opportunities" [level=3] [ref=e346]
+              - paragraph [ref=e347]: Direct path to VCs and angel investors for your startup
+          - generic [ref=e349]:
+            - img [ref=e351]
+            - generic [ref=e356]:
+              - heading "Hiring Pipeline" [level=3] [ref=e357]
+              - paragraph [ref=e358]: Get recruited by top tech companies actively scouting talent
+          - generic [ref=e360]:
+            - img [ref=e362]
+            - generic [ref=e366]:
+              - heading "Career Launch" [level=3] [ref=e367]
+              - paragraph [ref=e368]: Transform your hackathon project into a full-time career
+      - generic [ref=e371]:
+        - generic [ref=e372]:
+          - generic [ref=e373]:
+            - img [ref=e374]
+            - heading "PRIZES & REWARDS" [level=2] [ref=e380]
+            - img [ref=e381]
+          - generic [ref=e388]:
+            - heading "Total Cash Prizes" [level=3] [ref=e389]
+            - paragraph [ref=e390]: $ 6,000+
+        - generic [ref=e391]:
+          - heading "Main Prizes All participants are eligible" [level=3] [ref=e392]:
+            - text: Main Prizes
+            - generic [ref=e393]: All participants are eligible
+          - generic [ref=e394]:
+            - heading "Top 5 Teams/Projects" [level=4] [ref=e395]
+            - generic [ref=e396]:
+              - generic [ref=e397]:
+                - img [ref=e399]
+                - generic [ref=e402]: Rank 1
+                - generic [ref=e403]: $ 1000 Cash
+              - generic [ref=e404]:
+                - img [ref=e406]
+                - generic [ref=e409]: Rank 2
+                - generic [ref=e410]: $ 800 Cash
+              - generic [ref=e411]:
+                - img [ref=e413]
+                - generic [ref=e416]: Rank 3
+                - generic [ref=e417]: $ 600 Cash
+              - generic [ref=e418]:
+                - img [ref=e420]
+                - generic [ref=e423]: Rank 4
+                - generic [ref=e424]: $ 400 Cash
+              - generic [ref=e425]:
+                - img [ref=e427]
+                - generic [ref=e430]: Rank 5
+                - generic [ref=e431]: $ 200 Cash
+          - generic [ref=e432]:
+            - generic [ref=e433]:
+              - generic [ref=e434]: Rank 6 - 25
+              - generic [ref=e435]: $ 50 Cash
+              - generic [ref=e436]: each (20 teams)
+            - generic [ref=e437]:
+              - generic [ref=e438]: Rank 26 - 50
+              - generic [ref=e439]: $ 20 Cash
+              - generic [ref=e440]: each (25 teams)
+            - generic [ref=e441]:
+              - generic [ref=e442]: Rank 51 - 100
+              - generic [ref=e443]: $ 10 Cash
+              - generic [ref=e444]: each (50 teams)
+        - generic [ref=e445]:
+          - heading "Track Prizes Sponsored track prizes" [level=3] [ref=e446]:
+            - text: Track Prizes
+            - generic [ref=e447]: Sponsored track prizes
+          - generic [ref=e448]:
+            - generic [ref=e449]:
+              - heading "Expo Track" [level=4] [ref=e450]
+              - paragraph [ref=e451]: $ 500 Cash Prize
+              - generic [ref=e452]:
+                - generic [ref=e453]:
+                  - generic [ref=e454]: 1st Place
+                  - generic [ref=e455]: $ 250
+                - generic [ref=e456]:
+                  - generic [ref=e457]: 2nd Place
+                  - generic [ref=e458]: $ 150
+                - generic [ref=e459]:
+                  - generic [ref=e460]: 3rd Place
+                  - generic [ref=e461]: $ 100
+            - generic [ref=e462]:
+              - heading "Neo4j Track" [level=4] [ref=e463]
+              - paragraph [ref=e464]: $ 500 Cash Prize
+              - generic [ref=e465]:
+                - generic [ref=e466]:
+                  - generic [ref=e467]: 1st Place
+                  - generic [ref=e468]: $ 250
+                - generic [ref=e469]:
+                  - generic [ref=e470]: 2nd Place
+                  - generic [ref=e471]: $ 150
+                - generic [ref=e472]:
+                  - generic [ref=e473]: 3rd Place
+                  - generic [ref=e474]: $ 100
+            - generic [ref=e475]:
+              - heading "Sarvam AI Track" [level=4] [ref=e476]
+              - paragraph [ref=e477]: $ 1000 Sarvam Credits
+              - generic [ref=e478]:
+                - generic [ref=e479]:
+                  - generic [ref=e480]: 1st Place
+                  - generic [ref=e481]: $ 500 Credits
+                - generic [ref=e482]:
+                  - generic [ref=e483]: 2nd Place
+                  - generic [ref=e484]: $ 300 Credits
+                - generic [ref=e485]:
+                  - generic [ref=e486]: 3rd Place
+                  - generic [ref=e487]: $ 200 Credits
+            - generic [ref=e488]:
+              - heading "Render Workflows Track" [level=4] [ref=e489]
+              - paragraph [ref=e490]: $ 900 Render Credits
+              - generic [ref=e491]:
+                - generic [ref=e492]:
+                  - generic [ref=e493]: 1st Place
+                  - generic [ref=e494]: $ 500 Credits
+                - generic [ref=e495]:
+                  - generic [ref=e496]: 2nd Place
+                  - generic [ref=e497]: $ 300 Credits
+                - generic [ref=e498]:
+                  - generic [ref=e499]: 3rd Place
+                  - generic [ref=e500]: $ 100 Credits
+      - generic [ref=e503]:
+        - heading "Timeline of HACKHAZARDS '26" [level=2] [ref=e504]
+        - paragraph [ref=e505]:
+          - text: For full details on each phase, read the
+          - link "Participant Manual →" [ref=e506] [cursor=pointer]:
+            - /url: /hackhazards/participant-manual
+        - generic [ref=e507]:
+          - img [ref=e508]
+          - generic:
+            - paragraph: April-start '26
+            - paragraph: Application window opens
+          - generic:
+            - paragraph: April-end '26
+            - paragraph: Themes and Sponsored Tracks announced
+          - generic:
+            - paragraph: 1st May
+            - paragraph: Build submission window opens
+          - generic:
+            - paragraph: May – June
+            - paragraph: Workshops and mentorship calls
+          - generic:
+            - paragraph: 30th June
+            - paragraph: Submission window closes
+          - generic:
+            - paragraph: mid-July
+            - paragraph: Project Evaluation with Mentors and Sponsors
+          - generic:
+            - paragraph: 26th July
+            - paragraph: Virtual Demo Day for top 25 Teams
+          - generic:
+            - paragraph: end-July
+            - paragraph: Results Announcement
+      - generic [ref=e513]:
+        - generic [ref=e514]:
+          - generic [ref=e515]:
+            - heading "Our Sponsors" [level=2] [ref=e516]
+            - paragraph [ref=e517]: Industry leaders powering HACKHAZARDS '26.
+          - generic [ref=e518]:
+            - link "Neo4j logo Neo4j" [ref=e519] [cursor=pointer]:
+              - /url: https://neo4j.com/product/auradb/
+              - img "Neo4j logo" [ref=e520]
+              - generic [ref=e521]: Neo4j
+            - link "Expo logo Expo" [ref=e522] [cursor=pointer]:
+              - /url: https://expo.dev/
+              - img "Expo logo" [ref=e523]
+              - generic [ref=e524]: Expo
+            - link "Base44 logo Base44" [ref=e525] [cursor=pointer]:
+              - /url: https://app.base44.com/
+              - img "Base44 logo" [ref=e526]
+              - generic [ref=e527]: Base44
+            - link "Sarvam AI logo Sarvam AI" [ref=e528] [cursor=pointer]:
+              - /url: https://www.sarvam.ai/
+              - img "Sarvam AI logo" [ref=e529]
+              - generic [ref=e530]: Sarvam AI
+            - link "Render logo Render" [ref=e531] [cursor=pointer]:
+              - /url: https://render.com/
+              - img "Render logo" [ref=e532]
+              - generic [ref=e533]: Render
+        - generic [ref=e534]:
+          - generic [ref=e535]:
+            - heading "Past Judges, Speakers & Mentors" [level=2] [ref=e536]
+            - paragraph [ref=e537]: Learn from the industry's finest minds who have guided our community through their expertise and insights.
+          - generic [ref=e538]:
+            - link "Sarthak Jain - Judge, Speaker & Mentor Sarthak Jain" [ref=e539] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/dotsarthak/
+              - generic [ref=e540]:
+                - img "Sarthak Jain - Judge, Speaker & Mentor" [ref=e542]
+                - generic [ref=e543]:
+                  - heading "Sarthak Jain" [level=3] [ref=e544]
+                  - img [ref=e546]
+            - link "Sanya Duggal - Judge, Speaker & Mentor Sanya Duggal" [ref=e550] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/sanya-duggal/
+              - generic [ref=e551]:
+                - img "Sanya Duggal - Judge, Speaker & Mentor" [ref=e553]
+                - generic [ref=e554]:
+                  - heading "Sanya Duggal" [level=3] [ref=e555]
+                  - img [ref=e557]
+            - link "Santosh Maurya - Judge, Speaker & Mentor Santosh Maurya" [ref=e561] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/santoshm93/
+              - generic [ref=e562]:
+                - img "Santosh Maurya - Judge, Speaker & Mentor" [ref=e564]
+                - generic [ref=e565]:
+                  - heading "Santosh Maurya" [level=3] [ref=e566]
+                  - img [ref=e568]
+            - link "Dibyasom Puhan - Judge, Speaker & Mentor Dibyasom Puhan" [ref=e572] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/dibyasompuhan/
+              - generic [ref=e573]:
+                - img "Dibyasom Puhan - Judge, Speaker & Mentor" [ref=e575]
+                - generic [ref=e576]:
+                  - heading "Dibyasom Puhan" [level=3] [ref=e577]
+                  - img [ref=e579]
+            - link "Rishab Bansal - Judge, Speaker & Mentor Rishab Bansal" [ref=e583] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/imrishabhbansal/
+              - generic [ref=e584]:
+                - img "Rishab Bansal - Judge, Speaker & Mentor" [ref=e586]
+                - generic [ref=e587]:
+                  - heading "Rishab Bansal" [level=3] [ref=e588]
+                  - img [ref=e590]
+            - link "Roopal Mittal - Judge, Speaker & Mentor Roopal Mittal" [ref=e594] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/roopalmittal/
+              - generic [ref=e595]:
+                - img "Roopal Mittal - Judge, Speaker & Mentor" [ref=e597]
+                - generic [ref=e598]:
+                  - heading "Roopal Mittal" [level=3] [ref=e599]
+                  - img [ref=e601]
+            - link "Riza Farheen - Judge, Speaker & Mentor Riza Farheen" [ref=e605] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/riza-farheen/
+              - generic [ref=e606]:
+                - img "Riza Farheen - Judge, Speaker & Mentor" [ref=e608]
+                - generic [ref=e609]:
+                  - heading "Riza Farheen" [level=3] [ref=e610]
+                  - img [ref=e612]
+            - link "David Chaum - Judge, Speaker & Mentor David Chaum" [ref=e616] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/david-chaum-3b219b183/
+              - generic [ref=e617]:
+                - img "David Chaum - Judge, Speaker & Mentor" [ref=e619]
+                - generic [ref=e620]:
+                  - heading "David Chaum" [level=3] [ref=e621]
+                  - img [ref=e623]
+            - link "Shyaamal Tripathi - Judge, Speaker & Mentor Shyaamal Tripathi" [ref=e627] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/shyaamal-tripathi-a389051b3/
+              - generic [ref=e628]:
+                - img "Shyaamal Tripathi - Judge, Speaker & Mentor" [ref=e630]
+                - generic [ref=e631]:
+                  - heading "Shyaamal Tripathi" [level=3] [ref=e632]
+                  - img [ref=e634]
+            - link "Priyansh Agarwal - Judge, Speaker & Mentor Priyansh Agarwal" [ref=e638] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/priyansh-agarwal/
+              - generic [ref=e639]:
+                - img "Priyansh Agarwal - Judge, Speaker & Mentor" [ref=e641]
+                - generic [ref=e642]:
+                  - heading "Priyansh Agarwal" [level=3] [ref=e643]
+                  - img [ref=e645]
+            - link "Yash Sharma - Judge, Speaker & Mentor Yash Sharma" [ref=e649] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/yash-sharma-4276b61b5/
+              - generic [ref=e650]:
+                - img "Yash Sharma - Judge, Speaker & Mentor" [ref=e652]
+                - generic [ref=e653]:
+                  - heading "Yash Sharma" [level=3] [ref=e654]
+                  - img [ref=e656]
+            - link "Ansh Bhawnani - Judge, Speaker & Mentor Ansh Bhawnani" [ref=e660] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/ansh-bhawnani/
+              - generic [ref=e661]:
+                - img "Ansh Bhawnani - Judge, Speaker & Mentor" [ref=e663]
+                - generic [ref=e664]:
+                  - heading "Ansh Bhawnani" [level=3] [ref=e665]
+                  - img [ref=e667]
+            - link "Abhishek Mishra - Judge, Speaker & Mentor Abhishek Mishra" [ref=e671] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/mishra5047/
+              - generic [ref=e672]:
+                - img "Abhishek Mishra - Judge, Speaker & Mentor" [ref=e674]
+                - generic [ref=e675]:
+                  - heading "Abhishek Mishra" [level=3] [ref=e676]
+                  - img [ref=e678]
+            - link "Kanishk Khurana - Judge, Speaker & Mentor Kanishk Khurana" [ref=e682] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/kanishkkhurana/
+              - generic [ref=e683]:
+                - img "Kanishk Khurana - Judge, Speaker & Mentor" [ref=e685]
+                - generic [ref=e686]:
+                  - heading "Kanishk Khurana" [level=3] [ref=e687]
+                  - img [ref=e689]
+            - link "Raihan Khan - Judge, Speaker & Mentor Raihan Khan" [ref=e693] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/raihankhan-rk/
+              - generic [ref=e694]:
+                - img "Raihan Khan - Judge, Speaker & Mentor" [ref=e696]
+                - generic [ref=e697]:
+                  - heading "Raihan Khan" [level=3] [ref=e698]
+                  - img [ref=e700]
+            - link "Jatin K Malik - Judge, Speaker & Mentor Jatin K Malik" [ref=e704] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/jatinkrmalik/
+              - generic [ref=e705]:
+                - img "Jatin K Malik - Judge, Speaker & Mentor" [ref=e707]
+                - generic [ref=e708]:
+                  - heading "Jatin K Malik" [level=3] [ref=e709]
+                  - img [ref=e711]
+            - link "Adarsh Gautam - Judge, Speaker & Mentor Adarsh Gautam" [ref=e715] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/connect-adarsh/
+              - generic [ref=e716]:
+                - img "Adarsh Gautam - Judge, Speaker & Mentor" [ref=e718]
+                - generic [ref=e719]:
+                  - heading "Adarsh Gautam" [level=3] [ref=e720]
+                  - img [ref=e722]
+            - link "Aditya Aryan - Judge, Speaker & Mentor Aditya Aryan" [ref=e726] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/aditya-aryan-3aa235249/
+              - generic [ref=e727]:
+                - img "Aditya Aryan - Judge, Speaker & Mentor" [ref=e729]
+                - generic [ref=e730]:
+                  - heading "Aditya Aryan" [level=3] [ref=e731]
+                  - img [ref=e733]
+            - link "Akshat Majila - Judge, Speaker & Mentor Akshat Majila" [ref=e737] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/akshatmajila/
+              - generic [ref=e738]:
+                - img "Akshat Majila - Judge, Speaker & Mentor" [ref=e740]
+                - generic [ref=e741]:
+                  - heading "Akshat Majila" [level=3] [ref=e742]
+                  - img [ref=e744]
+            - link "Aqsa Parveen - Judge, Speaker & Mentor Aqsa Parveen" [ref=e748] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/aqsa-parveen-0366322a1/
+              - generic [ref=e749]:
+                - img "Aqsa Parveen - Judge, Speaker & Mentor" [ref=e751]
+                - generic [ref=e752]:
+                  - heading "Aqsa Parveen" [level=3] [ref=e753]
+                  - img [ref=e755]
+            - link "Ashim Upadhaya - Judge, Speaker & Mentor Ashim Upadhaya" [ref=e759] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/ashimupadhaya/
+              - generic [ref=e760]:
+                - img "Ashim Upadhaya - Judge, Speaker & Mentor" [ref=e762]
+                - generic [ref=e763]:
+                  - heading "Ashim Upadhaya" [level=3] [ref=e764]
+                  - img [ref=e766]
+            - link "Datta Snehith D. - Judge, Speaker & Mentor Datta Snehith D." [ref=e770] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/snehith1011/
+              - generic [ref=e771]:
+                - img "Datta Snehith D. - Judge, Speaker & Mentor" [ref=e773]
+                - generic [ref=e774]:
+                  - heading "Datta Snehith D." [level=3] [ref=e775]
+                  - img [ref=e777]
+            - link "Devendra Parihar - Judge, Speaker & Mentor Devendra Parihar" [ref=e781] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/devendra-parihar/
+              - generic [ref=e782]:
+                - img "Devendra Parihar - Judge, Speaker & Mentor" [ref=e784]
+                - generic [ref=e785]:
+                  - heading "Devendra Parihar" [level=3] [ref=e786]
+                  - img [ref=e788]
+            - link "Ekta Agrawal - Judge, Speaker & Mentor Ekta Agrawal" [ref=e792] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/theektaagrawal/
+              - generic [ref=e793]:
+                - img "Ekta Agrawal - Judge, Speaker & Mentor" [ref=e795]
+                - generic [ref=e796]:
+                  - heading "Ekta Agrawal" [level=3] [ref=e797]
+                  - img [ref=e799]
+            - link "Gaurav Mehta - Judge, Speaker & Mentor Gaurav Mehta" [ref=e803] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/gnmehta/
+              - generic [ref=e804]:
+                - img "Gaurav Mehta - Judge, Speaker & Mentor" [ref=e806]
+                - generic [ref=e807]:
+                  - heading "Gaurav Mehta" [level=3] [ref=e808]
+                  - img [ref=e810]
+            - link "Harsh Tyagi - Judge, Speaker & Mentor Harsh Tyagi" [ref=e814] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/harsh-tyagi-4b1a3223b/
+              - generic [ref=e815]:
+                - img "Harsh Tyagi - Judge, Speaker & Mentor" [ref=e817]
+                - generic [ref=e818]:
+                  - heading "Harsh Tyagi" [level=3] [ref=e819]
+                  - img [ref=e821]
+            - link "Harshvardhan Bajoria - Judge, Speaker & Mentor Harshvardhan Bajoria" [ref=e825] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/harshavardhan-bajoria/
+              - generic [ref=e826]:
+                - img "Harshvardhan Bajoria - Judge, Speaker & Mentor" [ref=e828]
+                - generic [ref=e829]:
+                  - heading "Harshvardhan Bajoria" [level=3] [ref=e830]
+                  - img [ref=e832]
+            - link "Jaskirat Singh - Judge, Speaker & Mentor Jaskirat Singh" [ref=e836] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/coderjaskirat/
+              - generic [ref=e837]:
+                - img "Jaskirat Singh - Judge, Speaker & Mentor" [ref=e839]
+                - generic [ref=e840]:
+                  - heading "Jaskirat Singh" [level=3] [ref=e841]
+                  - img [ref=e843]
+            - link "Krishnendu Dasgupta - Judge, Speaker & Mentor Krishnendu Dasgupta" [ref=e847] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/krishnendudg/
+              - generic [ref=e848]:
+                - img "Krishnendu Dasgupta - Judge, Speaker & Mentor" [ref=e850]
+                - generic [ref=e851]:
+                  - heading "Krishnendu Dasgupta" [level=3] [ref=e852]
+                  - img [ref=e854]
+            - link "Mohammad Ehshan - Judge, Speaker & Mentor Mohammad Ehshan" [ref=e858] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/mohammad-ehshan-4362a0298/
+              - generic [ref=e859]:
+                - img "Mohammad Ehshan - Judge, Speaker & Mentor" [ref=e861]
+                - generic [ref=e862]:
+                  - heading "Mohammad Ehshan" [level=3] [ref=e863]
+                  - img [ref=e865]
+            - link "Pratik Kale - Judge, Speaker & Mentor Pratik Kale" [ref=e869] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/pratikkale26/
+              - generic [ref=e870]:
+                - img "Pratik Kale - Judge, Speaker & Mentor" [ref=e872]
+                - generic [ref=e873]:
+                  - heading "Pratik Kale" [level=3] [ref=e874]
+                  - img [ref=e876]
+            - link "Rajeeb Kumar Malik - Judge, Speaker & Mentor Rajeeb Kumar Malik" [ref=e880] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/rajeebkm/
+              - generic [ref=e881]:
+                - img "Rajeeb Kumar Malik - Judge, Speaker & Mentor" [ref=e883]
+                - generic [ref=e884]:
+                  - heading "Rajeeb Kumar Malik" [level=3] [ref=e885]
+                  - img [ref=e887]
+            - link "Sajal Batra - Judge, Speaker & Mentor Sajal Batra" [ref=e891] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/sajal-batra/
+              - generic [ref=e892]:
+                - img "Sajal Batra - Judge, Speaker & Mentor" [ref=e894]
+                - generic [ref=e895]:
+                  - heading "Sajal Batra" [level=3] [ref=e896]
+                  - img [ref=e898]
+            - link "Sourav Das - Judge, Speaker & Mentor Sourav Das" [ref=e902] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/sourav-prod/
+              - generic [ref=e903]:
+                - img "Sourav Das - Judge, Speaker & Mentor" [ref=e905]
+                - generic [ref=e906]:
+                  - heading "Sourav Das" [level=3] [ref=e907]
+                  - img [ref=e909]
+            - link "Tushar Gupta - Judge, Speaker & Mentor Tushar Gupta" [ref=e913] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/tushar1504/
+              - generic [ref=e914]:
+                - img "Tushar Gupta - Judge, Speaker & Mentor" [ref=e916]
+                - generic [ref=e917]:
+                  - heading "Tushar Gupta" [level=3] [ref=e918]
+                  - img [ref=e920]
+            - link "Vinit Vijal - Judge, Speaker & Mentor Vinit Vijal" [ref=e924] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/vinitvijal/
+              - generic [ref=e925]:
+                - img "Vinit Vijal - Judge, Speaker & Mentor" [ref=e927]
+                - generic [ref=e928]:
+                  - heading "Vinit Vijal" [level=3] [ref=e929]
+                  - img [ref=e931]
+            - link "Vani Chitkara - Judge, Speaker & Mentor Vani Chitkara" [ref=e935] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/vani-chitkara/
+              - generic [ref=e936]:
+                - img "Vani Chitkara - Judge, Speaker & Mentor" [ref=e938]
+                - generic [ref=e939]:
+                  - heading "Vani Chitkara" [level=3] [ref=e940]
+                  - img [ref=e942]
+            - link "Puspanjali Sarma - Judge, Speaker & Mentor Puspanjali Sarma" [ref=e946] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/puspanjalisarma
+              - generic [ref=e947]:
+                - img "Puspanjali Sarma - Judge, Speaker & Mentor" [ref=e949]
+                - generic [ref=e950]:
+                  - heading "Puspanjali Sarma" [level=3] [ref=e951]
+                  - img [ref=e953]
+            - link "Dipanshu Parashar - Judge, Speaker & Mentor Dipanshu Parashar" [ref=e957] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/dipanshu-parashar
+              - generic [ref=e958]:
+                - img "Dipanshu Parashar - Judge, Speaker & Mentor" [ref=e960]
+                - generic [ref=e961]:
+                  - heading "Dipanshu Parashar" [level=3] [ref=e962]
+                  - img [ref=e964]
+            - link "Palak Awasthi - Judge, Speaker & Mentor Palak Awasthi" [ref=e968] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/palakawasthi
+              - generic [ref=e969]:
+                - img "Palak Awasthi - Judge, Speaker & Mentor" [ref=e971]
+                - generic [ref=e972]:
+                  - heading "Palak Awasthi" [level=3] [ref=e973]
+                  - img [ref=e975]
+            - link "Sumit Shukla - Judge, Speaker & Mentor Sumit Shukla" [ref=e979] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/ssumitshukla
+              - generic [ref=e980]:
+                - img "Sumit Shukla - Judge, Speaker & Mentor" [ref=e982]
+                - generic [ref=e983]:
+                  - heading "Sumit Shukla" [level=3] [ref=e984]
+                  - img [ref=e986]
+            - link "Priyanshu Mundra - Judge, Speaker & Mentor Priyanshu Mundra" [ref=e990] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/priyanshu-mundra
+              - generic [ref=e991]:
+                - img "Priyanshu Mundra - Judge, Speaker & Mentor" [ref=e993]
+                - generic [ref=e994]:
+                  - heading "Priyanshu Mundra" [level=3] [ref=e995]
+                  - img [ref=e997]
+            - link "Chhavi Garg - Judge, Speaker & Mentor Chhavi Garg" [ref=e1001] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/chhavigg
+              - generic [ref=e1002]:
+                - img "Chhavi Garg - Judge, Speaker & Mentor" [ref=e1004]
+                - generic [ref=e1005]:
+                  - heading "Chhavi Garg" [level=3] [ref=e1006]
+                  - img [ref=e1008]
+            - link "Piyush Sachdeva - Judge, Speaker & Mentor Piyush Sachdeva" [ref=e1012] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/piyush-sachdeva
+              - generic [ref=e1013]:
+                - img "Piyush Sachdeva - Judge, Speaker & Mentor" [ref=e1015]
+                - generic [ref=e1016]:
+                  - heading "Piyush Sachdeva" [level=3] [ref=e1017]
+                  - img [ref=e1019]
+            - link "Jay Sadana - Judge, Speaker & Mentor Jay Sadana" [ref=e1023] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/jaysaadana
+              - generic [ref=e1024]:
+                - img "Jay Sadana - Judge, Speaker & Mentor" [ref=e1026]
+                - generic [ref=e1027]:
+                  - heading "Jay Sadana" [level=3] [ref=e1028]
+                  - img [ref=e1030]
+            - link "Abhinav Rai - Judge, Speaker & Mentor Abhinav Rai" [ref=e1034] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/abhinav-rai-6a7119154/
+              - generic [ref=e1035]:
+                - img "Abhinav Rai - Judge, Speaker & Mentor" [ref=e1037]
+                - generic [ref=e1038]:
+                  - heading "Abhinav Rai" [level=3] [ref=e1039]
+                  - img [ref=e1041]
+            - link "Unnati Chhabra - Judge, Speaker & Mentor Unnati Chhabra" [ref=e1045] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/unnati-chhabra-/
+              - generic [ref=e1046]:
+                - img "Unnati Chhabra - Judge, Speaker & Mentor" [ref=e1048]
+                - generic [ref=e1049]:
+                  - heading "Unnati Chhabra" [level=3] [ref=e1050]
+                  - img [ref=e1052]
+            - link "Shruti Arora - Judge, Speaker & Mentor Shruti Arora" [ref=e1056] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/shrutiiaroraaa/
+              - generic [ref=e1057]:
+                - img "Shruti Arora - Judge, Speaker & Mentor" [ref=e1059]
+                - generic [ref=e1060]:
+                  - heading "Shruti Arora" [level=3] [ref=e1061]
+                  - img [ref=e1063]
+            - link "Saksham Verma - Judge, Speaker & Mentor Saksham Verma" [ref=e1067] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/saksham-verma-a9390b256/
+              - generic [ref=e1068]:
+                - img "Saksham Verma - Judge, Speaker & Mentor" [ref=e1070]
+                - generic [ref=e1071]:
+                  - heading "Saksham Verma" [level=3] [ref=e1072]
+                  - img [ref=e1074]
+            - link "Vani Mittal - Judge, Speaker & Mentor Vani Mittal" [ref=e1078] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/vani-mi-ttal/
+              - generic [ref=e1079]:
+                - img "Vani Mittal - Judge, Speaker & Mentor" [ref=e1081]
+                - generic [ref=e1082]:
+                  - heading "Vani Mittal" [level=3] [ref=e1083]
+                  - img [ref=e1085]
+            - link "Somya Maheshwari - Judge, Speaker & Mentor Somya Maheshwari" [ref=e1089] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/somya-maheshwari-0b5305243/
+              - generic [ref=e1090]:
+                - img "Somya Maheshwari - Judge, Speaker & Mentor" [ref=e1092]
+                - generic [ref=e1093]:
+                  - heading "Somya Maheshwari" [level=3] [ref=e1094]
+                  - img [ref=e1096]
+            - link "Yash Kataria - Judge, Speaker & Mentor Yash Kataria" [ref=e1100] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/kataria-yash/
+              - generic [ref=e1101]:
+                - img "Yash Kataria - Judge, Speaker & Mentor" [ref=e1103]
+                - generic [ref=e1104]:
+                  - heading "Yash Kataria" [level=3] [ref=e1105]
+                  - img [ref=e1107]
+            - link "Abdal Lalit - Judge, Speaker & Mentor Abdal Lalit" [ref=e1111] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/abdal-lalit/
+              - generic [ref=e1112]:
+                - img "Abdal Lalit - Judge, Speaker & Mentor" [ref=e1114]
+                - generic [ref=e1115]:
+                  - heading "Abdal Lalit" [level=3] [ref=e1116]
+                  - img [ref=e1118]
+            - link "Rohan Kumar - Judge, Speaker & Mentor Rohan Kumar" [ref=e1122] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/rohan-kumar-a65a87175/
+              - generic [ref=e1123]:
+                - img "Rohan Kumar - Judge, Speaker & Mentor" [ref=e1125]
+                - generic [ref=e1126]:
+                  - heading "Rohan Kumar" [level=3] [ref=e1127]
+                  - img [ref=e1129]
+            - link "Arnav Gupta - Judge, Speaker & Mentor Arnav Gupta" [ref=e1133] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/arnav-gupta-437a66256/
+              - generic [ref=e1134]:
+                - img "Arnav Gupta - Judge, Speaker & Mentor" [ref=e1136]
+                - generic [ref=e1137]:
+                  - heading "Arnav Gupta" [level=3] [ref=e1138]
+                  - img [ref=e1140]
+            - link "Kanishak Chaurasia - Judge, Speaker & Mentor Kanishak Chaurasia" [ref=e1144] [cursor=pointer]:
+              - /url: https://linkedin.com/in/kanishak-chaurasia-1101/
+              - generic [ref=e1145]:
+                - img "Kanishak Chaurasia - Judge, Speaker & Mentor" [ref=e1147]
+                - generic [ref=e1148]:
+                  - heading "Kanishak Chaurasia" [level=3] [ref=e1149]
+                  - img [ref=e1151]
+            - link "Tanmay Arora - Judge, Speaker & Mentor Tanmay Arora" [ref=e1155] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/tanmaycode1/
+              - generic [ref=e1156]:
+                - img "Tanmay Arora - Judge, Speaker & Mentor" [ref=e1158]
+                - generic [ref=e1159]:
+                  - heading "Tanmay Arora" [level=3] [ref=e1160]
+                  - img [ref=e1162]
+            - link "Harshita Gupta - Judge, Speaker & Mentor Harshita Gupta" [ref=e1166] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/harshita-gupta-03b6b125b/
+              - generic [ref=e1167]:
+                - img "Harshita Gupta - Judge, Speaker & Mentor" [ref=e1169]
+                - generic [ref=e1170]:
+                  - heading "Harshita Gupta" [level=3] [ref=e1171]
+                  - img [ref=e1173]
+            - link "Mohit Arora - Judge, Speaker & Mentor Mohit Arora" [ref=e1177] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/mohit8181/
+              - generic [ref=e1178]:
+                - img "Mohit Arora - Judge, Speaker & Mentor" [ref=e1180]
+                - generic [ref=e1181]:
+                  - heading "Mohit Arora" [level=3] [ref=e1182]
+                  - img [ref=e1184]
+            - link "Mridul Saggi - Judge, Speaker & Mentor Mridul Saggi" [ref=e1188] [cursor=pointer]:
+              - /url: https://linkedin.com/in/mridulsaggi/
+              - generic [ref=e1189]:
+                - img "Mridul Saggi - Judge, Speaker & Mentor" [ref=e1191]
+                - generic [ref=e1192]:
+                  - heading "Mridul Saggi" [level=3] [ref=e1193]
+                  - img [ref=e1195]
+            - link "Ayush Chauhan - Judge, Speaker & Mentor Ayush Chauhan" [ref=e1199] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/ayush-singh-chauhan-22945722b/
+              - generic [ref=e1200]:
+                - img "Ayush Chauhan - Judge, Speaker & Mentor" [ref=e1202]
+                - generic [ref=e1203]:
+                  - heading "Ayush Chauhan" [level=3] [ref=e1204]
+                  - img [ref=e1206]
+            - link "Shivam Saini - Judge, Speaker & Mentor Shivam Saini" [ref=e1210] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/shvmsaini/
+              - generic [ref=e1211]:
+                - img "Shivam Saini - Judge, Speaker & Mentor" [ref=e1213]
+                - generic [ref=e1214]:
+                  - heading "Shivam Saini" [level=3] [ref=e1215]
+                  - img [ref=e1217]
+            - link "Himanshu Jaidka - Judge, Speaker & Mentor Himanshu Jaidka" [ref=e1221] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/himanshu-jaidka-b39b191a4/
+              - generic [ref=e1222]:
+                - img "Himanshu Jaidka - Judge, Speaker & Mentor" [ref=e1224]
+                - generic [ref=e1225]:
+                  - heading "Himanshu Jaidka" [level=3] [ref=e1226]
+                  - img [ref=e1228]
+            - link "Harshit Arora - Judge, Speaker & Mentor Harshit Arora" [ref=e1232] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/harshit-arora-in/
+              - generic [ref=e1233]:
+                - img "Harshit Arora - Judge, Speaker & Mentor" [ref=e1235]
+                - generic [ref=e1236]:
+                  - heading "Harshit Arora" [level=3] [ref=e1237]
+                  - img [ref=e1239]
+            - link "Shivam Goyal - Judge, Speaker & Mentor Shivam Goyal" [ref=e1243] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/shivamgoyall/
+              - generic [ref=e1244]:
+                - img "Shivam Goyal - Judge, Speaker & Mentor" [ref=e1246]
+                - generic [ref=e1247]:
+                  - heading "Shivam Goyal" [level=3] [ref=e1248]
+                  - img [ref=e1250]
+      - generic [ref=e1256]:
+        - generic [ref=e1257]:
+          - heading "Frequently Asked Questions" [level=2] [ref=e1258]
+          - paragraph [ref=e1259]: Got questions? We've got answers. Here's everything you need to know about HACKHAZARDS '26.
+          - paragraph [ref=e1260]:
+            - text: Looking for in-depth details? Check out the
+            - link "Participant Manual →" [ref=e1261] [cursor=pointer]:
+              - /url: /hackhazards/participant-manual
+        - generic [ref=e1263]:
+          - heading "What is HACKHAZARDS?" [level=3] [ref=e1265]:
+            - button "What is HACKHAZARDS?" [ref=e1266] [cursor=pointer]:
+              - text: What is HACKHAZARDS?
+              - img [ref=e1267]
+          - heading "What are the dates for HACKHAZARDS '26?" [level=3] [ref=e1270]:
+            - button "What are the dates for HACKHAZARDS '26?" [ref=e1271] [cursor=pointer]:
+              - text: What are the dates for HACKHAZARDS '26?
+              - img [ref=e1272]
+          - heading "Is HACKHAZARDS in-person?" [level=3] [ref=e1275]:
+            - button "Is HACKHAZARDS in-person?" [ref=e1276] [cursor=pointer]:
+              - text: Is HACKHAZARDS in-person?
+              - img [ref=e1277]
+          - heading "Is there any cost to participate?" [level=3] [ref=e1280]:
+            - button "Is there any cost to participate?" [ref=e1281] [cursor=pointer]:
+              - text: Is there any cost to participate?
+              - img [ref=e1282]
+          - heading "How do I participate?" [level=3] [ref=e1285]:
+            - button "How do I participate?" [ref=e1286] [cursor=pointer]:
+              - text: How do I participate?
+              - img [ref=e1287]
+          - heading "What kind of projects can I build?" [level=3] [ref=e1290]:
+            - button "What kind of projects can I build?" [ref=e1291] [cursor=pointer]:
+              - text: What kind of projects can I build?
+              - img [ref=e1292]
+          - heading "Do I have to follow a specific problem statement?" [level=3] [ref=e1295]:
+            - button "Do I have to follow a specific problem statement?" [ref=e1296] [cursor=pointer]:
+              - text: Do I have to follow a specific problem statement?
+              - img [ref=e1297]
+          - heading "Can I use any tech stack?" [level=3] [ref=e1300]:
+            - button "Can I use any tech stack?" [ref=e1301] [cursor=pointer]:
+              - text: Can I use any tech stack?
+              - img [ref=e1302]
+          - heading "What form should my project be in?" [level=3] [ref=e1305]:
+            - button "What form should my project be in?" [ref=e1306] [cursor=pointer]:
+              - text: What form should my project be in?
+              - img [ref=e1307]
+          - heading "Can I participate solo or in a team?" [level=3] [ref=e1310]:
+            - button "Can I participate solo or in a team?" [ref=e1311] [cursor=pointer]:
+              - text: Can I participate solo or in a team?
+              - img [ref=e1312]
+          - heading "Can I submit more than one project?" [level=3] [ref=e1315]:
+            - button "Can I submit more than one project?" [ref=e1316] [cursor=pointer]:
+              - text: Can I submit more than one project?
+              - img [ref=e1317]
+          - heading "Can I join multiple teams?" [level=3] [ref=e1320]:
+            - button "Can I join multiple teams?" [ref=e1321] [cursor=pointer]:
+              - text: Can I join multiple teams?
+              - img [ref=e1322]
+          - heading "Can I submit an old project?" [level=3] [ref=e1325]:
+            - button "Can I submit an old project?" [ref=e1326] [cursor=pointer]:
+              - text: Can I submit an old project?
+              - img [ref=e1327]
+          - heading "What do I need to submit?" [level=3] [ref=e1330]:
+            - button "What do I need to submit?" [ref=e1331] [cursor=pointer]:
+              - text: What do I need to submit?
+              - img [ref=e1332]
+          - heading "What are sponsored tracks?" [level=3] [ref=e1335]:
+            - button "What are sponsored tracks?" [ref=e1336] [cursor=pointer]:
+              - text: What are sponsored tracks?
+              - img [ref=e1337]
+          - heading "Do I have to participate in a sponsored track?" [level=3] [ref=e1340]:
+            - button "Do I have to participate in a sponsored track?" [ref=e1341] [cursor=pointer]:
+              - text: Do I have to participate in a sponsored track?
+              - img [ref=e1342]
+          - heading "Should I use sponsor technologies in my project?" [level=3] [ref=e1345]:
+            - button "Should I use sponsor technologies in my project?" [ref=e1346] [cursor=pointer]:
+              - text: Should I use sponsor technologies in my project?
+              - img [ref=e1347]
+          - heading "How are projects evaluated?" [level=3] [ref=e1350]:
+            - button "How are projects evaluated?" [ref=e1351] [cursor=pointer]:
+              - text: How are projects evaluated?
+              - img [ref=e1352]
+          - heading "What makes a strong submission?" [level=3] [ref=e1355]:
+            - button "What makes a strong submission?" [ref=e1356] [cursor=pointer]:
+              - text: What makes a strong submission?
+              - img [ref=e1357]
+          - heading "Are mentorship sessions mandatory?" [level=3] [ref=e1360]:
+            - button "Are mentorship sessions mandatory?" [ref=e1361] [cursor=pointer]:
+              - text: Are mentorship sessions mandatory?
+              - img [ref=e1362]
+          - heading "How can I book a mentorship session?" [level=3] [ref=e1365]:
+            - button "How can I book a mentorship session?" [ref=e1366] [cursor=pointer]:
+              - text: How can I book a mentorship session?
+              - img [ref=e1367]
+          - heading "Will mentorship affect my score?" [level=3] [ref=e1370]:
+            - button "Will mentorship affect my score?" [ref=e1371] [cursor=pointer]:
+              - text: Will mentorship affect my score?
+              - img [ref=e1372]
+          - heading "What are the prizes?" [level=3] [ref=e1375]:
+            - button "What are the prizes?" [ref=e1376] [cursor=pointer]:
+              - text: What are the prizes?
+              - img [ref=e1377]
+      - generic [ref=e1385]:
+        - generic [ref=e1386]:
+          - heading "Create Your Badge" [level=1] [ref=e1387]
+          - paragraph [ref=e1388]: Generate your personalized hackathon badge and share it with the world!
+        - generic [ref=e1393]:
+          - generic [ref=e1394]:
+            - textbox "Enter your name" [ref=e1395]
+            - button "Upload Your Photo" [ref=e1396] [cursor=pointer]:
+              - img [ref=e1397]
+              - text: Upload Your Photo
+            - generic [ref=e1400]:
+              - paragraph [ref=e1401]: Or choose from these
+              - generic [ref=e1402]:
+                - button [ref=e1403] [cursor=pointer]:
+                  - img [ref=e1404]
+                - generic [ref=e1406]:
+                  - img "Carousel image 1" [ref=e1407] [cursor=pointer]
+                  - img "Carousel image 2" [ref=e1408] [cursor=pointer]
+                  - img "Carousel image 3" [ref=e1409] [cursor=pointer]
+                - button [ref=e1410] [cursor=pointer]:
+                  - img [ref=e1411]
+          - generic [ref=e1413]:
+            - button "Download" [disabled] [ref=e1414]:
+              - img [ref=e1415]
+              - text: Download
+            - button "Share" [disabled] [ref=e1418]:
+              - img [ref=e1419]
+              - text: Share
+          - paragraph [ref=e1425]: "Please note: there are some bonus points for your team if all your team members share their badges on social media! 😉"
+    - contentinfo [ref=e1426]:
+      - contentinfo [ref=e1427]:
+        - generic [ref=e1428]:
+          - generic [ref=e1429]:
+            - heading "Ready to Change the World?" [level=2] [ref=e1430]
+            - generic [ref=e1432]:
+              - link "Apply Now" [ref=e1433] [cursor=pointer]:
+                - /url: https://www.namespace.world/events/AH6926
+              - link "Join Discord" [ref=e1434] [cursor=pointer]:
+                - /url: https://discord.gg/W978VhSjbh
+              - link "Participant Manual" [ref=e1435] [cursor=pointer]:
+                - /url: /hackhazards/participant-manual
+          - generic [ref=e1438]:
+            - img "HACKHAZARDS '26 Logo" [ref=e1439]
+            - generic [ref=e1440]:
+              - link "Privacy Policy" [ref=e1441] [cursor=pointer]:
+                - /url: /privacy-policy
+              - link "Contact Us" [ref=e1442] [cursor=pointer]:
+                - /url: mailto:contact@namespacecomm.in
+            - paragraph [ref=e1443]:
+              - text: © 2026 Namespace Ecosystem India Pvt. Ltd.. Building the Global Ecosystem for Humans and Organizations in Tech. Organized by
+              - link "NAMESPACE" [ref=e1444] [cursor=pointer]:
+                - /url: /

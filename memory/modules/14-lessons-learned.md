@@ -236,7 +236,25 @@ done
 
 ### 13. Empty Directories Survive Cleanup
 
-### 14. NEVER Delete Files Based on Assumptions — Full Verification Required
+### 14. Eval Metrics Are Diagnostics, Not Targets — Overfitting to "make validate" Wastes Time
+**Error Signature:**
+```
+"make validate passes" → declared done
+But: agent still asks permission instead of acting (01-core-rules failure)
+Or: vector DB can't find the new module
+Or: pre-commit hook blocks commit with unrelated validation
+```
+
+**Root Cause:**
+Treating eval metrics as success criteria rather than diagnostic signals. `make validate` only checks module existence and line count — it doesn't measure whether the agent's behavior improved. Over-optimizing for a single eval metric produces changes that pass CI but don't help.
+
+**Standard Resolution:**
+- Every change must answer: "What agent behavior does this improve?"
+- Use multiple signals: module validation + vector DB coverage + tool availability + behavioral test
+- Eval gates catch regressions, they don't define success
+- See `16-agent-evals.md` for complete eval methodology
+
+### 15. NEVER Delete Files Based on Assumptions — Full Verification Required
 **Error Signature:**
 ```
 Files deleted: 26 files across config/, docs/, memory-bank/, templates/, dotfiles/

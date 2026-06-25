@@ -1,0 +1,23 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "shadcn": {
+      "type": "local",
+      "command": ["npx", "shadcn@latest", "mcp"],
+      "enabled": true
+    },
+    "firecrawl": {
+      "type": "local",
+      "command": ["npx", "-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "fc-4e929ff9b0bf482c987f64fd9705463c"
+      },
+      "enabled": true
+    },
+    "memory": {
+      "type": "url",
+      "url": "http://127.0.0.1:8932/sse",
+      "enabled": true
+    }
+  }
+}

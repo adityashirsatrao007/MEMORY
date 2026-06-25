@@ -1,0 +1,158 @@
+%------------------------
+% ATS-Optimized AI/ML Resume
+% Jake's Resume template -- visually clean AND ATS-proven
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+% Times font for professional look
+\renewcommand{\rmdefault}{ptm}
+\usepackage{mathptmx}
+
+% Icons for digital resume
+\usepackage{fontawesome5}
+
+% Disable ligatures -- ATS parsers choke on fi/fl ligatures
+\usepackage{microtype}
+\DisableLigatures{encoding = *, family = *}
+
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-0.4in}
+\addtolength{\textheight}{0.8in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-6pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-4pt}]
+
+\pdfgentounicode=1
+
+\newcommand{\resumeItem}[1]{\item\small{#1 \vspace{-3pt}}}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textit{\small #2} \\
+      \textit{\small#3} & \textit{\small #4}
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+  \item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \small\textbf{#1} & \textit{\small #2}
+  \end{tabular*}\vspace{-4pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+%----------HEADER----------
+\begin{center}
+  {\Huge\textbf{\scshape Aditya Shirsatrao}} \\ \vspace{2pt}
+  \small
+  \href{mailto:adityashirsatrao007@gmail.com}{\faEnvelope} $|$
+  +91-7387-384655 $|$
+  \href{https://www.linkedin.com/in/adityashirsatrao/}{\faLinkedin} $|$
+  \href{https://github.com/adityashirsatrao007}{\faGithub} $|$
+  \href{https://leetcode.com/u/adityashirsatrao007/}{\faCode}
+\end{center}
+
+%----------SUMMARY----------
+\section{Professional Summary}
+\small{Aspiring AI/ML Engineer with strong project-based experience building ML systems, NLP models, and full-stack AI products. Three-time national hackathon winner across AI security, developer tooling, and legal-tech domains. Open source contributor with 50+ merged PRs at Google, Microsoft, Apache, and Hedera Hashgraph. GDG AI/ML Lead mentoring a community of 200+ students.}
+
+%----------EDUCATION----------
+\section{Education}
+\resumeSubHeadingListStart
+\resumeSubheading
+  {N. K. Orchid College of Engineering and Technology}{Solapur, MH}
+  {B.Tech -- Artificial Intelligence and Data Science | \textbf{CGPA: 8.5/10}}{Aug 2023 -- Present}
+\resumeSubHeadingListEnd
+\small{\textbf{Class XII (HSC, Maharashtra Board):} 90\% -- Sarosh Junior College, Aurangabad $|$ \textbf{Class X (ICSE):} 90\% -- St. Thomas English Medium School, Solapur}\vspace{4pt}
+
+%----------SKILLS----------
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \small{
+  \item{\textbf{AI \& ML:} PyTorch, HuggingFace Transformers, scikit-learn, LLMs, NLP, Sentiment Analysis, OpenAI Whisper, LangChain, LangGraph, AI Agents, FAISS, Vector Embeddings, RAG, EasyOCR, DistilBERT}
+  \item{\textbf{Backend \& Infra:} Python, FastAPI, Node.js, PostgreSQL, Redis, Docker, Celery, REST APIs, JWT, RBAC, AWS Bedrock}
+  \item{\textbf{Frontend:} React.js, JavaScript, HTML5, CSS3, Tailwind CSS, WebSockets}
+  \item{\textbf{Other:} C++, Java, SQL, DSA (366+ LeetCode), Git, CI/CD, PyPI Publishing}
+  }
+\end{itemize}
+
+%----------PROJECTS----------
+\section{Projects}
+\resumeSubHeadingListStart
+\resumeProjectHeading
+  {SentinelX -- AI Cybersecurity Platform}{May 2026}
+  \resumeItemListStart
+    \resumeItem{Production-grade threat detection platform analyzing phishing, scams, and social engineering across email, SMS, voice, and messaging channels. Multi-model ML pipeline using HuggingFace DistilBERT for NLP classification, Whisper for speech-to-text transcription, and Qwen 2.5-7B for LLM enrichment.}
+    \resumeItem{Designed a weighted 4-component risk scoring engine (NLP, behavior, URL, reputation) with async Celery + Redis task queue for non-blocking analysis. PostgreSQL with SQLAlchemy ORM, Alembic migrations, and structured JSON logging.}
+    \resumeItem{Won 1st Place at Hack to Future 3.0 from 600+ teams nationwide with a prize of INR 50,000. Shipped fully functional in 36 hours.}
+  \resumeItemListEnd
+\resumeProjectHeading
+  {Tracelify -- Cross-Platform Error Tracking SDK \& Observability Platform}{Apr 2026}
+  \resumeItemListStart
+    \resumeItem{Designed and published a multi-language error tracking SDK (PyPI: tracelify-sdk v1.0.0) supporting Python, Java, Kotlin, Go, C++, and JavaScript runtimes with a unified REST ingestion API and DSN key-based authentication.}
+    \resumeItem{Built FastAPI backend with PostgreSQL event persistence, Redis caching, multi-tenant org/project hierarchy with RBAC, and LLM-powered error report generation via AWS Bedrock. Real-time alert engine with email and SMS dispatch.}
+    \resumeItem{Interactive React dashboard with aggregated trend charts and automated alert rules engine. GitHub Actions CI/CD with PyPI trusted publishing. Secured 1st Runner-Up at Orchathon 2K26 from 800+ teams.}
+  \resumeItemListEnd
+\resumeProjectHeading
+  {Nyaya AI -- Intelligent FIR Digitization \& Legal Analysis Platform}{Apr 2026}
+  \resumeItemListStart
+    \resumeItem{AI-powered platform converting scanned FIR documents (handwritten and printed, English and Hindi) into structured digital cases using EasyOCR with automatic language detection and preprocessing pipeline.}
+    \resumeItem{IPC section extraction via regex + TF-IDF mapping against 500+ Indian Penal Code sections with full-text legal statute search and relevance ranking. Evidence forensics module for deepfake and tamper detection via HuggingFace zero-shot classification models.}
+    \resumeItem{Secure case management with JWT authentication, file upload pipeline with OCR preprocessing, and batch processing support. FastAPI backend with PostgreSQL. Won 1st Runner-Up at National Hackathon (800+ teams).}
+  \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%----------OPEN SOURCE----------
+\section{Open Source Contributions}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \item\small{\textbf{50+ PRs merged} across Google (OSS-Fuzz), Microsoft (VibeVoice), Apache (DataFusion), Hedera Hashgraph (Hiero SDK)}
+  \item\small{\textbf{Hedera Hiero SDK}: Refactored the EVM transaction builder reducing boilerplate code by 30\% and eliminating type redundancy errors (PR\#1030)}
+  \item\small{\textbf{Super Impress}: Fixed a mobile FOUC race condition using ResizeObserver with debounce. Improved CLS scores by 15\% (PR\#77)}
+\end{itemize}
+
+%----------ACHIEVEMENTS----------
+\section{Achievements and Certifications}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \item\small{Three-time national hackathon winner (1st place out of 600+ teams, 1st Runner-Up out of 800+ teams $\times$ 2)}
+  \item\small{IEEE publication: First-author research paper at ICCTWC 2026}
+  \item\small{Class Representative for a cohort of 120+ students}
+  \item\small{366+ LeetCode problems solved (104 Easy, 176 Medium, 86 Hard) plus 50 SQL problems}
+  \item\small{Certifications: Kaggle AI Agents, JPMorgan Chase Software Engineering, Electronic Arts Software Engineering}
+\end{itemize}
+
+\end{document}

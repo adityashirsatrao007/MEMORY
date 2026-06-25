@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Comfortaa:wght@400;700&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Fredoka", sans-serif;
+  --font-serif: "Comfortaa", cursive;
+}
+
+body {
+  background: linear-gradient(135deg, #eef2f7 0%, #dbeafe 100%);
+  color: #1e293b;
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+}
+
+/* Claymorphic custom styles */
+.clay-card {
+  background: #ffffff;
+  border-radius: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    0 15px 30px rgba(99, 102, 241, 0.05),
+    inset 0 -8px 16px rgba(0, 0, 0, 0.04),
+    inset 0 8px 16px rgba(255, 255, 255, 0.8);
+}
+
+.clay-btn {
+  background: #6366f1;
+  color: #ffffff;
+  border-radius: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 10px 20px rgba(99, 102, 241, 0.2),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.2),
+    inset 0 4px 8px rgba(255, 255, 255, 0.4);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.clay-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 
+    0 12px 24px rgba(99, 102, 241, 0.25),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.2),
+    inset 0 4px 8px rgba(255, 255, 255, 0.4);
+}
+
+.clay-btn:active {
+  transform: scale(0.97);
+  box-shadow: 
+    0 4px 8px rgba(99, 102, 241, 0.2),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4);
+}
+
+.clay-input {
+  background: #f1f5f9;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.05),
+    0 1px 2px rgba(255, 255, 255, 0.8);
+  font-family: var(--font-sans);
+}
