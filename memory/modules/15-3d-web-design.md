@@ -1,41 +1,93 @@
-# 15 — Premium 3D Web Design & SaaS Template Architecture
+# 3D Web Design Patterns
 
-Engineering guidelines for developing, optimizing, and deploying high-performance 3D scrollytelling pages and premium commercial SaaS templates.
+## React Three Fiber (R3F) Setup
+```bash
+npm install three @react-three/fiber @react-three/drei
+```
 
----
+### Basic Scene
+```jsx
+import { Canvas } from '@react-three/fiber'
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 
-## Core 3D Architecture Patterns
+function Scene() {
+  return (
+    <Canvas>
+      <PerspectiveCamera makeDefault position={[0, 2, 5]} />
+      <OrbitControls />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 5, 5]} />
+      <mesh>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color="#6366f1" />
+      </mesh>
+    </Canvas>
+  )
+}
+```
 
-### 1. Unified Scroll-Inertial Smoothing (Lenis + GSAP)
-All scrollytelling timelines must bind Lenis scroll updates directly to GSAP's ticker:
-- **BOILERPLATE**:
-  ```javascript
-  const lenis = new Lenis({
-    smoothWheel: true,
-    wheelMultiplier: 1.0,
-    touchMultiplier: 1.8,
-  });
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
-  gsap.ticker.lagSmoothing(0);
-  ```
+## Model Loading
+```jsx
+import { useGLTF } from '@react-three/drei'
 
-### 2. Vertex Displacement Shaders (Digital Terrains)
-To build glowing digital landscapes that wave and distort based on scroll, displace Plane vertices in the animation loop:
-- **FORMULA**:
-  ```javascript
-  const wave = Math.sin(x * 0.6 + time) * Math.cos(y * 0.6 + time) * (minHeight + scrollRatio * maxHeight);
-  geometry.attributes.position.setZ(i, wave);
-  ```
+function Model({ url }) {
+  const { scene } = useGLTF(url)
+  return <primitive object={scene} />
+}
 
-### 3. Connection Mesh Segmenting (Laser Linkages)
-For networks of floating nodes, render dynamic linkages by checking distance thresholds in the loop:
-- **DRAW RANGE**: Use a single `THREE.LineSegments` object and dynamically calculate connection pairs in the loop. Call `connectionLines.geometry.setDrawRange(0, lineCount)` to prune draw calls.
+// Preload for performance
+useGLTF.preload('/models/scene.glb')
+```
 
----
+## Draco Compression
+```bash
+npm install gltf-pipeline
+# Compress models
+gltf-pipeline -i input.glb -o output.glb --draco.compressionLevel 7
+```
 
-## Performance Guardrails
+## Texture Optimization
+```jsx
+import { useTexture } from '@react-three/drei'
 
-1. **Draw Call Consolidation**: Always prefer `THREE.InstancedMesh` over hundreds of standalone mesh instances.
-2. **Resource Garbage Collection**: Explicitly call `.dispose()` on geometries, materials, and textures when the canvas component unmounts to prevent GPU memory leaks.
-3. **Low-Poly Decimation**: Export 3D assets from Blender with decimation modifiers, target Draco compression, and limit textures to power-of-two resolutions (max 1024x1024).
+function TexturedPlane() {
+  const [map, normalMap] = useTexture(['./diffuse.jpg', './normal.jpg'])
+  return (
+    <mesh>
+      <planeGeometry args={[4, 4]} />
+      <meshStandardMaterial map={map} normalMap={normalMap} />
+    </mesh>
+  )
+}
+```
+
+### Rules
+- Use `Suspense` wrapper for async loads
+- Set `dpr={[1, 2]}` for mobile optimization
+- Use `useMemo` for geometry/materials
+- Dispose unused resources: `geometry.dispose()`
+- Prefer GLB over GLTF (single file)
+- Max texture size: 2048x2048 for mobile, 4096 for desktop
+
+## GSAP + Three.js Integration
+```jsx
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+// Scroll-driven camera animation
+gsap.to(camera.position, {
+  scrollTrigger: { trigger: '#section2', start: 'top center' },
+  z: 2, y: 1, duration: 1
+})
+```
+
+## Performance Budget
+| Metric | Target |
+|--------|--------|
+| Initial load | < 3MB |
+| FPS (mobile) | > 30 |
+| FPS (desktop) | > 60 |
+| Draw calls | < 50 |
+| Triangles | < 100K |

@@ -1,12 +1,14 @@
 ## Current Focus
-Repository setup and configuration — verified all dotfile symlinks, converted 7 duplicated GEMINI.md copies to symlinks, created vector_db/ infrastructure, and logged all error prevention patterns.
+Repository fully set up and integrated — all CLI tools installed, vector DB seeded (246 chunks), GitHub Student Pack integrations ready.
 
 ## Active Decisions
-- GEMINI.md is the single 197KB master rules file (3543 lines)
+- GEMINI.md is a lightweight 158-line index (NOT the old 3543-line monolith)
+- 19 modules in memory/modules/ cover all domains (01-20, with 13 newly created)
+- Vector DB: ChromaDB with 246 chunks from 23 files
 - All agent config files symlink to GEMINI.md (no duplication)
-- 14-lessons-learned.md (in modules/) is the error log — memory/LESSONS_LEARNED.md is a symlink to it
-- vector_db/ is gitignored (ChromaDB persistent storage)
-- tools/static/ is for the dashboard frontend
+- 27 CLI tools installed with 8 guardrails
+- GitHub Student Pack: DigitalOcean $200, MongoDB $50, Clerk, Stripe, Datadog configured
 
 ## Open Questions
 - Should activeContext.md be auto-regenerated each session?
+- MongoDB Atlas migration from ChromaDB for production scale?

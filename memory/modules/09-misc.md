@@ -228,7 +228,7 @@ Analyze project type, select perfect Aesthetic + Layout + Animation stack. Pass 
 ### freellmapi Proxy (0-cost LLM)
 **Always use freellmapi instead of direct provider APIs to save tokens.**
 - Base URL: `http://localhost:3001/v1`
-- Key: `freellmapi-c72bebe9578ae453d5d77b79af6e988e19405950c2087632`
+- Key: Load from `~/.config/global-apikeys/keys.env` (FREELLMAPI_KEY)
 - Model: `auto` (auto-routes across 12 free providers)
 - Auto-failover, 1.7B free tokens/month
 

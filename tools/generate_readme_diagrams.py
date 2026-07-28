@@ -81,18 +81,26 @@ def generate_module_sizes():
     fig, ax = plt.subplots(figsize=(10, 6.5))
 
     modules = [
-        ("01 Core Rules", 115, ACCENT2),
-        ("02 CLI Tools", 160, ACCENT1),
-        ("03 ML Engineering", 292, ACCENT3),
+        ("01 Core Rules", 180, ACCENT2),
+        ("02 CLI Tools", 170, ACCENT1),
+        ("03 ML Engineering", 516, ACCENT3),
         ("04 Security", 147, "#8B4513"),
-        ("05 UI/UX", 274, ACCENT4),
-        ("06 Web Dev", 305, ACCENT5),
+        ("05 UI/UX", 321, ACCENT4),
+        ("06 Web Dev", 293, ACCENT5),
         ("07 Job Hunt", 145, "#5A6B5A"),
         ("08 Architecture", 198, "#7A6B4A"),
         ("09 Misc", 255, "#6B5A4A"),
-        ("10 Lessons Learned", 17, MUTED),
+        ("10 Lessons Learned", 22, MUTED),
         ("11 Error Logs", 30, MUTED),
-        ("12 Architectural Patterns", 107, "#4A6B7A"),
+        ("12 Architectural Patterns", 67, "#4A6B7A"),
+        ("13 DevOps/CI", 120, "#5A7A6B"),
+        ("14 Lessons (Full)", 305, MUTED),
+        ("15 3D Web", 41, "#7A5A6B"),
+        ("16 Agent Evals", 198, "#6B7A5A"),
+        ("17 MongoDB", 59, "#5A6B7A"),
+        ("18 Datadog", 39, "#7A6B5A"),
+        ("19 Clerk Auth", 47, "#6B5A7A"),
+        ("20 Stripe", 36, "#5A7A5A"),
     ]
 
     names = [m[0] for m in modules]

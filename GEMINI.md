@@ -51,13 +51,21 @@ Open ONLY that file: `bat --line-range :80 "$MEMORY_ROOT/memory/modules/XX-*.md"
 | Architecture | `08-architecture.md` |
 | Misc | `09-misc.md` |
 | Architectural Patterns | `12-repo-teachings.md` |
+| DevOps/CI/CD | `13-devops-cicd.md` |
 | Lessons Learned | `14-lessons-learned.md` |
+| 3D Web Design | `15-3d-web-design.md` |
+| Agent Evals | `16-agent-evals.md` |
+| MongoDB Vector DB | `17-mongodb-vector.md` |
+| Datadog Monitoring | `18-datadog-monitoring.md` |
+| Clerk Auth | `19-clerk-auth.md` |
+| Stripe Payments | `20-stripe-payments.md` |
 
 ## Tools
 `cat ~/.config/agent-tools/manifest.json` — 15 installed tools (CLI + infra + skills). Read once, cache in context, match task desc to tool.
+`skill-find "<query>" [N]` — instant text search across all 2932 skills (ripgrep, ~10ms). Used automatically by AI on task start.
 
 ## Quick
-`MEMORY_ROOT=$MEMORY_ROOT` | `memory-search` | Dashboard: `localhost:8083` | Makefile: `make {validate,seed,stats}`
+`MEMORY_ROOT=$MEMORY_ROOT` | `memory-search` | `mem-skill` | Dashboard: `localhost:8083` | Makefile: `make {validate,seed,stats}`
 
 ## ANTIGRAVITY & GLOBAL RULES
 
@@ -123,15 +131,13 @@ Every agent MUST follow this protocol on session start and session end.
 - Read/write knowledge through `$MEMORY_ROOT/memory/modules/`, `$MEMORY_ROOT/memory/vector_db/`, and `$MEMORY_ROOT/memory/memory-bank/`.
 - This guarantees every model (current and future) reads the same memory.
 
-### RULE #8 — SKILL DISCOVERY (do NOT load all 1000+)
-**Never load all skills into context. Discover and load on-demand:**
-1. **Match task to skill** — `ls $MEMORY_ROOT/.agents/skills/ | rg -i "<keyword>"` to find a relevant skill by name
-2. **Search descriptions** — `rg "description" $MEMORY_ROOT/.agents/skills/*/SKILL.md -l | head -5` to find matching skill files
-3. **Vector DB** — `memory-search "skill for <task>" 2` to retrieve the right skill's trigger
-4. **Load only one** — `bat --line-range :80 "$MEMORY_ROOT/.agents/skills/<match>/SKILL.md"` — read the first 80 lines, stop if not relevant
-5. **Abort early** — if no skill matches, don't load any. Do the task directly.
-- 1147 skills exist. Loading even 10 prefix summaries costs more than doing the task without a skill.
-- Skills are for reference, not preloading.
+### RULE #8 — SKILL DISCOVERY (instant, no preloading)
+**2988 skills installed. I auto-discover them per task:**
+1. **Instant find** — `skill-find "<task keyword>" 3` → returns top matching skills with line counts in ~10ms
+2. **Load only one** — `bat --line-range :80 "$MEMORY_ROOT/.agents/skills/<match>/SKILL.md"` — read first 80 lines, stop if irrelevant
+3. **Abort early** — if no skill matches, do the task directly without loading any
+- I will automatically search skills at the start of every task and decide which (if any) to load.
+- You never need to remember or specify which skill to use.
 
 ## LICENSE (MIT)
 

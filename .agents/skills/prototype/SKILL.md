@@ -1,9 +1,34 @@
 ---
 name: prototype
-description: Build a throwaway prototype to flesh out a design before committing to it. Routes between two branches — a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route. Use when the user wants to prototype, sanity-check a data model or state machine, mock up a UI, explore design options, or says "prototype this", "let me play with it", "try a few designs".
+description: Build a throwaway prototype to flesh out a design — a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
+disable-model-invocation: true
+category: "development"
+risk: "safe"
+source: "community"
+source_repo: "mattpocock/skills"
+source_type: "community"
+date_added: "2026-06-19"
+author: "Matt Pocock"
+license: "MIT"
+license_source: "https://github.com/mattpocock/skills/blob/main/LICENSE"
+tags:
+  - engineering
+  - workflow
+  - coding-agents
+tools:
+  - claude-code
+  - codex-cli
+  - cursor
 ---
 
 # Prototype
+
+## When to Use
+
+Use when this workflow matches the user request: Build a throwaway prototype to flesh out a design — a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
+
+
+_Source: [mattpocock/skills](https://github.com/mattpocock/skills) (MIT)._
 
 A prototype is **throwaway code that answers a question**. The question decides the shape.
 
@@ -28,3 +53,10 @@ The two branches produce very different artifacts — getting this wrong wastes 
 ## When done
 
 The _answer_ is the only thing worth keeping from a prototype. Capture it somewhere durable (commit message, ADR, issue, or a `NOTES.md` next to the prototype) along with the question it was answering. If the user is around, that capture is a quick conversation; if not, leave the placeholder so they (or you, on the next pass) can fill in the verdict before deleting the prototype.
+
+
+## Limitations
+
+- Requires the upstream tool, account, API key, or local setup when the workflow names one.
+- Does not authorize destructive, production, paid, or external-message actions without explicit user approval.
+- Validate generated artifacts or recommendations against the user's real sources before treating them as final.

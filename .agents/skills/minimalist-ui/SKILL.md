@@ -1,9 +1,30 @@
 ---
 name: minimalist-ui
-description: Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.
+description: "Use when creating clean editorial interfaces with warm monochrome palettes, crisp borders, restrained motion, and flat bento layouts."
+category: frontend
+risk: safe
+source: community
+source_repo: Leonxlnx/taste-skill
+source_type: community
+date_added: "2026-04-17"
+author: Leonxlnx
+tags: [frontend, design, minimalism, ui]
+tools: [claude, cursor, codex, antigravity]
 ---
-
 # Protocol: Premium Utilitarian Minimalism UI Architect
+
+## When to Use
+
+- Use when the user wants a refined minimalist UI inspired by tools like Notion, Linear, or editorial workspace products.
+- Use when designing warm monochrome interfaces with crisp borders, generous whitespace, muted pastel accents, and quiet motion.
+- Use when the task should avoid gradients, heavy shadows, saturated colors, pill-heavy components, and generic SaaS visuals.
+
+## Limitations
+
+- Minimalism can hide hierarchy when content is dense; validate scannability, contrast, and navigation clarity with real content.
+- This skill assumes the product can support restrained palettes and typography-led layouts; do not override an established brand system without cause.
+- Subtle motion and flat surfaces still need responsive, keyboard, and screen-reader verification in the target project.
+
 
 ## 1. Protocol Overview
 Name: Premium Utilitarian Minimalism & Editorial UI
@@ -46,8 +67,8 @@ Color is a scarce resource, utilized only for semantic meaning or subtle accents
   - Border-radius must be crisp: `8px` or `12px` maximum.
   - Internal padding must be generous (e.g., `24px` to `40px`).
 - Primary Call-To-Action (Buttons):
-  - Solid background `#111111`, text `#FFFFFF`. 
-  - Slight border-radius (`4px` to `6px`). No box-shadow. 
+  - Solid background `#111111`, text `#FFFFFF`.
+  - Slight border-radius (`4px` to `6px`). No box-shadow.
   - Hover state should be a subtle color shift to `#333333` or a micro-scale `transform: scale(0.98)`.
 - Tags & Status Badges:
   - Pill-shaped (`border-radius: 9999px`), very small typography (`text-xs`), uppercase with wide tracking (`letter-spacing: 0.05em`).

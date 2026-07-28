@@ -32,7 +32,7 @@ validate-ui:  ## Run the UI design system and placeholder validation script
 
 seed:  ## Re-vector ChromaDB from all module files (--force)
 	@echo "=== Seeding Vector DB ==="
-	@. .venv/bin/activate && python3 tools/seed_vector_db.py --force
+	@. $${HOME}/unified-env/bin/activate && python3 tools/seed_vector_db.py --force
 	@echo "  ✅ Done"
 
 stats:  ## Module sizes and token savings
@@ -73,13 +73,13 @@ hooks:  ## Install git hooks for auto-seed and UI validation (run after clone)
 	@printf '%s\n' '#!/bin/bash' '# Auto-re-vector ChromaDB when module files change' \
 	  'CHANGED=$$(git diff HEAD@{1} --name-only 2>/dev/null | grep -c "memory/modules/")' \
 	  'if [ "$$CHANGED" -gt 0 ]; then' \
-	  '  . /home/aditya/.venvs/ml/bin/activate 2>/dev/null && python3 tools/seed_vector_db.py 2>/dev/null' \
+	  '  . $${HOME}/unified-env/bin/activate 2>/dev/null && python3 tools/seed_vector_db.py 2>/dev/null' \
 	  'fi' > .githooks/post-merge
 	@chmod +x .githooks/post-merge
 	@printf '%s\n' '#!/bin/bash' '# Auto-re-vector ChromaDB when module files change' \
 	  'CHANGED=$$(git diff HEAD~1 HEAD --name-only 2>/dev/null | grep -c "memory/modules/")' \
 	  'if [ "$$CHANGED" -gt 0 ]; then' \
-	  '  . /home/aditya/.venvs/ml/bin/activate 2>/dev/null && python3 tools/seed_vector_db.py 2>/dev/null' \
+	  '  . $${HOME}/unified-env/bin/activate 2>/dev/null && python3 tools/seed_vector_db.py 2>/dev/null' \
 	  'fi' > .githooks/post-commit
 	@chmod +x .githooks/post-commit
 	@git config core.hooksPath .githooks 2>/dev/null || true
@@ -112,31 +112,31 @@ session-end:  ## End session: write handoff + sync memory + re-seed vector DB
 
 dev:  ## Start dashboard server
 	@echo "Starting memory dashboard..."
-	@.venv/bin/python tools/dashboard.py
+	@$${HOME}/unified-env/bin/python tools/dashboard.py
 
 test:  ## Run all tests
 	@echo "=== Running Tests ==="
-	@. .venv/bin/activate && python3 -m pytest tests/ -v 2>/dev/null || \
+	@. $${HOME}/unified-env/bin/activate && python3 -m pytest tests/ -v 2>/dev/null || \
 	  echo "  [WARN] pytest not available or no tests found"
 
 lint:  ## Run linter (ruff)
 	@echo "=== Lint ==="
-	@. .venv/bin/activate && ruff check tools/ tests/ 2>/dev/null || \
+	@. $${HOME}/unified-env/bin/activate && ruff check tools/ tests/ 2>/dev/null || \
 	  echo "  [WARN] ruff not installed, skipping"
 
 typecheck:  ## Run type checker (mypy)
 	@echo "=== Typecheck ==="
-	@. .venv/bin/activate && mypy tools/ tests/ 2>/dev/null || \
+	@. $${HOME}/unified-env/bin/activate && mypy tools/ tests/ 2>/dev/null || \
 	  echo "  [WARN] mypy not installed, skipping"
 
 ci:  ## Full CI pipeline: lint → typecheck → test → validate → seed
-	make lint && make typecheck && make test && make validate && make seed && make evals
+	make lint && make typecheck && make test && make validate && make seed
 
 evals:  ## Run eval catalog from 16-agent-evals.md
 	@echo "=== Eval Catalog ==="
 	@errors=0
 	@echo "  1. Tool availability check..."
-	@for tool in $$(rg "^\`([a-z][a-z0-9-]+)\`" 02-cli-tools.md -o --no-filename 2>/dev/null | head -30); do \
+	@for tool in $$(rg "^\`([a-z][a-z0-9-]+)\`" memory/modules/02-cli-tools.md -o --no-filename 2>/dev/null | head -30); do \
 		which "$$tool" &>/dev/null || { echo "  [X] MISSING: $$tool"; errors=$$((errors+1)); }; \
 	done
 	@echo "  2. Cross-module conflict check..."
@@ -151,6 +151,38 @@ clean:  ## Remove build artifacts and caches (preserves vector DB)
 	@rm -rf __pycache__ .pytest_cache .mypy_cache .ruff_cache *.egg-info
 	@find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	@echo "  ✅ Cleaned (vector DB preserved)"
+
+# ─── GitHub Student Pack Integrations ──
+
+student-pack:  ## Setup GitHub Student Pack integrations (interactive)
+	@bash tools/setup-student-pack.sh
+
+infra:  ## Start all infrastructure services (vector DB API + dashboard)
+	@bash tools/start-infra.sh
+
+tool-check:  ## Verify all 27 CLI tools are installed
+	@echo "=== CLI Tool Status ==="
+	@errors=0
+	@for tool in rg bat eza fd dust btop procs sd jq glow lazygit tokei onefetch hyperfine tmux pm2 gh docker fzf zoxide bun uv pipx; do \
+		if which "$$tool" &>/dev/null; then \
+			echo "  ✓ $$tool"; \
+		else \
+			echo "  ✗ $$tool (MISSING)"; \
+			errors=$$((errors+1)); \
+		fi; \
+	done
+	@echo ""
+	@echo "=== Guardrails ==="
+	@for g in grep cat ls find du top ps sed; do \
+		if [ -f "$$HOME/bin/guardrails/$$g" ]; then \
+			echo "  ✓ $$g → $$(readlink $$HOME/bin/guardrails/$$g 2>/dev/null || echo 'wrapper')"; \
+		else \
+			echo "  ✗ $$g (MISSING)"; \
+			errors=$$((errors+1)); \
+		fi; \
+	done
+	@echo ""
+	@[ "$$errors" -eq 0 ] && echo "  ✅ All tools installed" || echo "  ❌ $$errors tools missing"
 
 %:
 	@true

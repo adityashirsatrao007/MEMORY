@@ -1,9 +1,30 @@
 ---
 name: industrial-brutalist-ui
-description: Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics. Rigid grids, extreme type scale contrast, utilitarian color, analog degradation effects. For data-heavy dashboards, portfolios, or editorial sites that need to feel like declassified blueprints.
+description: "Use when creating raw industrial or tactical telemetry UIs with rigid grids, stark typography, CRT effects, and high-density data."
+category: frontend
+risk: safe
+source: community
+source_repo: Leonxlnx/taste-skill
+source_type: community
+date_added: "2026-04-17"
+author: Leonxlnx
+tags: [frontend, design, brutalism, ui]
+tools: [claude, cursor, codex, antigravity]
 ---
-
 # SKILL: Industrial Brutalism & Tactical Telemetry UI
+
+## When to Use
+
+- Use when the user wants a brutalist, industrial, Swiss-print, CRT terminal, or tactical telemetry interface.
+- Use when building data-heavy dashboards, portfolios, editorial pages, or command-center UIs that should feel raw and mechanical.
+- Use when a design must reject soft gradients, rounded consumer UI, glassmorphism, and generic SaaS card layouts.
+
+## Limitations
+
+- This style is intentionally severe and may not fit consumer products, accessibility-sensitive flows, or brands that require warmth and softness.
+- CRT, halftone, dithering, and degradation effects must be tested for readability, contrast, and motion sensitivity.
+- Do not mix the light industrial and dark telemetry palettes in the same interface unless the user explicitly asks for a controlled hybrid.
+
 
 ## 1. Skill Meta
 **Name:** Industrial Brutalism & Tactical Telemetry Interface Engineering

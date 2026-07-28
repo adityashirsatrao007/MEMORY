@@ -5,6 +5,7 @@
 Run with --force to re-seed even if entries exist or content unchanged."""
 
 import chromadb
+
 import hashlib
 import os
 import sys
@@ -17,7 +18,11 @@ FILES = [
     *(BASE / "memory/modules").glob("*.md"),
     BASE / ".agent-progress.md",
     BASE / "memory/memory-bank/progress.md",
-    BASE / "memory/context-snapshot.md",
+    BASE / "memory/memory-bank/activeContext.md",
+    BASE / "memory/memory-bank/architecture.md",
+    BASE / "memory/memory-bank/decisions.md",
+    BASE / "memory/memory-bank/walkthrough.md",
+    # Skills indexed via BM25/rg for instant text search (not embeddings)
 ]
 HASH_FILE = VECTOR_DB_PATH / "content_hash"
 
@@ -50,13 +55,15 @@ def chunk_file(path):
 
 client = chromadb.PersistentClient(path=str(VECTOR_DB_PATH))
 
+COLLECTION_NAME = "antigravity_memory"
+
 if "--force" in sys.argv:
     try:
-        client.delete_collection("antigravity_memory")
+        client.delete_collection(COLLECTION_NAME)
     except Exception:
         pass
 
-collection = client.get_or_create_collection(name="antigravity_memory")
+collection = client.get_or_create_collection(name=COLLECTION_NAME)
 
 existing = collection.get()
 if existing and existing.get("ids") and "--force" not in sys.argv:
@@ -66,16 +73,19 @@ if existing and existing.get("ids") and "--force" not in sys.argv:
         sys.exit(0)
     print(f"  Content changed. Re-seeding ({len(existing['ids'])} old entries).")
     try:
-        client.delete_collection("antigravity_memory")
-        collection = client.get_or_create_collection(name="antigravity_memory")
+        client.delete_collection(COLLECTION_NAME)
     except Exception:
         pass
+
+collection = client.get_or_create_collection(name=COLLECTION_NAME)
 
 all_chunks = []
 for fpath in sorted(FILES):
     if not fpath.exists():
         continue
-    all_chunks.extend(chunk_file(fpath))
+    c = chunk_file(fpath)
+    all_chunks.extend(c)
+    print(f"  {fpath.name}: {len(c)} chunks", flush=True)
 
 ids, documents, metadatas = [], [], []
 for i, (section, text, start, end, src) in enumerate(all_chunks):
@@ -90,6 +100,15 @@ for i, (section, text, start, end, src) in enumerate(all_chunks):
         "file": Path(src).name,
     })
 
-collection.add(documents=documents, metadatas=metadatas, ids=ids)
+if ids:
+    BATCH_SIZE = 1000
+    for b in range(0, len(ids), BATCH_SIZE):
+        collection.add(
+            documents=documents[b:b+BATCH_SIZE],
+            metadatas=metadatas[b:b+BATCH_SIZE],
+            ids=ids[b:b+BATCH_SIZE]
+        )
+        print(f"  Indexed {min(b+BATCH_SIZE, len(ids))}/{len(ids)} chunks", flush=True)
+
 HASH_FILE.write_text(compute_hash())
 print(f"  Seeded {len(ids)} chunks from {len(FILES)} files into vector DB")

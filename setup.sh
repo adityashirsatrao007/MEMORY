@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ──────────────────────────────────────────────────────
-#  MEMORY — Setup & License Activation
+#  MEMORY — Setup
 #  Run this script after cloning the repo.
 # ──────────────────────────────────────────────────────
 
@@ -15,13 +15,13 @@ NC='\033[0m' # No Color
 
 echo ""
 echo -e "${BOLD}╔══════════════════════════════════════════════╗${NC}"
-echo -e "${BOLD}║         MEMORY — Setup & Activation         ║${NC}"
+echo -e "${BOLD}║              MEMORY — Setup                  ║${NC}"
 echo -e "${BOLD}╚══════════════════════════════════════════════╝${NC}"
 echo ""
 
 # ─── Step 1: Check Python ───────────────────────────────
 
-echo -e "${BOLD}[1/5] Checking prerequisites...${NC}"
+echo -e "${BOLD}[1/4] Checking prerequisites...${NC}"
 
 PYTHON=""
 for candidate in python3.12 python3.11 python3.10 python3; do
@@ -64,7 +64,7 @@ echo -e "  ${GREEN}✓${NC} $("$PYTHON" --version) at $(command -v "$PYTHON")"
 
 # ─── Step 2: Create virtual environment ─────────────────
 
-echo -e "${BOLD}[2/5] Setting up virtual environment...${NC}"
+echo -e "${BOLD}[2/4] Setting up virtual environment...${NC}"
 if [ ! -d ".venv" ]; then
     "$PYTHON" -m venv .venv
     echo -e "  ${GREEN}✓${NC} Created .venv"
@@ -74,65 +74,20 @@ fi
 
 # ─── Step 3: Install Python dependencies ────────────────
 
-echo -e "${BOLD}[3/5] Installing dependencies...${NC}"
+echo -e "${BOLD}[3/4] Installing dependencies...${NC}"
 source .venv/bin/activate
 pip install -q -U pip setuptools wheel 2>/dev/null
 pip install -q chromadb 2>/dev/null && echo -e "  ${GREEN}✓${NC} chromadb installed"
 echo -e "  ${GREEN}✓${NC} Dependencies ready"
 
-# ─── Step 4: License check ──────────────────────────────
-
-echo -e "${BOLD}[4/5] Checking license status...${NC}"
-
-LICENSE_FILE="$HOME/.config/memory/license.jwt"
-LICENSE_KEY=""
-
-if [ -f "$LICENSE_FILE" ]; then
-    TOKEN=$(cat "$LICENSE_FILE")
-    # Try online verification
-    VERIFY_URL="https://memory-license-server.onrender.com/verify"
-    FP=$(echo -n "$(hostname)-$(uname -s)-$(uname -m)" | sha256sum | cut -d' ' -f1)
-    RESULT=$(curl -s -m 5 -X POST "$VERIFY_URL" \
-        -H "Content-Type: application/json" \
-        -d "{\"token\":\"$TOKEN\",\"machine_fingerprint\":\"$FP\"}" 2>/dev/null || echo '{"valid":false}')
-    VALID=$(echo "$RESULT" | grep -o '"valid":true' || true)
-    if [ -n "$VALID" ]; then
-        TIER=$(echo "$RESULT" | grep -o '"tier":"[^"]*"' | cut -d'"' -f4 || echo "active")
-        echo -e "  ${GREEN}✓${NC} License active (${TIER})"
-    else
-        echo -e "  ${YELLOW}⚠ License token found but could not verify server.${NC}"
-        echo -e "  ${DIM}  → Offline grace may apply. Will use existing license.${NC}"
-    fi
-else
-    echo -e "  ${YELLOW}⚠ No license key found.${NC}"
-    echo ""
-    echo -e "  ${BOLD}This software requires a license for commercial use.${NC}"
-    echo ""
-    echo -e "  ${BOLD}Option A — Personal / Non-commercial use (FREE):${NC}"
-    echo -e "  ${DIM}  Set this environment variable to skip the license check:${NC}"
-    echo "    export MEMORY_NON_COMMERCIAL=1"
-    echo ""
-    echo -e "  ${BOLD}Option B — Get a trial or purchase a license:${NC}"
-    echo "    1. Open this URL in your browser:"
-    echo -e "       ${GREEN}https://adityashirsatrao007.github.io/MEMORY/docs/pricing.html${NC}"
-    echo "    2. Enter your email and click 'Start Trial'"
-    echo -e "    3. Copy the ${BOLD}license key${NC} shown on screen (also sent via email)"
-    echo "    4. Run this command to activate:"
-    echo -e "       ${GREEN}make license key=MEM-TRIAL-XXXX-XXXX-XXXX${NC}"
-    echo ""
-    echo -e "  ${YELLOW}Proceeding without activation — tools will prompt for license.${NC}"
-fi
-
-# ─── Step 5: Verify setup ───────────────────────────────
+# ─── Step 4: Verify setup ───────────────────────────────
 
 echo ""
-echo -e "${BOLD}[5/5] Setup complete${NC}"
+echo -e "${BOLD}[4/4] Setup complete${NC}"
 echo ""
 echo -e "  ${GREEN}Quick start:${NC}"
 echo "    source .venv/bin/activate"
 echo "    make validate"
-echo ""
-echo -e "  ${DIM}If you see a license error, set MEMORY_NON_COMMERCIAL=1 or activate a key.${NC}"
 echo ""
 
 # Copy env example if not present

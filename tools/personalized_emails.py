@@ -19,9 +19,9 @@ from pathlib import Path
 
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 587
-SMTP_USER = "adityashirsatrao007@gmail.com"
-SMTP_PASS = "gzwt yylt lcio dszo"
-SMTP_FROM = "adityashirsatrao007@gmail.com"
+SMTP_USER = os.environ.get("SMTP_USER", "")
+SMTP_PASS = os.environ.get("SMTP_PASS", "")
+SMTP_FROM = os.environ.get("SMTP_FROM", SMTP_USER)
 LOG_DIR = Path("/tmp/cold_email_logs")
 LOG_DIR.mkdir(exist_ok=True)
 RESUME_PATH = Path("/tmp/resume.pdf")

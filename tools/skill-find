@@ -1,0 +1,23 @@
+#!/bin/bash
+# Instant text search across all 2500+ skills using ripgrep
+# Usage: skill-find <query> [max-results]
+QUERY="$1"
+MAX="${2:-10}"
+SKILL_DIR="${MEMORY_ROOT:-$HOME/Desktop/Projects/MEMORY}/.agents/skills"
+
+if [ -z "$QUERY" ]; then
+  echo "Usage: skill-find <query> [max-results]"
+  echo "Search all 2500+ skills for matching content"
+  exit 1
+fi
+
+rg -l -i --max-count=5 "$QUERY" "$SKILL_DIR"/*/SKILL.md 2>/dev/null | head -n "$MAX" | while read -r f; do
+  NAME=$(basename "$(dirname "$f")")
+  LINES=$(wc -l < "$f")
+  MATCHES=$(rg -c -i "$QUERY" "$f" 2>/dev/null | cut -d: -f2)
+  echo "  $NAME ($LINES lines, $MATCHES matches)"
+done
+
+TOTAL=$(rg -l -i "$QUERY" "$SKILL_DIR"/*/SKILL.md 2>/dev/null | wc -l)
+echo ""
+echo "  Found in $TOTAL skills (showing top $MAX)"
