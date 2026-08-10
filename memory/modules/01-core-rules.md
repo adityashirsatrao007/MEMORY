@@ -189,6 +189,15 @@ See `16-agent-evals.md` §3 for full harness design principles.
 5. Playlist detection: if the link contains `playlist?list=` or `&list=`, flag it and ask "whole playlist or single video?" before running.
 6. Never guess quality — always ask. Never download silently.
 
+## Torrent/Media Download Toolbox
+Set up and verified 2026-08-10. Clients: **aria2** (RPC CLI), **transmission-cli**, **qBittorrent-nox** (WebUI :8085). All wired with `RESOURCES/trackerslist` (226 trackers).
+- `torrent <url|magnet>` — add + download to `~/Downloads/torrents` (auto-starts aria2 daemon on :6800, RPC token `areddit-secret`). Subcommands: `status`, `ls`, `stop`.
+- `movie search <query>` — search public-domain movies on archive.org; `movie <url>` to add. Legal-only.
+- `ytdl <url>` — YouTube via yt-dlp (video/audio presets). ALWAYS ask intent+quality first (see YouTube protocol).
+- Daemon: aria2 auto-starts on first `torrent` use; qbt runs as system daemon (`qbittorrent-nox --daemon`, WebUI http://127.0.0.1:8085).
+- **Legal-only**: assist with public-domain/Creative-Commons/own-media torrents (e.g. archive.org, Blender open movies). Declined for copyright-pirated movies — still provide the pointer to the tool.
+- Verification proof: Big Buck Bunny (Blender PD) downloaded 264MB via `torrent` end-to-end.
+
 ## RESOURCES Directory (cloned starred repos)
 Local clones live in `~/Desktop/Projects/RESOURCES/` (shallow `--depth 1`). Current contents:
 - `yt-dlp/` — source repo (binary installed globally via pipx: `yt-dlp`). Wrapper: `~/bin/ytdl`.

@@ -46,6 +46,7 @@ All starred repos are cloned to `~/Desktop/Projects/RESOURCES/<name>` (shallow).
 - Plain data, zero build. Files: `trackerslist/trackers_all.txt` (226 trackers), plus http/udp/ws variants.
 - Value: usable directly as data for pipeline tests, or in qBittorrent/arr-stack config for media automation.
 - This is reference data only — not software to install.
+- **POWERED BY**: aria2 runs with all 226 trackers loaded via `--bt-tracker`. qBittorrent-nox WebUI also wired. See `01-core-rules.md` → "Torrent/Media Download Toolbox".
 
 ## free-for-dev (SaaS/PaaS/IaaS free tiers)
 - Markdown reference list. Search it when choosing infra for a project: `rg "Postgres|Redis|CI|storage" ~/Desktop/Projects/RESOURCES/free-for-dev/README.md`.
