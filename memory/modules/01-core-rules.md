@@ -160,6 +160,25 @@ Before any multi-step agent task, verify:
 - [ ] Are resource limits set? (timeout, token budget)
 See `16-agent-evals.md` §3 for full harness design principles.
 
+## Repo Linking Protocol (MANDATORY)
+1. **Whenever the user pastes a GitHub repo URL** (any repo), immediately:
+   - Star it: `gh api -X PUT "user/starred/$owner/$repo"` (silent success = starred)
+   - Verify: `gh api --silent -X GET "user/starred/$owner/$repo"` (exit 0 = confirmed)
+   - Pull it in via `gh repo clone` **only if** user asks to use it (don't clone lazily)
+   - Add it to `memory/memory-bank/starred-repos.md` with: name, language, 1-line use-case, stars, "why useful to Aditya"
+   - `memory-search` the repo name → if related module exists, append relevance note; else record in `09-misc.md`
+2. Never skip the star even for trivial/unknown repos — the user tracks stars as a curated bookmarks list.
+
+## Daily Trending Scan (MANDATORY)
+Every session (or at minimum once per day) the agent MUST check GitHub trending and self-upgrade:
+```bash
+gh api "search/repositories" -f q="created:>$(date -d '-14 days' +%Y-%m-%d)" --jq '.items[:10] | .[] | [.full_name, .stargazers_count, .description] | @tsv'
+```
+- Filter for repos useful to Aditya's stack (Python, TS/React, C++, security, data, DevOps, LLM/AI tools).
+- For top hits, briefly evaluate: does it improve workflows/performance? If yes → record in `16-agent-evals.md` or `templates/` and mention to user.
+- Keep it short: 3-5 lines max in your reply. No noisy dumps.
+- Run `tools/check-trending.sh` if it exists (idempotent daily log).
+
 ## Pre-Done Audit
 ```bash
 for tool in $(rg "^\`([a-z][a-z-]+)\`" GEMINI.md -o --no-filename | sort -u); do which "$tool" &>/dev/null || echo "MISSING: $tool"; done

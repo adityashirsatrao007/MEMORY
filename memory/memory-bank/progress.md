@@ -33,6 +33,7 @@ MCP Memory Server built. Persistent SSE daemon on port 8932, systemd-enabled. 6 
 - Vector DB needs re-seeding after module content changes
 
 ## Session Log
+| 2026-08-10 08:42:27 | Completed: 4 sites live+200. Blocked: 2 backends + 2 infra-blocked apps. Next: browser imports. |
 | 2026-06-23 15:57:28 | Research-to-Integration session complete. Created 16-agent-evals.md (198 lines) distilling Anthropic eval/harness/skill patterns into MEMORY format. Enhanced 01-core-rules.md with eval gate, skill composition requirement, and harness self-audit. Added eval-design lesson 14 to 14-lessons-learned.md. Added 'make evals' target to Makefile. Integrated all into SUMMARY.md. Vector DB seeded (221 chunks). |
 | 2026-06-23 15:22:34 | Completed: Installed Fontsource variable fonts (@fontsource-variable/inter and @fontsource-variable/space-grotesk) as offline npm dependencies and integrated them locally in index.css. Blocked: None. Next: Design next-gen templates. |
 | 2026-06-23 15:18:32 | Completed: Created 3D Web Design & SaaS Template guidelines artifact and saved it in memory modules as 15-3d-web-design.md for future agent sessions. Blocked: None. Next: Design next-gen SaaS templates. |
@@ -136,3 +137,17 @@ MCP Memory Server built. Persistent SSE daemon on port 8932, systemd-enabled. 6 
 
 
 
+
+## Conversation Handoff (2026-08-10 08:00:17)
+- **Notes**: No explicit session notes provided.
+- **Incoming Agent Directive**: Read this note and resolve any pending tasks described.
+
+## Conversation Handoff (2026-08-10 08:42:27)
+- **Notes**: Completed: 4 sites live+200 with correct content (portfolio, BERT, SentinelX front, Tracelify front); wired portfolio live-demo links; fixed CI action typo (amondnet/vercel-action@v42) + set VERCEL_TOKEN via GitHub API; all CI deploy runs=success. Blocked: SentinelX/Tracelify/OME/NIDS backends not deployed (need browser OAuth to Render/Streamlit/HF + DB/Redis secrets). Next: user imports OME+Tracelify to Render, NIDS to Streamlit Cloud; add NEON Postgres+Redis Cloud free for SentinelX/Tracelify DB deps.
+- **Incoming Agent Directive**: Read this note and resolve any pending tasks described.
+
+## 2026-08-10 — AI Provider matrix created (by opencode)
+- Created AI_PROVIDERS.md (MEMORY repo + ~/.config/global-apikeys) — 23 providers already had vs 30 missing recommended keys with signup links.
+- Added SARVAM_API_KEY (verified working via /translate -> 200).
+- Added pending placeholders (commented) to keys.env; both key files synced/identical.
+- Next: user collects missing keys (starts: OPENAI, ANTHROPIC, XAI, TOGETHER, PERPLEXITY); then rerun tools/test_all_keys.py to validate.
