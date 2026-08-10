@@ -129,6 +129,15 @@ done
 }
 ```
 
+### 🛠️ One-shot OpenCode Integration (automated)
+Any AI (or the user) can wire opencode to MEMORY in one command — it installs the python deps, appends the MEMORY brain section to the global `~/.config/opencode/AGENTS.md`, merges the `memory` MCP server + `permission: allow` + token-saving config into `opencode.jsonc` (preserving existing servers like firecrawl), adds the tools to PATH, and re-seeds the vector DB. Idempotent — safe to re-run.
+
+```bash
+bash tools/opencode-integration.sh
+```
+
+After it finishes, **restart opencode**. The memory MCP tools (`recall_context`, `save_memory`, `search_memory`, `session_status`, `memory_stats`, `session_snapshot`, `get_memory_modules`) go live and the persistent brain loop (handoff on session start/end) is active.
+
 ---
 
 ## 🧩 The 12 Brain Modules
