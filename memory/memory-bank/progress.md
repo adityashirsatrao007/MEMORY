@@ -33,6 +33,7 @@ MCP Memory Server built. Persistent SSE daemon on port 8932, systemd-enabled. 6 
 - Vector DB needs re-seeding after module content changes
 
 ## Session Log
+| 2026-08-10 09:21:41 | Completed: tutorials 04-05 + index + README updates, pushed 731dcf6. Blocked: none. Next: end-to-end whisper p95 run; mock-interview skeleton. |
 | 2026-08-10 08:42:27 | Completed: 4 sites live+200. Blocked: 2 backends + 2 infra-blocked apps. Next: browser imports. |
 | 2026-06-23 15:57:28 | Research-to-Integration session complete. Created 16-agent-evals.md (198 lines) distilling Anthropic eval/harness/skill patterns into MEMORY format. Enhanced 01-core-rules.md with eval gate, skill composition requirement, and harness self-audit. Added eval-design lesson 14 to 14-lessons-learned.md. Added 'make evals' target to Makefile. Integrated all into SUMMARY.md. Vector DB seeded (221 chunks). |
 | 2026-06-23 15:22:34 | Completed: Installed Fontsource variable fonts (@fontsource-variable/inter and @fontsource-variable/space-grotesk) as offline npm dependencies and integrated them locally in index.css. Blocked: None. Next: Design next-gen templates. |
@@ -151,3 +152,5 @@ MCP Memory Server built. Persistent SSE daemon on port 8932, systemd-enabled. 6 
 - Added SARVAM_API_KEY (verified working via /translate -> 200).
 - Added pending placeholders (commented) to keys.env; both key files synced/identical.
 - Next: user collects missing keys (starts: OPENAI, ANTHROPIC, XAI, TOGETHER, PERPLEXITY); then rerun tools/test_all_keys.py to validate.
+
+- Skipped paid (Together/MiniMax/DashScope/Perplexity/AI21). Added SAMBANOVA(valid). Dead free keys: GEMINI/HF_TOKEN/KIMI. Queue: Hyperbolic, Tavily, Voyage, Jina, ElevenLabs, Brave.

@@ -169,6 +169,36 @@ See `16-agent-evals.md` §3 for full harness design principles.
    - `memory-search` the repo name → if related module exists, append relevance note; else record in `09-misc.md`
 2. Never skip the star even for trivial/unknown repos — the user tracks stars as a curated bookmarks list.
 
+## YouTube/Media Link Protocol (MANDATORY)
+**Whenever the user pastes a YouTube (or other video/audio) link, the agent MUST ask before downloading.** Do NOT download automatically.
+1. First, check metadata WITHOUT downloading:
+   ```bash
+   yt-dlp -J --no-playlist "<url>" | jq -r '"title: \(.title) | dur: \(.duration) | uploader: \(.uploader)"'
+   ```
+2. Ask the user (2 quick questions):
+   - **What to do**: download video / download audio only (mp3) / just info (no download) / subtitless / playlist
+   - **Quality**: for video → `best` | `1080p` | `720p` | `480p` | `360p`; for audio → `320k` | `192k` | `128k`
+3. Download with the `ytdl` wrapper (installed at `~/bin/ytdl`):
+   ```bash
+   ytdl "<url>"                 # video best
+   ytdl "<url>" -q 720p         # video capped
+   ytdl "<url>" --audio-only    # audio 320k mp3
+   ytdl "<url>" --audio-only -q 128k
+   ```
+4. Files land in the current working directory by default. If only extraction/info was requested, mock nothing — just report metadata.
+5. Playlist detection: if the link contains `playlist?list=` or `&list=`, flag it and ask "whole playlist or single video?" before running.
+6. Never guess quality — always ask. Never download silently.
+
+## RESOURCES Directory (cloned starred repos)
+Local clones live in `~/Desktop/Projects/RESOURCES/` (shallow `--depth 1`). Current contents:
+- `yt-dlp/` — source repo (binary installed globally via pipx: `yt-dlp`). Wrapper: `~/bin/ytdl`.
+- `nitro/` — Nitro 3 framework source; install done via `pnpm@9.15.9`. Consume via `npx nitro@latest` for new projects; the clone is for reading source.
+- `authentik/` — SSO/OIDC/SAML self-hosted IdP. Run on demand via `docker compose` (needs Postgres+Redis+worker stack, multi-GB images — do NOT pull lazily).
+- `go-whatsapp-web-multidevice/` — WhatsApp REST API in Go; build with `go build` if needed.
+- `JUCE/` — C++ audio framework; requires CMake + JUCE framework to build.
+- `trackerslist/` — plain text tracker lists under `trackerslist/*.txt` (usable immediately, no build).
+- `free-for-dev/` — markdown reference list only.
+
 ## Daily Trending Scan (MANDATORY)
 Every session (or at minimum once per day) the agent MUST check GitHub trending and self-upgrade:
 ```bash
