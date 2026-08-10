@@ -200,6 +200,13 @@ Set up and verified 2026-08-10. Clients: **aria2** (RPC CLI), **transmission-cli
 
 ## Anime Downloader/Streamer (Crunchyroll official)
 - Tool: **crunchy-cli** v3.6.7, installed at `~/bin/crunchy`, wrapper `~/bin/anime`.
+- Player: **mpv** v0.41 (installed 2026-08-10) — crunchy-cli streams to mpv by default. vlc/ffplay also available.
+- **Stream protocol**: when user says "stream <anime name>":
+  1. `anime search "<name>" --search-top-results-limit 5` → find series (or use known URL)
+  2. `anime login` if not already logged in (needs user's Crunchyroll credentials — ask them to run it once if not done)
+  3. `anime play <series-url> <episode>` → streams in mpv (uses their account).
+  4. For download instead: `anime download <series-url>`.
+- If user says "stream <anime>" with an anime NOT on Crunchyroll, say so and offer legal alternatives (their Crunchyroll account is the only licensed source we have).
 - Source: `crunchy-labs/crunchy-cli` (★634), official Crunchyroll client — NOT a pirate mirror scraper.
 - Commands:
   - `anime search "<title>" --search-top-results-limit 5` — find series
