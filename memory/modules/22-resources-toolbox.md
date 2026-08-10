@@ -51,3 +51,6 @@ All starred repos are cloned to `~/Desktop/Projects/RESOURCES/<name>` (shallow).
 ## free-for-dev (SaaS/PaaS/IaaS free tiers)
 - Markdown reference list. Search it when choosing infra for a project: `rg "Postgres|Redis|CI|storage" ~/Desktop/Projects/RESOURCES/free-for-dev/README.md`.
 - Value: build freelancing products at $0 until they earn. Always check this before suggesting paid services to Aditya.
+## Anime (Crunchyroll, official)
+- `~/bin/crunchy` (crunchy-cli v3.6.7) + `~/bin/anime` wrapper. Official Crunchyroll client — the ONLY legal CLI path. Requires user's own account (`anime login`) or `--anonymous` free tier.
+- Full usage in `01-core-rules.md` → "Anime Downloader/Streamer".

@@ -33,6 +33,7 @@ MCP Memory Server built. Persistent SSE daemon on port 8932, systemd-enabled. 6 
 - Vector DB needs re-seeding after module content changes
 
 ## Session Log
+| 2026-08-10 09:44:59 | Completed: research+from-zero+coverage map+pushed 98177b3. Blocked: none. Next: install whisper/jiwer to validate asr_pipeline end-to-end; build weekly study schedule. |
 | 2026-08-10 09:21:41 | Completed: tutorials 04-05 + index + README updates, pushed 731dcf6. Blocked: none. Next: end-to-end whisper p95 run; mock-interview skeleton. |
 | 2026-08-10 08:42:27 | Completed: 4 sites live+200. Blocked: 2 backends + 2 infra-blocked apps. Next: browser imports. |
 | 2026-06-23 15:57:28 | Research-to-Integration session complete. Created 16-agent-evals.md (198 lines) distilling Anthropic eval/harness/skill patterns into MEMORY format. Enhanced 01-core-rules.md with eval gate, skill composition requirement, and harness self-audit. Added eval-design lesson 14 to 14-lessons-learned.md. Added 'make evals' target to Makefile. Integrated all into SUMMARY.md. Vector DB seeded (221 chunks). |
@@ -154,3 +155,5 @@ MCP Memory Server built. Persistent SSE daemon on port 8932, systemd-enabled. 6 
 - Next: user collects missing keys (starts: OPENAI, ANTHROPIC, XAI, TOGETHER, PERPLEXITY); then rerun tools/test_all_keys.py to validate.
 
 - Skipped paid (Together/MiniMax/DashScope/Perplexity/AI21). Added SAMBANOVA(valid). Dead free keys: GEMINI/HF_TOKEN/KIMI. Queue: Hyperbolic, Tavily, Voyage, Jina, ElevenLabs, Brave.
+
+- README + updated with API Key Links master table (has/next/paid). TAVILY verified. Skip-paid policy locked.

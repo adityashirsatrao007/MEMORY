@@ -198,6 +198,17 @@ Set up and verified 2026-08-10. Clients: **aria2** (RPC CLI), **transmission-cli
 - **Legal-only**: assist with public-domain/Creative-Commons/own-media torrents (e.g. archive.org, Blender open movies). Declined for copyright-pirated movies — still provide the pointer to the tool.
 - Verification proof: Big Buck Bunny (Blender PD) downloaded 264MB via `torrent` end-to-end.
 
+## Anime Downloader/Streamer (Crunchyroll official)
+- Tool: **crunchy-cli** v3.6.7, installed at `~/bin/crunchy`, wrapper `~/bin/anime`.
+- Source: `crunchy-labs/crunchy-cli` (★634), official Crunchyroll client — NOT a pirate mirror scraper.
+- Commands:
+  - `anime search "<title>" --search-top-results-limit 5` — find series
+  - `anime login` — Save user's own Crunchyroll credentials (first time)
+  - `anime download <series>` — download episodes (requires their account)
+  - Anonymous mode works (`--anonymous`) but limited/rate-limited.
+- **Boundary**: only anime the user has licensed access to (own Crunchyroll account or official free tier). Declined: ani-cli/anipy-cli etc. (scrape unauthorized mirrors — same as piracy policy).
+- Worldwide search performed 2026-08-10; results: ani-cli(13.4k★, non-compliant), GoAnime(1.1k★), crunchy-cli(634★, compliant, chosen), anipy-cli(504★, non-compliant), koneko nyaa CLI(223★).
+
 ## RESOURCES Directory (cloned starred repos)
 Local clones live in `~/Desktop/Projects/RESOURCES/` (shallow `--depth 1`). Current contents:
 - `yt-dlp/` — source repo (binary installed globally via pipx: `yt-dlp`). Wrapper: `~/bin/ytdl`.
