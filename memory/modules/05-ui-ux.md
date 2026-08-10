@@ -4,6 +4,17 @@
 
 ---
 
+## 🚫 UI Anti-Patterns — Do NOT Make These Errors (enforced by `tools/validate_ui.py`)
+
+Apply these in EVERY project (any framework: React, Next, Vue, plain HTML). The repo's pre-commit hook block commits on these ERRORS:
+
+- **NO placeholder text/comments.** `placeholder`, `lorem ipsum`, "your text here", "todo", sample/dummy copy → replace with real, high-quality content. Exception: normal HTML input `placeholder="..."` attributes are fine (validator already ignores them).
+- **NO basic utility color classes.** `bg-*`, `text-*`, `border-*`, `ring-*`, `decoration-*` using raw `red|blue|green|yellow|purple|pink|indigo` at `500|600`. Use custom HSL/Sass tokens, or Tailwind neutral/slate/zinc/stone/gray scales.
+- **NO raw `border` without a color.** `border` alone renders a harsh default border. Always use `border-slate-*`, `border-zinc-*`, `border-neutral-*`, or `border-gray-*`.
+- **Font stack must include premium/system fonts.** `font-family` should include `SF Pro Display`, `Inter`, `-apple-system`, or equivalent. Avoid exotic single fonts with no fallback.
+
+**Gold internal check before finishing any UI work:** `rg -n "placeholder|bg-(red|blue|green|yellow|purple|pink|indigo)-(500|600)" src/` — fix anything it hits. Project-specific (campussync), the same rules apply everywhere; treat the validator as the ground truth, not memory.
+
 ## 🎨 UI/UX Standard (Default — Never Needs to Be Asked)
 
 Every web interface MUST be premium quality:

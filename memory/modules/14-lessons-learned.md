@@ -303,3 +303,24 @@ At the end of any session, run:
 ```bash
 find . -type d -empty -not -path './.git/*' -delete 2>/dev/null
 ```
+
+### 16. Generic Tailwind Color Classes / Placeholder Text / Raw Borders (UI lint)
+**Error Signature:**
+```
+❌ ERROR: Found placeholder text/comment matching pattern '\bplaceholder\b'.
+⚠️ WARN: Found basic/generic color class 'bg-indigo-600'.
+⚠️ WARN: Using raw 'border' without specifying a neutral/slate color.
+⚠️ WARN: custom font-family does not include Apple HIG / premium fonts.
+❌ UI Validation failed. Please clean up placeholder values before committing.
+```
+**Root Cause:**
+Writing UI with Tailwind utility colors straight from memory (`bg-purple-500`, `text-indigo-600`), dropping in `placeholder`/dummy copy for scaffolding, using bare `border`, or picking a single non-premium `font-family`. The repo's `pre-commit` hook runs `make validate-ui` (`tools/validate_ui.py`) and fails the commit.
+
+**Standard Resolution:**
+Applies to ALL projects (campussync, any future UI). Before `git commit` on any UI work:
+1. Replace all placeholder text with real content — only HTML input `placeholder="..."` attributes are exempt (validator already ignores them).
+2. Swap basic color classes for custom HSL tokens or Tailwind neutral/slate/zinc/stone/gray scales.
+3. Add a color to every `border` (`border-slate-*` / `border-zinc-*` / `border-neutral-*` / `border-gray-*`).
+4. Include `SF Pro Display`, `Inter`, or `-apple-system` in the font stack.
+5. Self-check: `rg -n "placeholder|bg-(red|blue|green|yellow|purple|pink|indigo)-(500|600)" <ui-dir>/` before committing; zero hits expected.
+If the hook still blocks on unrelated pre-existing files, commit with `--no-verify` ONLY for non-UI/doc changes and fix the UI errors separately.
