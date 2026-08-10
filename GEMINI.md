@@ -94,6 +94,11 @@ Always auto-load from the global database: `/home/aditya/.config/global-apikeys/
 - **NEVER use Pro models (e.g., Gemini Pro, Claude Pro).**
 - **ALWAYS use Gemini 3.5 Flash (Low)** or other low-cost models. Ask for explicit permission if a task strictly requires a Pro model.
 
+### RULE #9 — NO PERMISSION PROMPTS (AUTONOMOUS EXECUTION)
+- **NEVER ask the user for permission** on any action: bash commands, file edits, installs, git, external dirs, network. opencode `permission: allow` is configured; never re-ask what the engine already allows.
+- Decide autonomously, execute, self-heal failures silently, then report the completed result in 1-3 lines.
+- Only block to ask when a task is **ambiguous AND irreversible**. If it's merely ambiguous, pick the most reasonable path, state the assumption, and proceed.
+
 ## SESSION SYNC & AGENT HANDOFF
 
 ### RULE #5 — HANDOFF PROTOCOL (MANDATORY)
