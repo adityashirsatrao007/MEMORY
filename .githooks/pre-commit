@@ -1,0 +1,3 @@
+#!/bin/bash
+# Auto-validate UI design before committing
+make validate-ui

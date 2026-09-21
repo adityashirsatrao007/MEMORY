@@ -1,0 +1,76 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+.nuxt/
+.output/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/settings.json
+.idea/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+dist/
+
+# Large reference projects (not part of core MEMORY config)
+templates/frontend-v0-reference/
+templates/fullstack-bolt-reference/
+templates/agent-skills/
+templates/ponytail/
+
+# Agents third-party skills directory
+.agents/
+
+# Session cache (contains transient agent tokens/session data)
+memory/.sessions/
+
+# Misc
+vector_db/
+memory/context-snapshot.md
+.cache/
+*.tmp
+*.swp
+agent_workspace/
+data/
+dotfiles/
+scratch/
+pihole/
+bsnl-*.txt
+tv-setup.sh
+keys.env
+*.env

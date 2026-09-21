@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Nunito", sans-serif;
+  --font-display: "Quicksand", sans-serif;
+}
+
+body {
+  background-color: #e0e0e0;
+  color: #3f3f46;
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+}
+
+/* Neumorphic components - Light Gray tactile desk */
+.neumorph-card-out {
+  background: #e0e0e0;
+  box-shadow: 12px 12px 24px #bebebe, -12px -12px 24px #ffffff;
+  border-radius: 2rem;
+}
+
+.neumorph-card-in {
+  background: #e0e0e0;
+  box-shadow: inset 8px 8px 16px #bebebe, inset -8px -8px 16px #ffffff;
+  border-radius: 1.5rem;
+}
+
+.neumorph-btn {
+  background: #e0e0e0;
+  border-radius: 1.2rem;
+  box-shadow: 6px 6px 12px #bebebe, -6px -6px 12px #ffffff;
+  transition: all 0.2s ease-in-out;
+  color: #4b5563;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.neumorph-btn:hover {
+  color: #111827;
+}
+
+.neumorph-btn:active, .neumorph-btn-active {
+  box-shadow: inset 6px 6px 12px #bebebe, inset -6px -6px 12px #ffffff;
+}
+
+.neumorph-input {
+  background: #e0e0e0;
+  border-radius: 1rem;
+  border: none;
+  box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+  color: #374151;
+  transition: all 0.3s ease;
+}
+
+.neumorph-input:focus {
+  outline: none;
+  box-shadow: inset 7px 7px 14px #bebebe, inset -7px -7px 14px #ffffff;
+}

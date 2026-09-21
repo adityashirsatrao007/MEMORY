@@ -1,0 +1,3 @@
+[submodule ".agents/skills/taste-skill"]
+	path = .agents/skills/taste-skill
+	url = https://github.com/Leonxlnx/taste-skill.git

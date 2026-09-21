@@ -1,0 +1,160 @@
+%------------------------
+% ATS-Optimized SDE Resume — Aditya Shirsatrao
+% Fresh synthesis from 18 resume variants (Downloads/Resumes.zip) + GitHub
+% Target: SDE / Backend / Full-Stack — 1 Page
+%------------------------
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+%\usepackage{fontawesome5} % removed for texlive minimal
+\usepackage{microtype}
+\usepackage{mathptmx}
+
+\renewcommand{\rmdefault}{ptm}
+\DisableLigatures{encoding = *, family = *}
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-0.6in}
+\addtolength{\textheight}{1.15in}
+\setlength{\footskip}{4pt}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{\vspace{-4pt}\scshape\raggedright\large}{}{0em}{}[\color{black}\titlerule \vspace{-3pt}]
+\titlespacing{\section}{0pt}{5pt}{3pt}
+\newcommand{\resumeItem}[1]{\item\small{#1 \vspace{-1pt}}}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textit{\small #2} \\
+      \textit{\small#3} & \textit{\small #4}
+    \end{tabular*}\vspace{-5pt}
+}
+\newcommand{\resumeProjectHeading}[2]{
+  \item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \small\textbf{#1} & \textit{\small #2}
+  \end{tabular*}\vspace{-3pt}
+}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{-2pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=15pt,itemsep=0pt,parsep=0pt,topsep=1pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
+
+\begin{document}
+
+%----------HEADER----------
+\begin{center}
+  {\Huge\textbf{\scshape Aditya Shirsatrao}} \\ \vspace{2pt}
+  \small
+  \href{mailto:adityashirsatrao007@gmail.com}{adityashirsatrao007@gmail.com} \hspace{4pt}$|$\hspace{4pt}
+  +91-7387-384655 \hspace{4pt}$|$\hspace{4pt}
+  \href{https://www.linkedin.com/in/adityashirsatrao/}{linkedin.com/in/adityashirsatrao} \hspace{4pt}$|$\hspace{4pt}
+  \href{https://github.com/adityashirsatrao007}{github.com/adityashirsatrao007} \hspace{4pt}$|$\hspace{4pt}
+  \href{https://leetcode.com/u/adityashirsatrao007/}{LeetCode} \hspace{4pt}$|$\hspace{4pt}
+  \href{https://huggingface.co/adityashirsatrao007}{HuggingFace}
+\end{center}
+
+%----------SUMMARY----------
+\section{Professional Summary}
+\small{SDE-oriented Full-Stack \& Systems Engineer building low-latency backends, distributed streaming platforms, and production AI systems. Authored C++17 order matching engine (10.9M orders/sec, price-time priority) and Kafka+Spark pipeline (10K events/sec, p99 $<$500ms). Shipped 3 hackathon-winning products (600--800+ teams) and merged 50+ PRs at Google, Microsoft, Apache, Hedera. 366 LeetCode (104E/176M/86H) + 50 SQL. GDG AI/ML Lead mentoring 200+ students.}
+
+%----------EDUCATION----------
+\section{Education}
+\resumeSubHeadingListStart
+\resumeSubheading
+  {N. K. Orchid College of Engineering and Technology}{Solapur, MH}
+  {B.Tech -- Artificial Intelligence and Data Science \hspace{4pt}|\hspace{4pt} \textbf{CGPA: 8.5/10} \hspace{4pt}|\hspace{4pt} Expected 2027}{Aug 2023 -- Present}
+\resumeSubHeadingListEnd
+\vspace{-4pt}
+\small{\textbf{Class XII (HSC):} 90\% -- Sarosh Junior College, Aurangabad \hspace{6pt}$|$\hspace{6pt} \textbf{Class X (ICSE):} 90\% -- St. Thomas EM School, Solapur}\vspace{2pt}
+
+%----------EXPERIENCE----------
+\section{Experience}
+\resumeSubHeadingListStart
+\resumeSubheading
+  {Fullstack Web Development Intern}{Jul 2025 -- Jan 2026}
+  {Unified Mentor Pvt. Ltd. -- Production Systems \& Distributed Platforms}{Remote}
+  \resumeItemListStart
+    \resumeItem{Built 6 production-grade platforms: \textbf{AI code review} (Kafka+Redis, -45\% latency via parallel workers \& AST vector search), \textbf{real-time collaborative IDE} (WebSockets/Socket.IO/Redis pub/sub, CRDT, Monaco Editor, sub-100ms sync), \textbf{distributed ML inference} (+60\% throughput via batching/caching, Prometheus), \textbf{event streaming analytics} (Kafka+Spark), \textbf{AI interview platform} (Whisper+LLM), and \textbf{microservices e-commerce} (Docker/Kubernetes, payment \& inventory consistency).}
+    \resumeItem{Stack: React, Next.js, Node.js, FastAPI, PostgreSQL, Redis, Kafka, Docker, Kubernetes, WebSockets, OAuth, GitHub Actions CI/CD. Shipped with observability and multi-env deployments.}
+  \resumeItemListEnd
+\resumeSubheading
+  {AI/ML Lead}{Sep 2025 -- Present}
+  {Google Developer Groups on Campus (GDG-NKOCET)}{Solapur}
+  \resumeItemListStart
+    \resumeItem{Lead AI/ML for 200+ students; workshops on system design, distributed systems \& production ML. Mentored juniors on Git/GitHub, backend architecture, and shipping. Class Representative (2023--27, 120+ cohort).}
+  \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%----------SKILLS----------
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}, itemsep=1pt]
+  \small{
+  \item{\textbf{Languages:} Python, C++17, Java, JavaScript/TypeScript, Go, SQL \hspace{6pt}$|$\hspace{6pt} \textbf{Backend:} FastAPI, Node.js, PostgreSQL, Redis, Celery, Docker, Kubernetes, Kafka, Spark, Microservices, REST, JWT/RBAC, CI/CD}
+  \item{\textbf{Frontend:} React.js, Next.js, Tailwind, WebSockets/Socket.IO \hspace{6pt}$|$\hspace{6pt} \textbf{ML/Systems:} PyTorch, HuggingFace, RAG/FAISS, Whisper, BERT 92\%+ \hspace{6pt}$|$\hspace{6pt} \textbf{Core:} DSA 366 (86H) + 50 SQL, System Design, Distributed Systems}
+  }
+\end{itemize}
+
+%----------PROJECTS (SDE TOP 3)----------
+\section{Projects}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+  {Order Matching Engine -- Low-Latency C++17 Limit Order Book \normalfont{\small $|$ \href{https://github.com/adityashirsatrao007/order-matching-engine}{GitHub}} $|$ C++17, FastAPI, WebSocket}{Aug 2025}
+  \resumeItemListStart
+    \resumeItem{Deterministic matching core with \textbf{price-time priority \& FIFO} within level; supports LIMIT/MARKET/STOP with GTC/IOC/FOK, partial fills, cancellations. Zero external deps, trade tape + depth callbacks; \textbf{10.9M+ matches/sec} on bench harness (µs/order). FastAPI+WebSocket bridge: \texttt{POST /orders}, \texttt{GET /depth}, \texttt{WS /ws} live ticks. Dockerized with CI.}
+  \resumeItemListEnd
+
+\resumeProjectHeading
+  {SentinelX -- AI Cybersecurity Platform \normalfont{\small $|$ \href{https://github.com/adityashirsatrao007/ai-threat-detection}{GitHub}} $|$ FastAPI, DistilBERT, Whisper, Celery, Redis, PostgreSQL}{May 2026}
+  \resumeItemListStart
+    \resumeItem{Multi-channel threat detection (email/SMS/voice) with DistilBERT NLP + Whisper STT + Qwen 2.5-7B enrichment; \textbf{4-component weighted risk engine} (NLP$\cdot$0.35 + Behavior$\cdot$0.25 + URL$\cdot$0.20 + Reputation$\cdot$0.20). Async Celery+Redis pipeline, JWT/RBAC, Alembic migrations. \textbf{1st Place, Hack to Future 3.0 (600+ teams, \rupee50k), shipped in 36h.}}
+  \resumeItemListEnd
+
+\resumeProjectHeading
+  {Real-Time Clickstream Pipeline -- Kafka + Spark Structured Streaming \normalfont{\small $|$ \href{https://github.com/adityashirsatrao007/real-time-clickstream}{GitHub}} $|$ Kafka, Spark, Docker}{Aug 2025}
+  \resumeItemListStart
+    \resumeItem{Producer $\rightarrow$ Kafka topic \texttt{clicks} $\rightarrow$ Spark Structured Streaming: windowed sessionization, top-page ranking, spike anomaly detection with watermarking for late data. Sustained \textbf{10K events/sec, p99 $<$500ms}; \texttt{docker compose up} for Kafka/Zookeeper/Spark. Benchmark mode for throughput/latency.}
+  \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%----------OPEN SOURCE----------
+\section{Open Source \& Additional Projects}
+\begin{itemize}[leftmargin=0.15in, label={}, itemsep=1pt]
+  \item\small{\textbf{50+ PRs merged} -- Google OSS-Fuzz, Microsoft VibeVoice, Apache DataFusion, Hedera Hiero SDK (10k+ devs impacted). Hiero PR \#1030: -30\% boilerplate; Super Impress PR \#77: +15\% CLS; DataFusion v43 JOIN optimizer repro.}
+  \item\small{\textbf{Tracelify (PyPI: tracelify-sdk)} -- 6-lang SDK + FastAPI/Redis/RBAC + Bedrock LLM reports; 1st Runner-Up Orchathon 2K26 (800 teams). \textbf{BERT Multilingual} (92\%+, 104 langs, HuggingFace) -- IEEE ICCTWC 2026 first-author. \textbf{Nyaya AI} (EasyOCR FIR, 500+ IPC) -- National Runner-Up (800 teams).}
+\end{itemize}
+
+%----------ACHIEVEMENTS----------
+\section{Achievements \& Certifications}
+\begin{itemize}[leftmargin=0.15in, label={}, itemsep=1pt]
+  \item\small{\textbf{3$\times$ National Hackathon Winner:} 1st Place Hack to Future 3.0 (600 teams), 1st Runner-Up Orchathon 2K26 (800 teams), 1st Runner-Up National Legal-Tech Hackathon (800 teams).}
+  \item\small{\textbf{366 LeetCode + 50 SQL} (86 Hard) | \textbf{NPTEL Programming in Java Elite+Gold (91/100)} | Class Rep 120+ | 40+ repos, 105 merged PRs, 32 orgs.}
+  \item\small{\textbf{Certifications:} Kaggle AI Agents Intensive (2025), JPMorgan Chase SE Virtual Experience, Electronic Arts SE Virtual Experience, AWS Bedrock, Joy of Computing (NPTEL).}
+\end{itemize}
+
+\end{document}

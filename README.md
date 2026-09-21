@@ -1,0 +1,505 @@
+# 🧠 MEMORY
+
+<p align="center">
+  <strong>The Autonomous Agent's Brain — 12 Modules · 54 CLI Tools · ∞ Context</strong>
+</p>
+
+<p align="center">
+  <img alt="Modules" src="https://img.shields.io/badge/Modules-12-2E4036?style=flat-square">
+  <img alt="Tools" src="https://img.shields.io/badge/CLI%20Tools-54-CC5833?style=flat-square">
+  <img alt="Vector" src="https://img.shields.io/badge/Vector%20DB-ChromaDB-CC5833?style=flat-square">
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-green?style=flat-square">
+</p>
+
+---
+
+## ⚡ Quick Start & Setup
+
+Follow these setup instructions based on your operating system:
+
+### 🍎 macOS
+1. **Install Prerequisites**: Ensure you have Homebrew and Python 3.10+ installed:
+   ```bash
+   brew install python@3.12 make
+   ```
+2. **Setup Environment**: Run the setup script to create a virtual environment and configure dependencies:
+   ```bash
+   make setup
+   ```
+3. **Run Validation**:
+   ```bash
+   source .venv/bin/activate
+   make validate
+   ```
+
+### 🐧 Linux (Ubuntu)
+1. **Install Prerequisites**: Ensure Python 3.10+, pip, venv, and build tools are installed:
+   ```bash
+   sudo apt update && sudo apt install -y build-essential python3 python3-venv python3-pip
+   ```
+2. **Setup Environment**: Run the setup script to create a virtual environment and configure dependencies:
+   ```bash
+   make setup
+   ```
+3. **Run Validation**:
+   ```bash
+   source .venv/bin/activate
+   make validate
+   ```
+
+### 🪟 Windows
+
+#### Option A: WSL2 (Recommended & Fully Supported)
+Runs a native Ubuntu Linux environment inside Windows.
+1. Open PowerShell as Administrator and run:
+   ```powershell
+   wsl --install
+   ```
+   *(Restart Windows if prompted to complete setup).*
+2. Open your WSL (Ubuntu) terminal and install prerequisites:
+   ```bash
+   sudo apt update && sudo apt install -y build-essential python3 python3-venv python3-pip git
+   ```
+3. Clone and set up:
+   ```bash
+   git clone https://github.com/adityashirsatrao007/MEMORY.git
+   cd MEMORY
+   make setup
+   source .venv/bin/activate
+   make validate
+   ```
+
+#### Option B: Native Windows (Git Bash)
+1. Install [Git for Windows](https://git-scm.com/download/win) (provides Git Bash).
+2. Install [Python 3.10+](https://www.python.org/downloads/windows/) (ensure you check **"Add Python to PATH"**).
+3. Open **Git Bash** and run the setup script:
+   ```bash
+   bash setup.sh
+   source .venv/bin/activate
+   ```
+---
+
+## 💀 The Problem That Built This
+
+It's 3 AM. You've been in the zone for 6 hours — agent is flying through code, shipping features, fixing bugs. Then it hits.
+
+**Context budget exhausted.**
+
+The agent forgets everything. Your project structure, the auth pattern you established, the coding conventions — gone. It starts hallucinating file paths it already created, suggesting patterns it already rejected, asking questions it already answered. Each response degrades. You're burning money on tokens just to re-explain what you already said.
+
+**Sound familiar?**
+
+This repo is the antidote. MEMORY is a modular, cross-agent knowledge system designed so your AI agents never forget. Instead of dumping 3,622 lines of rules into one monolithic file that burns through your context budget in minutes, MEMORY lazy-loads only what the agent needs — ~200 tokens for quick lookups, ~1,420 for deep work. That's **60-95% fewer tokens per session** than the old way.
+
+Six agents (Claude Code, OpenCode, Cursor, Windsurf, Copilot, Cline) point at one source of truth through symlinks. Twelve brain modules cover every domain. A vector database lets agents search before they load. And if one agent hits token limits, another picks up seamlessly with a handoff file.
+
+No more 3 AM context dumps. No more repeated explanations. No more burned credits on re-learning.
+
+---
+
+## 🏗️ Architecture
+
+---
+
+## 🔗 Symlink Architecture — One Source of Truth
+
+Five agents, six symlinks, one file. Every agent tool reads the same `GEMINI.md` as its instruction set, which acts as a router that loads only the memory modules relevant to the task.
+
+| Link | Target | Agent / Tool |
+|------|--------|-------------|
+| `CLAUDE.md` | `→ GEMINI.md` | Claude Code |
+| `AGENTS.md` | `→ GEMINI.md` | OpenCode / generic agents |
+| `.cursorrules` | `→ GEMINI.md` | Cursor AI |
+| `.windsurfrules` | `→ GEMINI.md` | Windsurf |
+| `.clinerules` | `→ GEMINI.md` | Cline |
+| `.github/copilot-instructions.md` | `→ GEMINI.md` | GitHub Copilot |
+
+```bash
+# Verify all symlinks resolve correctly
+for f in AGENTS.md CLAUDE.md .cursorrules .windsurfrules .clinerules .github/copilot-instructions.md; do
+  [ "$(readlink -f "$f")" = "$(readlink -f GEMINI.md)" ] || echo "BROKEN: $f"
+done
+```
+
+### opencode.json Config
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": ["/home/aditya/Desktop/Projects/MEMORY/GEMINI.md"]
+}
+```
+
+### 🛠️ One-shot OpenCode Integration (automated)
+Any AI (or the user) can wire opencode to MEMORY in one command — it installs the python deps, appends the MEMORY brain section to the global `~/.config/opencode/AGENTS.md`, merges the `memory` MCP server + `permission: allow` + token-saving config into `opencode.jsonc` (preserving existing servers like firecrawl), adds the tools to PATH, and re-seeds the vector DB. Idempotent — safe to re-run.
+
+```bash
+bash tools/opencode-integration.sh
+```
+
+After it finishes, **restart opencode**. The memory MCP tools (`recall_context`, `save_memory`, `search_memory`, `session_status`, `memory_stats`, `session_snapshot`, `get_memory_modules`) go live and the persistent brain loop (handoff on session start/end) is active.
+
+---
+
+## 🧩 The 12 Brain Modules
+
+Each module is a markdown file under `memory/modules/XX-*.md`. The agent loads ONLY what it needs.
+
+| # | Module | Lines | Domain | Load When |
+|---|--------|-------|--------|-----------|
+| 01 | **Core Rules** | 115 | Session protocol, Karpathy, prod standards | Every full session |
+| 02 | **CLI Tools** | 160 | 54-tool dispatch, guardrails, token optimization | Every full session |
+| 03 | **ML Engineering** | 292 | FSDP training, Feast, Triton, MLflow | ML/MLOps tasks |
+| 04 | **Security** | 147 | Password hashing, Argon2, bcrypt, breach response | Security tasks |
+| 05 | **UI/UX** | 274 | Design system, GSAP, Three.js, Stitch API | UI/Frontend tasks |
+| 06 | **Web Dev** | 305 | SEO, CODVYN, vibe coding, project setup | Web projects |
+| 07 | **Job Hunt** | 145 | ATS resume, LinkedIn, n8n automation | Job hunting |
+| 08 | **Architecture** | 198 | SAGA, CQRS, EDA, LLM proxy, Playwright QA | Architecture tasks |
+| 09 | **Misc** | 255 | Roadmaps, GitHub tricks, OSM, AlgoTracker | Everything else |
+| 10 | **Lessons Learned** | 17 | Hardcoded agent directives, configuration gotchas | Pre-flight check |
+| 11 | **Error Logs** | 30 | OOMs, PEP 668, Wayland, token exhaustion history | Before risky ops |
+| 12 | **Architectural Patterns** | 107 | Industry pattern research notes | Personal reference |
+
+```bash
+# Quick stats
+make stats
+
+# Validate all modules
+make validate
+
+# Re-seed vector DB
+make seed
+```
+
+---
+
+## 💰 Token Economics
+
+| Mode | Lines Loaded | vs Old 3,622-line Monolith |
+|------|-------------|---------------------------|
+| **Lazy** (vector search) | ~200 | **−95%** |
+| **Full** (core + CLI + task) | ~1,420 | **−60%** |
+| Old monolithic GEMINI.md | 3,622 | Baseline |
+
+### Cost Comparison
+
+**The trick is simple:** agents search the vector DB first. If the answer exists in a cached chunk (~200 tokens), they use that instead of loading a 300-line module. Modules only load when the search misses.
+
+---
+
+## ⚡ Free Claude Code (FCC) — Zero-Cost Claude
+
+FCC routes Anthropic Messages API traffic to **17 free/paid/local providers**.
+
+### Provider Configuration
+| Provider | Key (prefix) | Base URL |
+|----------|-------------|----------|
+| **NVIDIA NIM** | `nvapi-...` | `api.nvcf.nvidia.com/v1` |
+| **OpenRouter** | `sk-or-v1-...` | `openrouter.ai/api/v1` |
+| **Mistral** | `AXub...` | `api.mistral.ai/v1` |
+| **Codestral** | `AXub...` | `codestral.mistral.ai/v1` |
+| **DeepSeek** | `sk-b2e...` | `api.deepseek.com/anthropic` |
+| **Kimi (Moonshot)** | `sk-NyN...` | `api.moonshot.ai/anthropic/v1` |
+| **Wafer** | `wfr_fb...` | `pass.wafer.ai/v1/messages` |
+| **OpenCode** | `sk-LDN...` | `opencode.ai/zen/v1` |
+| **freellmapi** | `freellmapi-...` | `localhost:3001/v1` |
+
+```bash
+fcc-server    # Run the proxy (admin UI: localhost:8082)
+fcc-claude    # Use Claude Code through FCC
+```
+
+**Critical config rules** (learned the hard way — see Module 10):
+- Base URL must NOT contain `/v1` (CLI auto-appends it)
+- Set `ANTHROPIC_AUTH_TOKEN` to target key, `ANTHROPIC_API_KEY` to `""`
+- Model profile parameter (`"model": "sonnet"`) is mandatory for CLI validation
+
+### freellmapi — 0-Cost Super Proxy
+Aggregates **16 free providers** behind one `/v1` endpoint (~1.7B tokens/month).
+
+| Detail | Value |
+|--------|-------|
+| **Base URL** | `http://localhost:3001/v1` |
+| **Key** | `freellmapi-...c7632` |
+| **Model** | `auto` (routes across 12+ providers) |
+| **Failover** | Automatic |
+| **Dashboard** | `http://localhost:5173` |
+
+**Golden rule:** Route everything through freellmapi first. Direct premium API calls caused the token exhaustion Event #6 in Error Logs (Module 11).
+
+---
+
+## 🛠️ 54-CLI Dispatch Table — Modern Replacements
+
+Every legacy command has a modern, token-optimized replacement. Guardrails auto-intercept the old ones.
+
+| Category | Legacy ❌ | Modern ✅ | Command |
+|----------|-----------|-----------|---------|
+| File listing | `ls` | `eza` | `eza --tree --level 2 --git-ignore` |
+| File content | `cat` | `bat` | `bat file` |
+| Markdown | `cat` | `glow` | `glow file.md` |
+| Text search | `grep` | `rg` | `rg "pattern" --type ts -l` |
+| Find files | `find` | `fd` | `fd "pattern"` |
+| Disk usage | `du` | `dust` | `dust` |
+| Disk free | `df` | `duf` | `duf` |
+| Processes | `ps` | `procs` | `procs` |
+| System monitor | `top` | `btop` | `btop` |
+| JSON | — | `jq` / `jless` / `jnv` | `jq '.key'` |
+| YAML | — | `yq` | `yq eval '.key'` |
+| API calls | `curl` | `http` | `http GET /api` |
+| Python deps | `pip` | `uv` | `uv add package` |
+| Node deps | `npm` | `bun` | `bun add package` |
+| Python tools | `pip --user` | `pipx` | `pipx install ruff` |
+| Git diff | `git diff` | `delta` | `git diff \| delta` |
+| Git TUI | — | `lazygit` | `lazygit` |
+| Bulk rename | `sed` | `sd` | `sd 'old' 'new'` |
+| History search | `Ctrl+R` | `atuin` | `atuin search` |
+| Navigation | `cd` | `zoxide` | `z dirname` |
+| Help | `man` | `tldr` | `tldr tar` |
+| Postgres | `psql` | `pgcli` | `pgcli -d db` |
+| Process mgmt | `nohup` | `pm2` | `pm2 start app.js` |
+| Session mgmt | `screen` | `tmux` | `tmux new -s session` |
+
+### CLI Guardrails (Auto-Installed `session-start.sh`)
+8 shadow wrappers at `~/bin/guardrails/`:
+```
+grep → rg  |  cat → bat  |  ls → eza  |  find → fd
+du → dust  |  top → btop  |  ps → procs  |  sed → sd
+```
+
+These wrappers intercept legacy commands and transparently redirect to modern alternatives. If someone types `grep` in a session, it silently runs `rg` instead.
+
+---
+
+## 🤖 Agent Infrastructure
+
+### Port Map
+| Port | Service | Status |
+|------|---------|--------|
+| 3001 | freellmapi API (LLM proxy) | PM2 permanent |
+| 5173 | freellmapi dashboard | On-demand dev |
+| 8082 | MEMORY vector DB / FCC admin | Optional |
+| 8083 | MEMORY dashboard (alt) | Optional |
+
+### 20+ API Keys Available
+```bash
+source ~/.config/global-apikeys/load_keys.sh
+```
+GROQ · MISTRAL · GEMINI · OPENROUTER · CEREBRAS · NVIDIA_NIM · HUGGINGFACE · OPENCODE · ZAI · DEEPSEEK · KIMI · FIREWORKS · WAFER · GITHUB · COHERE · CLOUDFLARE · FREELLMAPI · ANTHROPIC · OPENAI · XAI · SAMBANOVA · HYPERBOLIC · TAVILY · SARVAM
+
+> Full provider → key-name → signup-link matrix: see [`AI_PROVIDERS.md`](AI_PROVIDERS.md) (also mirrored at `~/.config/global-apikeys/AI_PROVIDERS.md`). Add keys via `add_key.sh KEY_NAME "value"`.
+
+### Antigravity Brain — Active Task State
+```bash
+~/.gemini/antigravity/brain/
+```
+Tracks active agent task states. Current: swarms, NeoAgent, MiMo-Code, taste-skill, hermes-agent, career-ops installs.
+
+---
+
+## 🔑 API Key Links — Master List (get-missing-key redirects)
+
+> Rule #2 says never ask the user for keys (they're auto-loaded). **BUT** when keys are missing/expired, point here — every provider's key-signup URL in one place. Save a new key with: `bash ~/Desktop/Projects/MEMORY/add_key.sh KEY_NAME "value"`.
+
+### ✅ Have (working)
+| Provider | Env var | How to regenerate |
+|----------|---------|-------------------|
+| OpenAI | `OPENAI_API_KEY` | https://platform.openai.com/api-keys |
+| Anthropic | `ANTHROPIC_API_KEY` | https://console.anthropic.com/settings/keys |
+| xAI Grok | `XAI_API_KEY` | https://console.x.ai |
+| SambaNova (free) | `SAMBANOVA_API_KEY` | https://cloud.sambanova.ai/apis |
+| Hyperbolic (free wks) | `HYPERBOLIC_API_KEY` | https://hyperbolic.xyz |
+| Tavily (1k/mo free) | `TAVILY_API_KEY` | https://app.tavily.com |
+| Groq | `GROQ_API_KEY` | https://console.groq.com/keys |
+| Gemini | `GEMINI_API_KEY` | https://aistudio.google.com/apikey |
+| Mistral/Codestral | `MISTRAL_API_KEY` | https://console.mistral.ai/api-keys |
+| DeepSeek | `DEEPSEEK_API_KEY` | https://platform.deepseek.com/api_keys |
+| OpenRouter | `OPENROUTER_API_KEY` | https://openrouter.ai/settings/keys |
+| Fireworks | `FIREWORKS_API_KEY` | https://fireworks.ai/account/api-keys |
+| Cerebras | `CEREBRAS_API_KEY` | https://cloud.cerebras.ai |
+| Cohere | `COHERE_API_KEY` | https://dashboard.cohere.com/api-keys |
+| NVIDIA NIM | `NVIDIA_NIM_API_KEY` | https://build.nvidia.com |
+| Hugging Face | `HF_TOKEN` | https://huggingface.co/settings/tokens |
+| Kimi/Moonshot | `KIMI_API_KEY` | https://platform.moonshot.cn |
+| Z.ai / GLM | `ZAI_API_KEY` | https://z.ai |
+| Sarvam AI | `SARVAM_API_KEY` | https://dashboard.sarvam.ai |
+| GitHub Models | `GITHUB_TOKEN` | https://github.com/settings/tokens |
+| Roboflow | `ROBOFOLLOW_API_KEY` | https://app.roboflow.com/settings/api |
+| WandB | `WANDB_API_KEY` | https://wandb.ai/settings |
+
+### ⏳ Free ones to grab next (skip-paid policy)
+| Provider | Env var | Signup / get key |
+|----------|---------|------------------|
+| Voyage AI (200M one-time FREE) | `VOYAGE_API_KEY` | https://dash.voyageai.com/api-keys |
+| Jina AI (free starter) | `JINA_API_KEY` | https://jina.ai/api-dashboard |
+| ElevenLabs (10k chars/mo FREE) | `ELEVENLABS_API_KEY` | https://elevenlabs.io/app/settings/api-keys |
+| Exa ✅ | `EXA_API_KEY` | https://dashboard.exa.ai/api-keys |
+| Deepgram ($200 one-time) | `DEEPGRAM_API_KEY` | https://console.deepgram.com |
+| AssemblyAI (one-time credits) | `ASSEMBLYAI_API_KEY` | https://www.assemblyai.com/app/account |
+| Qdrant Cloud (1GB free) | `QDRANT_API_KEY` | https://cloud.qdrant.io |
+| Pinecone ✅ | `PINECONE_API_KEY` | https://app.pinecone.io |
+| Cloudflare Workers AI (10k neurons/day FREE) | reuse `CLOUDFLARE_TOKEN` (CURRENTLY DEAD) | https://dash.cloudflare.com → Workers AI |
+
+### 💳 Paid — skipped by preference (get only if needed)
+| Provider | Env var | Signup |
+|----------|---------|--------|
+| Together AI | `TOGETHER_API_KEY` | https://api.together.ai/settings/api-keys |
+| Perplexity | `PERPLEXITY_API_KEY` | https://www.perplexity.ai/settings/api |
+| MiniMax | `MINIMAX_API_KEY` | https://platform.minimax.io/api-key |
+| Alibaba Qwen | `DASHSCOPE_API_KEY` | https://dashscope.intl.aliyuncs.com |
+| AI21 | `AI21_API_KEY` | https://studio.ai21.com/account/api-key |
+| Stability | `STABILITY_API_KEY` | https://platform.stability.ai/account/keys |
+| Replicate | `REPLICATE_API_TOKEN` | https://replicate.com/account/api-tokens |
+| DeepInfra | `DEEPINFRA_API_KEY` | https://deepinfra.com/dash/api_keys |
+| SiliconFlow | `SILICONFLOW_API_KEY` | https://siliconflow.com/account/ak |
+| Novita | `NOVITA_API_KEY` | https://novita.ai/setting/key |
+
+> ⚠️ Known dead (regenerate when convenient): `GEMINI_API_KEY`, `HF_TOKEN`, `KIMI_API_KEY`. Full matrix: `AI_PROVIDERS.md`.
+
+---
+
+---
+
+## 🧠 About the Creator
+
+**MEMORY** is an original project by **Aditya Shirsatrao** — built from scratch, every module, every tool, every pattern. Researched, designed, and implemented independently.
+
+All code, documentation, and design is original — researched, designed, and implemented from scratch.
+
+---
+
+## 🗺️ Infrastructure Map
+
+```
+~/.config/
+├── global-apikeys/
+│   ├── keys.env           # 18 API keys
+│   └── load_keys.sh       # Source this to load all keys
+├── agent-tools/
+│   └── manifest.json      # 15 installed agent tools
+└── stitch/
+    └── mcp-config.json    # Stitch UI builder MCP
+
+~/.gemini/antigravity/
+├── brain/                 # Active task state management
+└── skills/                # Installed agent skills
+
+~/.fcc/.env                # Free Claude Code provider configs
+
+~/bin/
+├── guardrails/            # 8 shadow CLI wrappers
+├── session-start.sh       # First action every session
+├── setup-project          # New project bootstrapper
+├── auto-dispatch          # Smart tool + module suggestion
+└── templates/
+    ├── architecture/      # SAGA, CQRS, EDA blueprints
+    ├── specs/             # PRD, DESIGNDOC, TECHSTACK
+    └── git/               # PR templates, issue templates
+```
+
+---
+
+## 📊 Makefile Operations
+
+```bash
+make validate    # Check all modules exist + UI validation
+make seed        # Re-vector ChromaDB from all modules
+make stats       # Module sizes + token savings calculation
+make hooks       # Install git hooks (auto-seed on merge, UI validate on commit)
+make all         # validate + seed
+make fix-paths   # Update relative paths to $MEMORY_ROOT
+```
+
+### Git Hooks (Auto-Installed)
+| Hook | Action |
+|------|--------|
+| `pre-commit` | Validates UI design system against Apple HIG |
+| `post-merge` | Re-seeds ChromaDB when module files change |
+| `post-commit` | Re-seeds ChromaDB when module files change |
+
+---
+
+## 🧪 The 5 Hardcoded Rules (Never Violated)
+
+### Rule #1 — Port Management
+```bash
+ss -tlnp | grep LISTEN    # Check before starting ANY server
+# Safe ports: 3000, 3002, 3003, 4000, 4001, 5000, 5001, 7000, 8000, 8080, 8081, 8888, 9000
+```
+
+### Rule #2 — API Keys (Never Ask)
+Auto-load from `/home/aditya/.config/global-apikeys/keys.env`. Never request keys from the user.
+
+### Rule #3 — No Polling, Token Conservation
+Never loop on background processes. Propose terminal commands. Start fresh after 15-20 messages.
+
+### Rule #4 — Never Use Pro Models
+Default: Gemini 3.5 Flash (Low). Never Claude Pro or Gemini Pro without explicit permission.
+
+### Rule #5 — Agent Handoff Protocol
+```markdown
+# Save .agent-progress.md before exiting:
+- What was built successfully
+- What failed/blocked
+- Next 2 tasks to complete
+```
+
+---
+
+## 🧪 Self-Healing & Error Prevention
+
+Error → diagnose → fix → re-run → verify → done.  
+Unknown errors route through Module 11 (error logs) to check for known failure modes before diagnosing.
+
+### Pre-Done Audit Checklist
+```bash
+semgrep --config auto .                                         # SAST + logic bugs
+pre-commit run --all-files                                      # lint/format/secrets
+git diff | gitleaks detect --no-git                             # no secrets in diff
+for f in AGENTS.md CLAUDE.md .cursorrules .windsurfrules .clinerules; do
+  [ "$(readlink -f "$f")" = "$(readlink -f GEMINI.md)" ] || echo "BROKEN: $f"
+done
+```
+
+### Recorded Failure Modes (Module 11)
+| Event | Error | Prevention |
+|-------|-------|------------|
+| 1 | OOM from parallel installs | Serialize: apt → cargo → ollama |
+| 2 | PEP 668 externally-managed | `apt-get install pipx`, never `pip --user` |
+| 3 | Wayland GUI crash | Use `systemctl --user` for GUI apps |
+| 4 | IBus keybinding conflict | Clear IBus triggers before binding Super+Space |
+| 5 | NPM 404 halts setup | Append `\|\| true` on non-critical installs |
+| 6 | Token exhaustion (all APIs) | Route through freellmapi proxy |
+
+---
+
+## 🏛️ Architecture Patterns (From Module 08)
+
+| Pattern | When to Use | Key File |
+|---------|-------------|----------|
+| **SAGA Orchestrator** | Distributed transactions across services | `saga_orchestrator.py` |
+| **CQRS** | Read/write asymmetry > 100:1 | `cqrs_fastapi.py` |
+| **Event-Driven** | Decoupled async microservices | `event_driven_broker.py` |
+| **Blue-Green Deploy** | Zero-downtime deployment | `blue_green_deploy.sh` |
+| **LLM Proxy Router** | Multi-provider with failover | Priority decay + cooldown quarantine |
+| **Playwright QA** | Autonomous test-and-fix loop | 8-iteration fix cycle |
+
+---
+
+## 📜 License
+
+MIT License — Copyright © 2026 **Aditya Shirsatrao**
+
+📄 [MIT License](LICENSE)
+
+---
+
+<p align="center">
+  <sub>Built because 3 AM context exhaustion sucks · Powered by 12 brains · Driven by zero assumptions</sub>
+  <br>
+  <sub>Made with 🧠 by <a href="https://github.com/adityashirsatrao007">Aditya Shirsatrao</a></sub>
+  <br><br>
+  <sub>
+    <a href="https://github.com/adityashirsatrao007/MEMORY">GitHub</a> ·
+    <a href="https://github.com/adityashirsatrao007/MEMORY/issues">Issues</a>
+  </sub>
+</p>

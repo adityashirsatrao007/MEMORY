@@ -1,0 +1,7 @@
+---
+created: 2026-08-19T23:06:55.736953
+category: portfolio
+tags: ["github", "audit", "deployment", "ci", "portfolio"]
+---
+
+2026-08-19 GitHub portfolio audit for adityashirsatrao007 (51 owned repos): (1) DELETED public repo `rdp` leaking plaintext RDP password ubuntu2026 + IP 172.20.10.9 — Aditya must rotate that password. (2) Made 6 flagships public: ai-threat-detection, order-matching-engine, rag-knowledge-assistant, nyc-taxi-data-pipeline, real-time-clickstream, production-cicd-template (scrubbed hardcoded Admin@2025 in reset_soc_password.py). (3) LIVE demos: SentinelX UI https://frontend-fa9srqvov-adityas-projects-7c01ad4a.vercel.app (Vercel, ssoProtection disabled via PATCH null) and RAG assistant https://ssl-rob-elected-you.trycloudflare.com (cloudflared quick tunnel pid 483006 -> localhost:8091 container rag-test). Backends not hosted (Railway trial expired, Render token 401, HF Spaces PRO-gated). (4) Fixed CI: portfolio (397f33a, locked) / ai-ds-starter (c274b8b, paths-filter v4 + AUTO_MERGE_TOKEN PAT) / Datathon-2026 (abea88f, orphan lockfile removed); nihongo-n5 red = Dependabot nanoid 6.x ESM-incompat, non-blocking. (5) Archived 7 scratch repos incl todo-list, Practice-Repo, AlgoScope, DevPath, vibe-coding-workspace, gym-aesthetic-physique-guide, Giri-Tech-Hub. NOASSERTION licenses are deliberate All-Rights-Reserved — do NOT override. Persisted in .agent-progress.md.

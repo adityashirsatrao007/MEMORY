@@ -1,0 +1,456 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=e6]:
+      - heading "Navigation Menu" [level=2] [ref=e7]
+      - generic [ref=e9]:
+        - button "Toggle navigation" [ref=e11] [cursor=pointer]
+        - link "Homepage" [ref=e17] [cursor=pointer]:
+          - /url: /
+          - img [ref=e18]
+        - generic [ref=e20]:
+          - link "Sign in" [ref=e21] [cursor=pointer]:
+            - /url: /login?return_to=https%3A%2F%2Fgithub.com%2FChhunneng%2Fprogramming-starters-project
+          - button "Appearance settings" [ref=e24] [cursor=pointer]:
+            - img
+  - main [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e32]:
+          - img [ref=e33]
+          - link "Chhunneng" [ref=e36] [cursor=pointer]:
+            - /url: /Chhunneng
+          - generic [ref=e37]: /
+          - strong [ref=e38]:
+            - link "programming-starters-project" [ref=e39] [cursor=pointer]:
+              - /url: /Chhunneng/programming-starters-project
+          - generic [ref=e40]: Public
+        - generic [ref=e41]:
+          - list:
+            - listitem [ref=e42]:
+              - link "You must be signed in to change notification settings" [ref=e43] [cursor=pointer]:
+                - /url: /login?return_to=%2FChhunneng%2Fprogramming-starters-project
+                - img [ref=e44]
+                - text: Notifications
+            - listitem [ref=e46]:
+              - link "Fork 81" [ref=e47] [cursor=pointer]:
+                - /url: /login?return_to=%2FChhunneng%2Fprogramming-starters-project
+                - img [ref=e48]
+                - text: Fork
+                - generic "81" [ref=e50]
+            - listitem [ref=e51]:
+              - link "You must be signed in to star a repository" [ref=e53] [cursor=pointer]:
+                - /url: /login?return_to=%2FChhunneng%2Fprogramming-starters-project
+                - img [ref=e54]
+                - text: Star
+                - generic "54 users starred this repository" [ref=e56]: "54"
+      - navigation "Repository" [ref=e57]:
+        - list [ref=e58]:
+          - listitem [ref=e59]:
+            - link "Code" [ref=e60] [cursor=pointer]:
+              - /url: /Chhunneng/programming-starters-project
+              - img [ref=e61]
+              - generic [ref=e63]: Code
+          - listitem [ref=e64]:
+            - link "Issues 1" [ref=e65] [cursor=pointer]:
+              - /url: /Chhunneng/programming-starters-project/issues
+              - img [ref=e66]
+              - generic [ref=e69]: Issues
+              - generic "1" [ref=e70]
+          - listitem [ref=e71]:
+            - link "Pull requests 12" [ref=e72] [cursor=pointer]:
+              - /url: /Chhunneng/programming-starters-project/pulls
+              - img [ref=e73]
+              - generic [ref=e75]: Pull requests
+              - generic "12" [ref=e76]
+          - listitem [ref=e77]:
+            - link "Actions" [ref=e78] [cursor=pointer]:
+              - /url: /Chhunneng/programming-starters-project/actions
+              - img [ref=e79]
+              - generic [ref=e81]: Actions
+          - listitem [ref=e82]:
+            - link "Projects" [ref=e83] [cursor=pointer]:
+              - /url: /Chhunneng/programming-starters-project/projects
+              - img [ref=e84]
+              - generic [ref=e86]: Projects
+          - listitem [ref=e87]:
+            - link "Security and quality" [ref=e88] [cursor=pointer]:
+              - /url: /Chhunneng/programming-starters-project/security
+              - img [ref=e89]
+              - generic [ref=e91]: Security and quality
+          - listitem [ref=e92]
+        - button "Additional navigation options" [ref=e96] [cursor=pointer]:
+          - img
+    - generic [ref=e109]:
+      - heading "Chhunneng/programming-starters-project" [level=1] [ref=e111]
+      - generic [ref=e112]:
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "main branch" [ref=e119] [cursor=pointer]:
+                - generic [ref=e120]:
+                  - generic [ref=e122]:
+                    - img [ref=e124]
+                    - generic [ref=e127]: main
+                  - generic:
+                    - img
+              - generic [ref=e128]:
+                - link "Go to Branches page" [ref=e129] [cursor=pointer]:
+                  - /url: /Chhunneng/programming-starters-project/branches
+                  - img [ref=e130]
+                - link "Go to Tags page" [ref=e132] [cursor=pointer]:
+                  - /url: /Chhunneng/programming-starters-project/tags
+                  - img [ref=e133]
+            - generic [ref=e135]:
+              - button "Go to file" [ref=e138] [cursor=pointer]:
+                - generic [ref=e140]: Go to file
+              - button "Code" [ref=e141] [cursor=pointer]:
+                - generic [ref=e142]:
+                  - generic:
+                    - img
+                  - generic [ref=e143]: Code
+                  - generic:
+                    - img
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - heading "Folders and files" [level=2] [ref=e146]
+              - table "Folders and files" [ref=e147]:
+                - rowgroup:
+                  - row "Name Last commit message Last commit date":
+                    - columnheader "Name"
+                    - columnheader "Last commit message":
+                      - generic "Last commit message"
+                    - columnheader "Last commit date":
+                      - generic "Last commit date"
+                - rowgroup [ref=e148]:
+                  - row "Latest commit History View commit history for this file." [ref=e149]:
+                    - cell "Latest commit History View commit history for this file." [ref=e150]:
+                      - generic [ref=e151]:
+                        - heading "Latest commit" [level=2] [ref=e152]
+                        - generic [ref=e155]:
+                          - heading "History" [level=2] [ref=e156]
+                          - link "View commit history for this file." [ref=e158] [cursor=pointer]:
+                            - /url: /Chhunneng/programming-starters-project/commits/main/
+                            - generic [ref=e159]:
+                              - generic:
+                                - img
+                  - row ".github, (Directory)" [ref=e160]:
+                    - cell ".github, (Directory)" [ref=e161]:
+                      - generic [ref=e162]:
+                        - img [ref=e163]
+                        - link ".github, (Directory)" [ref=e168] [cursor=pointer]:
+                          - /url: /Chhunneng/programming-starters-project/tree/main/.github
+                          - text: .github
+                    - cell [ref=e169]
+                    - cell [ref=e171]
+                  - row "Javascript, (Directory)" [ref=e174]:
+                    - cell "Javascript, (Directory)" [ref=e175]:
+                      - generic [ref=e176]:
+                        - img [ref=e177]
+                        - link "Javascript, (Directory)" [ref=e182] [cursor=pointer]:
+                          - /url: /Chhunneng/programming-starters-project/tree/main/Javascript
+                          - text: Javascript
+                    - cell [ref=e183]
+                    - cell [ref=e185]
+                  - row "Laravel/my-first-badges, (Directory)" [ref=e188]:
+                    - cell "Laravel/my-first-badges, (Directory)" [ref=e189]:
+                      - generic [ref=e190]:
+                        - img [ref=e191]
+                        - link "Laravel/my-first-badges, (Directory)" [ref=e196] [cursor=pointer]:
+                          - /url: /Chhunneng/programming-starters-project/tree/main/Laravel/my-first-badges
+                          - text: Laravel/my-first-badges
+                    - cell [ref=e197]
+                    - cell [ref=e199]
+                  - row "Python, (Directory)" [ref=e202]:
+                    - cell "Python, (Directory)" [ref=e203]:
+                      - generic [ref=e204]:
+                        - img [ref=e205]
+                        - link "Python, (Directory)" [ref=e210] [cursor=pointer]:
+                          - /url: /Chhunneng/programming-starters-project/tree/main/Python
+                          - text: Python
+                    - cell [ref=e211]
+                    - cell [ref=e213]
+                  - row "LICENSE, (File)" [ref=e216]:
+                    - cell "LICENSE, (File)" [ref=e217]:
+                      - generic [ref=e218]:
+                        - img [ref=e219]
+                        - link "LICENSE, (File)" [ref=e224] [cursor=pointer]:
+                          - /url: /Chhunneng/programming-starters-project/blob/main/LICENSE
+                          - text: LICENSE
+                    - cell [ref=e225]
+                    - cell [ref=e227]
+                  - row "README.md, (File)" [ref=e230]:
+                    - cell "README.md, (File)" [ref=e231]:
+                      - generic [ref=e232]:
+                        - img [ref=e233]
+                        - link "README.md, (File)" [ref=e238] [cursor=pointer]:
+                          - /url: /Chhunneng/programming-starters-project/blob/main/README.md
+                          - text: README.md
+                    - cell [ref=e239]
+                    - cell [ref=e241]
+            - generic [ref=e245]:
+              - generic [ref=e246]:
+                - heading "Repository files navigation" [level=2] [ref=e247]
+                - navigation "Repository files" [ref=e248]:
+                  - list [ref=e249]:
+                    - listitem [ref=e250]:
+                      - link "README" [ref=e251] [cursor=pointer]:
+                        - /url: "#"
+                        - generic [ref=e252]: README
+                    - listitem [ref=e253]:
+                      - link "Code of conduct" [ref=e254] [cursor=pointer]:
+                        - /url: "#"
+                        - generic [ref=e255]: Code of conduct
+                    - listitem [ref=e256]:
+                      - link "Contributing" [ref=e257] [cursor=pointer]:
+                        - /url: "#"
+                        - generic [ref=e258]: Contributing
+                    - listitem [ref=e259]:
+                      - link "MIT license" [ref=e260] [cursor=pointer]:
+                        - /url: "#"
+                        - generic [ref=e261]: MIT license
+                    - listitem [ref=e262]:
+                      - link "Security" [ref=e263] [cursor=pointer]:
+                        - /url: "#"
+                        - generic [ref=e264]: Security
+                - button "Outline" [ref=e265] [cursor=pointer]:
+                  - img [ref=e266]
+              - article [ref=e269]:
+                - generic [ref=e270]:
+                  - heading "Programming Starters Project" [level=1] [ref=e271]
+                  - 'link "Permalink: Programming Starters Project" [ref=e272] [cursor=pointer]':
+                    - /url: "#programming-starters-project"
+                    - img [ref=e273]
+                - paragraph [ref=e275]: 🚀 Welcome to the Programming Starters Project! This repository contains a curated collection of beginner-friendly projects in various programming languages and frameworks. Explore, learn, and code your way through hands-on projects to build your skills.
+                - generic [ref=e276]:
+                  - heading "How to Use" [level=2] [ref=e277]
+                  - 'link "Permalink: How to Use" [ref=e278] [cursor=pointer]':
+                    - /url: "#how-to-use"
+                    - img [ref=e279]
+                - list [ref=e281]:
+                  - listitem [ref=e282]: Explore language folders to find projects.
+                  - listitem [ref=e283]: Each project is documented in Markdown files, providing step-by-step instructions and examples.
+                  - listitem [ref=e284]: Choose a project, dive in, and start coding!
+                - generic [ref=e285]:
+                  - heading "Contributing" [level=2] [ref=e286]
+                  - 'link "Permalink: Contributing" [ref=e287] [cursor=pointer]':
+                    - /url: "#contributing"
+                    - img [ref=e288]
+                - paragraph [ref=e290]:
+                  - text: We welcome contributions! If you have a project idea or want to improve existing projects, please check out our
+                  - link "Contributing Guidelines" [ref=e291] [cursor=pointer]:
+                    - /url: /Chhunneng/programming-starters-project/blob/main/.github/CONTRIBUTING.md
+                  - text: . Your contributions help make learning to code more accessible.
+                - paragraph [ref=e292]: ⭐ If you find this project helpful, consider giving it a star! ⭐ It's a simple way to show your support.
+                - generic [ref=e293]:
+                  - heading "License" [level=2] [ref=e294]
+                  - 'link "Permalink: License" [ref=e295] [cursor=pointer]':
+                    - /url: "#license"
+                    - img [ref=e296]
+                - paragraph [ref=e298]:
+                  - text: This repository is open-sourced under the
+                  - link "MIT License" [ref=e299] [cursor=pointer]:
+                    - /url: /Chhunneng/programming-starters-project/blob/main/LICENSE
+                  - text: . Feel free to use, modify, and share the content with others.
+                - paragraph [ref=e300]: Happy coding! 🚀✨
+                - separator [ref=e301]
+                - generic [ref=e302]:
+                  - heading "Contributors" [level=2] [ref=e303]
+                  - 'link "Permalink: Contributors" [ref=e304] [cursor=pointer]':
+                    - /url: "#contributors"
+                    - img [ref=e305]
+                - link [ref=e307] [cursor=pointer]:
+                  - /url: https://github.com/Chhunneng/programming-starters-project/graphs/contributors
+                  - img [ref=e308]
+        - generic [ref=e312]:
+          - generic [ref=e315]:
+            - heading "About" [level=2] [ref=e316]
+            - paragraph [ref=e317]: 🚀 Beginner-friendly projects in various languages. Dive into coding with hands-on projects and build your skills! ✨
+            - heading "Topics" [level=3] [ref=e318]
+            - generic [ref=e320]:
+              - link "hacktoberfest" [ref=e321] [cursor=pointer]:
+                - /url: /topics/hacktoberfest
+              - link "hacktoberfest2025" [ref=e322] [cursor=pointer]:
+                - /url: /topics/hacktoberfest2025
+            - heading "Resources" [level=3] [ref=e323]
+            - link "Readme" [ref=e325] [cursor=pointer]:
+              - /url: "#readme-ov-file"
+              - img [ref=e326]
+              - text: Readme
+            - heading "License" [level=3] [ref=e328]
+            - link "MIT license" [ref=e330] [cursor=pointer]:
+              - /url: "#MIT-1-ov-file"
+              - img [ref=e331]
+              - text: MIT license
+            - heading "Code of conduct" [level=3] [ref=e333]
+            - link "Code of conduct" [ref=e335] [cursor=pointer]:
+              - /url: "#coc-ov-file"
+              - img [ref=e336]
+              - text: Code of conduct
+            - heading "Contributing" [level=3] [ref=e338]
+            - link "Contributing" [ref=e340] [cursor=pointer]:
+              - /url: "#contributing-ov-file"
+              - img [ref=e341]
+              - text: Contributing
+            - heading "Security policy" [level=3] [ref=e343]
+            - link "Security policy" [ref=e345] [cursor=pointer]:
+              - /url: "#security-ov-file"
+              - img [ref=e346]
+              - text: Security policy
+            - link "Activity" [ref=e349] [cursor=pointer]:
+              - /url: /Chhunneng/programming-starters-project/activity
+              - img [ref=e350]
+              - text: Activity
+            - heading "Stars" [level=3] [ref=e352]
+            - link "54 stars" [ref=e354] [cursor=pointer]:
+              - /url: /Chhunneng/programming-starters-project/stargazers
+              - img [ref=e355]
+              - strong [ref=e357]: "54"
+              - text: stars
+            - heading "Watchers" [level=3] [ref=e358]
+            - link "1 watching" [ref=e360] [cursor=pointer]:
+              - /url: /Chhunneng/programming-starters-project/watchers
+              - img [ref=e361]
+              - strong [ref=e363]: "1"
+              - text: watching
+            - heading "Forks" [level=3] [ref=e364]
+            - link "81 forks" [ref=e366] [cursor=pointer]:
+              - /url: /Chhunneng/programming-starters-project/forks
+              - img [ref=e367]
+              - strong [ref=e369]: "81"
+              - text: forks
+            - link "Report repository" [ref=e371] [cursor=pointer]:
+              - /url: /contact/report-content?content_url=https%3A%2F%2Fgithub.com%2FChhunneng%2Fprogramming-starters-project&report=Chhunneng+%28user%29
+          - generic [ref=e373]:
+            - heading "Releases" [level=2] [ref=e374]:
+              - link "Releases" [ref=e375] [cursor=pointer]:
+                - /url: /Chhunneng/programming-starters-project/releases
+            - generic [ref=e376]: No releases published
+          - generic [ref=e378]:
+            - heading "Packages" [level=2] [ref=e379]:
+              - link "Packages" [ref=e380] [cursor=pointer]:
+                - /url: /users/Chhunneng/packages?repo_name=programming-starters-project
+            - generic [ref=e381]: No packages published
+          - generic [ref=e383]:
+            - heading "Contributors 13" [level=2] [ref=e384]:
+              - link "Contributors 13" [ref=e385] [cursor=pointer]:
+                - /url: /Chhunneng/programming-starters-project/graphs/contributors
+                - text: Contributors
+                - generic "13" [ref=e386]
+            - list [ref=e387]:
+              - listitem [ref=e388]:
+                - link "@Chhunneng" [ref=e389] [cursor=pointer]:
+                  - /url: https://github.com/Chhunneng
+                  - img "@Chhunneng" [ref=e390]
+              - listitem [ref=e391]:
+                - link "@Utkarshgola" [ref=e392] [cursor=pointer]:
+                  - /url: https://github.com/Utkarshgola
+                  - img "@Utkarshgola" [ref=e393]
+              - listitem [ref=e394]:
+                - link "@DillonAdriyan" [ref=e395] [cursor=pointer]:
+                  - /url: https://github.com/DillonAdriyan
+                  - img "@DillonAdriyan" [ref=e396]
+              - listitem [ref=e397]:
+                - link "@Ballwictb" [ref=e398] [cursor=pointer]:
+                  - /url: https://github.com/Ballwictb
+                  - img "@Ballwictb" [ref=e399]
+              - listitem [ref=e400]:
+                - link "@Shiva9801" [ref=e401] [cursor=pointer]:
+                  - /url: https://github.com/Shiva9801
+                  - img "@Shiva9801" [ref=e402]
+              - listitem [ref=e403]:
+                - link "@joyboyid" [ref=e404] [cursor=pointer]:
+                  - /url: https://github.com/joyboyid
+                  - img "@joyboyid" [ref=e405]
+              - listitem [ref=e406]:
+                - link "@Rdx11" [ref=e407] [cursor=pointer]:
+                  - /url: https://github.com/Rdx11
+                  - img "@Rdx11" [ref=e408]
+              - listitem [ref=e409]:
+                - link "@DThiwanka" [ref=e410] [cursor=pointer]:
+                  - /url: https://github.com/DThiwanka
+                  - img "@DThiwanka" [ref=e411]
+              - listitem [ref=e412]:
+                - link "@Atharva1723" [ref=e413] [cursor=pointer]:
+                  - /url: https://github.com/Atharva1723
+                  - img "@Atharva1723" [ref=e414]
+              - listitem [ref=e415]:
+                - link "@Ayushjhawar8" [ref=e416] [cursor=pointer]:
+                  - /url: https://github.com/Ayushjhawar8
+                  - img "@Ayushjhawar8" [ref=e417]
+              - listitem [ref=e418]:
+                - link "@veroagrisand" [ref=e419] [cursor=pointer]:
+                  - /url: https://github.com/veroagrisand
+                  - img "@veroagrisand" [ref=e420]
+              - listitem [ref=e421]:
+                - link "@SimardeepSingh-zsh" [ref=e422] [cursor=pointer]:
+                  - /url: https://github.com/SimardeepSingh-zsh
+                  - img "@SimardeepSingh-zsh" [ref=e423]
+              - listitem [ref=e424]:
+                - link "@SubhaBhatta" [ref=e425] [cursor=pointer]:
+                  - /url: https://github.com/SubhaBhatta
+                  - img "@SubhaBhatta" [ref=e426]
+          - generic [ref=e428]:
+            - heading "Languages" [level=2] [ref=e429]
+            - list [ref=e436]:
+              - listitem [ref=e437]:
+                - link "PHP 70.0%" [ref=e438] [cursor=pointer]:
+                  - /url: /Chhunneng/programming-starters-project/search?l=php
+                  - img [ref=e439]
+                  - generic [ref=e441]: PHP
+                  - generic [ref=e442]: 70.0%
+              - listitem [ref=e443]:
+                - link "Blade 26.5%" [ref=e444] [cursor=pointer]:
+                  - /url: /Chhunneng/programming-starters-project/search?l=blade
+                  - img [ref=e445]
+                  - generic [ref=e447]: Blade
+                  - generic [ref=e448]: 26.5%
+              - listitem [ref=e449]:
+                - link "Python 3.2%" [ref=e450] [cursor=pointer]:
+                  - /url: /Chhunneng/programming-starters-project/search?l=python
+                  - img [ref=e451]
+                  - generic [ref=e453]: Python
+                  - generic [ref=e454]: 3.2%
+              - listitem [ref=e455]:
+                - link "JavaScript 0.3%" [ref=e456] [cursor=pointer]:
+                  - /url: /Chhunneng/programming-starters-project/search?l=javascript
+                  - img [ref=e457]
+                  - generic [ref=e459]: JavaScript
+                  - generic [ref=e460]: 0.3%
+  - contentinfo [ref=e462]:
+    - heading "Footer" [level=2] [ref=e463]
+    - generic [ref=e464]:
+      - generic [ref=e465]:
+        - link "GitHub Homepage" [ref=e466] [cursor=pointer]:
+          - /url: https://github.com
+          - img [ref=e467]
+        - generic [ref=e469]: © 2026 GitHub, Inc.
+      - navigation "Footer" [ref=e470]:
+        - heading "Footer navigation" [level=3] [ref=e471]
+        - list "Footer navigation" [ref=e472]:
+          - listitem [ref=e473]:
+            - link "Terms" [ref=e474] [cursor=pointer]:
+              - /url: https://docs.github.com/site-policy/github-terms/github-terms-of-service
+          - listitem [ref=e475]:
+            - link "Privacy" [ref=e476] [cursor=pointer]:
+              - /url: https://docs.github.com/site-policy/privacy-policies/github-privacy-statement
+          - listitem [ref=e477]:
+            - link "Security" [ref=e478] [cursor=pointer]:
+              - /url: https://github.com/security
+          - listitem [ref=e479]:
+            - link "Status" [ref=e480] [cursor=pointer]:
+              - /url: https://www.githubstatus.com/
+          - listitem [ref=e481]:
+            - link "Community" [ref=e482] [cursor=pointer]:
+              - /url: https://github.community/
+          - listitem [ref=e483]:
+            - link "Docs" [ref=e484] [cursor=pointer]:
+              - /url: https://docs.github.com/
+          - listitem [ref=e485]:
+            - link "Contact" [ref=e486] [cursor=pointer]:
+              - /url: https://support.github.com?tags=dotcom-footer
+          - listitem [ref=e487]:
+            - button "Manage cookies" [ref=e489] [cursor=pointer]
+          - listitem [ref=e490]:
+            - button "Do not share my personal information" [ref=e492] [cursor=pointer]

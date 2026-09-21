@@ -1,0 +1,29 @@
+# Git configuration
+
+# Auto-detect text files
+* text=auto
+
+# Source files
+*.md text
+*.html text diff=html
+*.css text
+*.js text
+*.json text
+*.yml text
+*.yaml text
+*.sh text eol=lf
+*.py text diff=python
+*.toml text
+*.cfg text
+*.ini text
+
+# Binary
+*.png binary
+*.jpg binary
+*.svg text
+*.ico binary
+*.drawio text
+
+# Git
+.gitattributes text
+.gitignore text
